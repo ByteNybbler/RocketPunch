@@ -8,8 +8,11 @@ using UnityEngine;
 public class PlayerInput : MonoBehaviour, IInputSubscriber
 {
     [SerializeField]
-    [Tooltip("Reference to the Rigidbody component.")]
-    Rigidbody2D rb;
+    [Tooltip("Reference to the Mover component.")]
+    Mover2D mover;
+    [SerializeField]
+    [Tooltip("Reference to the PlayerPunch component.")]
+    PlayerPunch playerPunch;
     [SerializeField]
     [Tooltip("Rocket movement speed.")]
     float movementSpeed;
@@ -25,11 +28,12 @@ public class PlayerInput : MonoBehaviour, IInputSubscriber
         float axisV = inputData.GetAxisVerticalRaw();
         float deltaX = axisH * movementSpeed;
         float deltaY = axisV * movementSpeed;
-        //Vector3 change = new Vector2(deltaX, deltaY);
-        //Vector2 newPos = transform.position + change;
         Vector2 change = new Vector2(deltaX, deltaY) * Time.deltaTime;
-        Vector2 newPos = rb.position + change;
+        mover.MovePosition(change);
 
-        rb.MovePosition(newPos);
+        if (inputData.GetKeyDown(KeyCode.Space))
+        {
+            playerPunch.Punch();
+        }
     }
 }

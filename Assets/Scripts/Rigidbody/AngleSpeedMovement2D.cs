@@ -10,15 +10,8 @@ public class AngleSpeedMovement2D : MonoBehaviour
     [SerializeField]
     [Tooltip("Reference to the Mover component.")]
     Mover2D mover;
-    /*
-    [SerializeField]
-    [Tooltip("The angle at which the projectile starts moving.")]
-    float angle;
-    [SerializeField]
-    [Tooltip("How quickly the projectile moves.")]
-    float speed;
-    */
 
+    // The vector determining the direction and distance to move.
     Vector2 moveVector;
 
     private void FixedUpdate()

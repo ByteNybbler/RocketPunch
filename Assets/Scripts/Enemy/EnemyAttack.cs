@@ -19,6 +19,12 @@ public class EnemyAttack : MonoBehaviour
     [SerializeField]
     [Tooltip("The angle of fired projectiles.")]
     float projectileAngle;
+    [SerializeField]
+    [Tooltip("The change in projectile angle between each shot.")]
+    float projectileAngleDeltaPerShot;
+    [SerializeField]
+    [Tooltip("Whether the fired projectiles are punchable.")]
+    bool projectilePunchable;
 
     Timer timerShot;
 
@@ -33,7 +39,9 @@ public class EnemyAttack : MonoBehaviour
         {
             GameObject projectile = Instantiate(prefabProjectile, transform.position, Quaternion.identity);
             EnemyProjectile proj = projectile.GetComponent<EnemyProjectile>();
-            proj.Init(projectileAngle, projectileSpeed);
+            proj.SetAngleSpeed(projectileAngle, projectileSpeed);
+            proj.SetPunchable(projectilePunchable);
+            projectileAngle += projectileAngleDeltaPerShot;
         }
     }
 }
