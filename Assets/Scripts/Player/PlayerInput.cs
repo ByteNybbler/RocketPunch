@@ -1,11 +1,11 @@
 ﻿// Author(s): Paul Calande
-// Player class for Rocket Puncher.
+// Player input class for Rocket Puncher.
 
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Player : MonoBehaviour, IInputSubscriber
+public class PlayerInput : MonoBehaviour, IInputSubscriber
 {
     [SerializeField]
     [Tooltip("Reference to the Rigidbody component.")]
@@ -23,10 +23,12 @@ public class Player : MonoBehaviour, IInputSubscriber
     {
         float axisH = inputData.GetAxisHorizontalRaw();
         float axisV = inputData.GetAxisVerticalRaw();
-        float deltaX = axisH * movementSpeed * Time.deltaTime;
-        float deltaY = axisV * movementSpeed * Time.deltaTime;
-        Vector3 change = new Vector2(deltaX, deltaY);
-        Vector2 newPos = transform.position + change;
+        float deltaX = axisH * movementSpeed;
+        float deltaY = axisV * movementSpeed;
+        //Vector3 change = new Vector2(deltaX, deltaY);
+        //Vector2 newPos = transform.position + change;
+        Vector2 change = new Vector2(deltaX, deltaY) * Time.deltaTime;
+        Vector2 newPos = rb.position + change;
 
         rb.MovePosition(newPos);
     }
