@@ -13,6 +13,9 @@ public class EnemyProjectile : MonoBehaviour
     [SerializeField]
     [Tooltip("Whether the projectile is punchable or not.")]
     bool punchable;
+    [SerializeField]
+    [Tooltip("How much damage the projectile does.")]
+    int damage;
 
     public void SetAngleSpeed(float angle, float speed)
     {
@@ -38,6 +41,11 @@ public class EnemyProjectile : MonoBehaviour
             {
                 Kill();
             }
+        }
+        else if (collision.CompareTag("PlayerSelfHitbox"))
+        {
+            collision.transform.root.GetComponent<Health>().Damage(damage);
+            Kill();
         }
     }
 }
