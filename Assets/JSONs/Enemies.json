@@ -1,0 +1,41 @@
+{
+	"enemies" :
+	[
+		{
+			"name" : "EnemyBasic",
+			"value" : 1,
+			"y oscillation magnitude" : 1.0,
+			"y oscillation speed" : 2.0,
+			"seconds between volleys" : 1.0,
+			"volley speed" : 3.0
+		},
+		{
+			"name" : "EnemyAimer",
+			"value" : 2,
+			"volley aims at player" : true
+		},
+		{
+			"name" : "EnemyPulse",
+			"value" : 2,
+			"volley speed" : 3,
+			"volley direction" : 22.5,
+			"volley projectile count" : 8,
+			"volley spread angle" : 360,
+		},
+		{
+			"name" : "EnemyForked",
+			"value" : 3,
+			"movement speed" : 0.01,
+			"volley projectile count" : 2,
+			"volley direction" : 180
+		},
+		{
+			"name" : "EnemySpiral",
+			"value" : 4,
+			"seconds between volleys" : 0.3,
+			"volley speed" : 3.0,
+			"volley direction" : 180,
+			"volley direction delta per shot" : 30
+		}
+	]
+}

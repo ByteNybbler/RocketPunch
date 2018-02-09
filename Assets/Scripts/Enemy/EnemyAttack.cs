@@ -11,37 +11,55 @@ public class EnemyAttack : MonoBehaviour
     [Tooltip("Prefab to use for the projectile.")]
     GameObject prefabProjectile;
     [SerializeField]
-    [Tooltip("How many seconds occur between each projectile shot.")]
-    float secondsBetweenShots;
+    [Tooltip("How many seconds should pass between each volley.")]
+    float secondsBetweenVolleys;
     [SerializeField]
-    [Tooltip("The speed of fired projectiles.")]
-    float projectileSpeed;
+    [Tooltip("The speed of fired volleys.")]
+    float volleySpeed;
     [SerializeField]
-    [Tooltip("The angle of fired projectiles.")]
-    float projectileAngle;
+    [Tooltip("The (initial) direction of fired volleys.")]
+    float volleyDirection;
     [SerializeField]
-    [Tooltip("The change in projectile angle between each shot.")]
-    float projectileAngleDeltaPerShot;
+    [Tooltip("The change in volley direction between each shot.")]
+    float volleyDirectionDeltaPerShot;
+    [SerializeField]
+    [Tooltip("How many projectiles are spawned per volley.")]
+    int volleyProjectileCount;
+    [SerializeField]
+    [Tooltip("The spread of projectiles (in degrees) across one volley.")]
+    float volleySpreadAngle;
     [SerializeField]
     [Tooltip("Whether the fired projectiles are punchable.")]
     bool projectilePunchable;
+    [SerializeField]
+    [Tooltip("Whether the enemy aims its volleys at the player.")]
+    bool volleyAimAtPlayer;
 
-    Timer timerShot;
+    Timer timerVolley;
 
     private void Start()
     {
-        timerShot = new Timer(secondsBetweenShots);
+        timerVolley = new Timer(secondsBetweenVolleys);
     }
 
     private void FixedUpdate()
     {
-        while (timerShot.TimeUp(Time.deltaTime))
+        while (timerVolley.TimeUp(Time.deltaTime))
         {
-            GameObject projectile = Instantiate(prefabProjectile, transform.position, Quaternion.identity);
-            EnemyProjectile proj = projectile.GetComponent<EnemyProjectile>();
-            proj.SetAngleSpeed(projectileAngle, projectileSpeed);
-            proj.SetPunchable(projectilePunchable);
-            projectileAngle += projectileAngleDeltaPerShot;
+            DirectionObject[] objects = UtilInstantiate.SpreadAngleGroup(prefabProjectile,
+                transform.position, volleyProjectileCount, volleySpreadAngle,
+                volleyDirection);
+            //GameObject projectile = Instantiate(prefabProjectile, transform.position, Quaternion.identity);
+
+            foreach (DirectionObject obj in objects)
+            {
+                GameObject projectile = obj.GetGameObject();
+                float direction = obj.GetDirection();
+                EnemyProjectile proj = projectile.GetComponent<EnemyProjectile>();
+                proj.SetAngleSpeed(direction, volleySpeed);
+                proj.SetPunchable(projectilePunchable);
+            }
+            volleyDirection += volleyDirectionDeltaPerShot;
         }
     }
 }
