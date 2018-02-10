@@ -48,7 +48,7 @@ public class EnemyAttack : MonoBehaviour
         {
             DirectionObject[] objects = UtilInstantiate.SpreadAngleGroup(prefabProjectile,
                 transform.position, volleyProjectileCount, volleySpreadAngle,
-                volleyDirection);
+                volleyDirection, true);
             //GameObject projectile = Instantiate(prefabProjectile, transform.position, Quaternion.identity);
 
             foreach (DirectionObject obj in objects)
