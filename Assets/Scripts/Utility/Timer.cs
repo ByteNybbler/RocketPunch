@@ -14,6 +14,10 @@ public class Timer
     {
         secondsTarget = seconds;
     }
+    public Timer()
+    {
+        secondsTarget = 1.0f;
+    }
 
     // Check if the time has run out, and if not, increment the time passed by deltaTime.
     public bool TimeUp(float deltaTime)
@@ -25,5 +29,10 @@ public class Timer
         }
         secondsCurrent += deltaTime;
         return false;
+    }
+
+    public void SetTargetTime(float seconds)
+    {
+        secondsTarget = seconds;
     }
 }

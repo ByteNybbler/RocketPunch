@@ -13,18 +13,37 @@ public class PlayerPunch : MonoBehaviour
     [SerializeField]
     [Tooltip("How many seconds the punch lasts for.")]
     float secondsOfPunching;
+    [SerializeField]
+    [Tooltip("How many seconds of cooldown occur after the end of the punch before a punch can happen again.")]
+    float secondsOfPunchCooldown;
 
-    Timer timerPunching;
+    Timer timerPunching = new Timer();
+    Timer timerPunchCooldown = new Timer();
+
+    // Whether or not the punch cooldown is occurring.
+    bool punchIsCoolingDown = false;
+
+    public void SetSecondsOfPunching(float val)
+    {
+        secondsOfPunching = val;
+        timerPunching.SetTargetTime(secondsOfPunching);
+    }
+    public void SetSecondsOfPunchCooldown(float val)
+    {
+        secondsOfPunchCooldown = val;
+        timerPunchCooldown.SetTargetTime(secondsOfPunchCooldown);
+    }
 
     private void Start()
     {
         punchingObject.SetActive(false);
-        timerPunching = new Timer(secondsOfPunching);
+        timerPunching.SetTargetTime(secondsOfPunching);
+        timerPunchCooldown.SetTargetTime(secondsOfPunchCooldown);
     }
 
     public void Punch()
     {
-        if (!IsPunching())
+        if (!IsPunching() && !punchIsCoolingDown)
         {
             punchingObject.SetActive(true);
         }
@@ -42,8 +61,21 @@ public class PlayerPunch : MonoBehaviour
         {
             while (timerPunching.TimeUp(Time.deltaTime))
             {
-                punchingObject.SetActive(false);
+                EndPunch();
             }
         }
+        if (punchIsCoolingDown)
+        {
+            while (timerPunchCooldown.TimeUp(Time.deltaTime))
+            {
+                punchIsCoolingDown = false;
+            }
+        }
+    }
+
+    private void EndPunch()
+    {
+        punchingObject.SetActive(false);
+        punchIsCoolingDown = true;
     }
 }

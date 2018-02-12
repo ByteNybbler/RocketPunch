@@ -882,8 +882,8 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1783250722}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.2, y: 0, z: 0}
-  m_LocalScale: {x: 2, y: 2, z: 1}
+  m_LocalPosition: {x: 0.15, y: 0, z: 0}
+  m_LocalScale: {x: 1.4, y: 1.4, z: 1}
   m_Children:
   - {fileID: 1603887251}
   m_Father: {fileID: 2109147854}
@@ -957,7 +957,7 @@ Transform:
   m_GameObject: {fileID: 1821427859}
   m_LocalRotation: {x: 0, y: -0, z: 0.7071068, w: -0.7071068}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.03, y: 0.03, z: 1}
+  m_LocalScale: {x: 0.025, y: 0.025, z: 1}
   m_Children: []
   m_Father: {fileID: 2109147854}
   m_RootOrder: 0
@@ -1152,6 +1152,7 @@ GameObject:
   - component: {fileID: 2109147858}
   - component: {fileID: 2109147859}
   - component: {fileID: 2109147860}
+  - component: {fileID: 2109147861}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -1278,6 +1279,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   punchingObject: {fileID: 1783250722}
   secondsOfPunching: 0.2
+  secondsOfPunchCooldown: 0
 --- !u!114 &2109147859
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1302,4 +1304,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1620e6982db67334a8fa45e3f1eba79d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  health: {fileID: 2109147859}
+--- !u!114 &2109147861
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 2109147852}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7f0f51b1d5361744fb98618470a06080, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerFile: {fileID: 4900000, guid: b147a2e343e34c34a991cb21c7bbdeb0, type: 3}
+  playerPunch: {fileID: 2109147858}
   health: {fileID: 2109147859}
