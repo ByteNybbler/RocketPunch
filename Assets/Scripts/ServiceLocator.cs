@@ -8,11 +8,9 @@ using UnityEngine;
 
 public class ServiceLocator : MonoBehaviour
 {
-    /*
     [SerializeField]
-    [Tooltip("Reference to the AchievementManager component.")]
-    AchievementManager achievementManager;
-    */
+    [Tooltip("Reference to the player object.")]
+    GameObject player;
     [SerializeField]
     [Tooltip("Reference to the Translator component.")]
     Translator translator;
@@ -20,23 +18,21 @@ public class ServiceLocator : MonoBehaviour
     [Tooltip("Reference to the InputManager component.")]
     InputManager inputManager;
 
-    //static AchievementManager instanceAchievementManager = null;
+    static GameObject instancePlayer = null;
     static Translator instanceTranslator = null;
     static InputManager instanceInputManager = null;
 
     private void Awake()
     {
-        //instanceAchievementManager = achievementManager;
+        instancePlayer = player;
         instanceTranslator = translator;
         instanceInputManager = inputManager;
     }
 
-    /*
-    public static AchievementManager GetAchievementManager()
+    public static GameObject GetPlayer()
     {
-        return instanceAchievementManager;
+        return instancePlayer;
     }
-    */
     public static Translator GetTranslator()
     {
         return instanceTranslator;

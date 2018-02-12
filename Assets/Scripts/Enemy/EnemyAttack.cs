@@ -35,10 +35,12 @@ public class EnemyAttack : MonoBehaviour
     [Tooltip("Whether the enemy aims its volleys at the player.")]
     bool volleyAimAtPlayer;
 
+    GameObject player;
     Timer timerVolley;
 
     private void Start()
     {
+        player = ServiceLocator.GetPlayer();
         timerVolley = new Timer(secondsBetweenVolleys);
     }
 
@@ -46,17 +48,19 @@ public class EnemyAttack : MonoBehaviour
     {
         while (timerVolley.TimeUp(Time.deltaTime))
         {
-            DirectionObject[] objects = UtilInstantiate.SpreadAngleGroup(prefabProjectile,
-                transform.position, volleyProjectileCount, volleySpreadAngle,
-                volleyDirection, true);
-            //GameObject projectile = Instantiate(prefabProjectile, transform.position, Quaternion.identity);
-
-            foreach (DirectionObject obj in objects)
+            float[] angles = UtilSpread.PopulateAngle(volleySpreadAngle, volleyDirection, volleyProjectileCount);
+            foreach (float a in angles)
             {
-                GameObject projectile = obj.GetGameObject();
-                float direction = obj.GetDirection();
+                float angle = a;
+                if (volleyAimAtPlayer)
+                {
+                    Vector3 playerPos = player.transform.position;
+                    angle += Vector3.Angle(Vector3.left, transform.position - playerPos);
+                }
+                Quaternion rotation = Quaternion.AngleAxis(angle, Vector3.forward);
+                GameObject projectile = Instantiate(prefabProjectile, transform.position, rotation);
                 EnemyProjectile proj = projectile.GetComponent<EnemyProjectile>();
-                proj.SetAngleSpeed(direction, volleySpeed);
+                proj.SetAngleSpeed(angle, volleySpeed);
                 proj.SetPunchable(projectilePunchable);
             }
             volleyDirection += volleyDirectionDeltaPerShot;

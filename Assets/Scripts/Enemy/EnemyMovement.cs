@@ -1,5 +1,5 @@
 ﻿// Author(s): Paul Calande
-// Script for enemy movement.
+// Script for enemy movement in Rocket Puncher.
 
 using System.Collections;
 using System.Collections.Generic;
@@ -18,5 +18,10 @@ public class EnemyMovement : MonoBehaviour
     {
         Vector2 change = new Vector2(-movementLeftSpeed, 0.0f);
         mover.MovePosition(change);
+    }
+
+    public void SetMovementLeftSpeed(float value)
+    {
+        movementLeftSpeed = value;
     }
 }
