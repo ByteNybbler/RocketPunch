@@ -25,8 +25,8 @@ public class EnemySpawner : MonoBehaviour
     int challengeMax;
     // How much the challenge value increases every time an enemy spawn group finishes.
     int challengeIncreasePerSpawnGroup;
-    // How many spawns are required to begin the dead time.
-    int spawnsPerDeadTime;
+    // How many spawn groups are required to begin the dead time.
+    int spawnGroupsPerDeadTime;
     // How many seconds must pass between each spawn.
     float secondsBetweenSpawns;
     // How many seconds must pass between each spawn group (not during dead time).
@@ -40,8 +40,8 @@ public class EnemySpawner : MonoBehaviour
 
     // A collection of all the possible enemies that can spawn.
     List<EnemyData> possibleEnemies = new List<EnemyData>();
-    // How many spawns have occurred since the last dead time.
-    int spawnsSinceLastDeadTime = 0;
+    // How many spawn groups have occurred since the last dead time.
+    int spawnGroupsSinceLastDeadTime = 0;
     // The current amount of challenge accumulated in this spawn group.
     int challengeCurrent = 0;
     // The current spawn position to use to spawn new enemies.
@@ -66,7 +66,7 @@ public class EnemySpawner : MonoBehaviour
         JSONNode json = JSON.Parse(enemySpawnersFile.ToString());
         challengeMax = json["initial challenge"].AsInt;
         challengeIncreasePerSpawnGroup = json["challenge increase per spawn group"].AsInt;
-        spawnsPerDeadTime = json["spawns per dead time"].AsInt;
+        spawnGroupsPerDeadTime = json["spawn groups per dead time"].AsInt;
         secondsBetweenSpawns = json["seconds between spawns"].AsFloat;
         secondsBetweenSpawnGroups = json["seconds between spawn groups"].AsFloat;
         secondsPerDeadTime = json["seconds per dead time"].AsFloat;
@@ -112,7 +112,7 @@ public class EnemySpawner : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (spawnsSinceLastDeadTime < spawnsPerDeadTime)
+        if (spawnGroupsSinceLastDeadTime < spawnGroupsPerDeadTime)
         {
             if (challengeCurrent < challengeMax)
             {
@@ -128,6 +128,7 @@ public class EnemySpawner : MonoBehaviour
                     challengeCurrent = 0;
                     challengeMax += challengeIncreasePerSpawnGroup;
                     ChooseRandomSpawnPosition();
+                    spawnGroupsSinceLastDeadTime += 1;
                 }
             }
         }
@@ -135,7 +136,7 @@ public class EnemySpawner : MonoBehaviour
         {
             while (timerDeadTime.TimeUp(Time.deltaTime))
             {
-                spawnsSinceLastDeadTime = 0;
+                spawnGroupsSinceLastDeadTime = 0;
             }
         }
     }

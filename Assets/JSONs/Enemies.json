@@ -10,7 +10,8 @@
 			"seconds between volleys" : 1.0,
 			"volley" :
 			{
-				"speed" : 3.0
+				"speed" : 3.0,
+				"color" : "#ffff00"
 			}
 		},
 		{
