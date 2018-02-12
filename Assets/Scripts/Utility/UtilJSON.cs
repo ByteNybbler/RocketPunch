@@ -42,4 +42,15 @@ public class UtilJSON
             return node.AsBool;
         }
     }
+    public static string TryReadString(JSONNode node, string defaultValue)
+    {
+        if (node == null)
+        {
+            return defaultValue;
+        }
+        else
+        {
+            return node;
+        }
+    }
 }

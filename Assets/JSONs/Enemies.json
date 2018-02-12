@@ -18,7 +18,9 @@
 			"challenge" : 2,
 			"volley" :
 			{
-				"aims at player" : true
+				"aims at player" : true,
+				"direction" : 0,
+				"color" : "#ff0000"
 			}
 		},
 		{
@@ -29,7 +31,8 @@
 				"speed" : 3,
 				"direction" : 22.5,
 				"projectile count" : 8,
-				"spread angle" : 315
+				"spread angle" : 315,
+				"color" : "#ff00ff"
 			}
 		},
 		{
@@ -39,7 +42,8 @@
 			{
 				"direction" : 180,
 				"projectile count" : 2,
-				"spread angle" : 90
+				"spread angle" : 90,
+				"color" : "#0000ff"
 			}
 		},
 		{
@@ -50,7 +54,8 @@
 			"volley" :
 			{
 				"direction" : 180,
-				"speed" : 3.0
+				"speed" : 3.0,
+				"color" : "#00ff00"
 			}
 		}
 	]

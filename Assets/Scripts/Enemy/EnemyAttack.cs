@@ -85,6 +85,7 @@ public class EnemyAttack : MonoBehaviour
                 EnemyProjectile proj = projectile.GetComponent<EnemyProjectile>();
                 proj.SetAngleSpeed(angle, volley.speed);
                 proj.SetPunchable(volley.projectilePunchable);
+                proj.SetColor(volley.color);
             }
             volley.direction += volleyDirectionDeltaPerShot;
         }

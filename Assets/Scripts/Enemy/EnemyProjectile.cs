@@ -11,6 +11,9 @@ public class EnemyProjectile : MonoBehaviour
     [Tooltip("Reference to the AngleSpeedMovement component.")]
     AngleSpeedMovement2D angleSpeedMovement;
     [SerializeField]
+    [Tooltip("Reference to the SpriteRenderer component.")]
+    SpriteRenderer spriteRenderer;
+    [SerializeField]
     [Tooltip("Whether the projectile is punchable or not.")]
     bool punchable;
     [SerializeField]
@@ -25,6 +28,11 @@ public class EnemyProjectile : MonoBehaviour
     public void SetPunchable(bool val)
     {
         punchable = val;
+    }
+
+    public void SetColor(Color val)
+    {
+        spriteRenderer.color = val;
     }
 
     // Kills the projectile, destroying it.

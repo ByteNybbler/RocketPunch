@@ -76,6 +76,7 @@ public class EnemySpawner : MonoBehaviour
         for (int i = 0; i < enemyArray.Count; ++i)
         {
             JSONNode enemyNode = enemyArray[i];
+            string enemyName = UtilJSON.TryReadString(enemyNode["name"], "UNNAMED");
             int challenge = UtilJSON.TryReadInt(enemyNode["challenge"], 1);
             EnemyData enemy = new EnemyData(challenge);
             enemy.leftMovementSpeed = UtilJSON.TryReadFloat(enemyNode["left movement speed"], 0.05f);
@@ -83,6 +84,7 @@ public class EnemySpawner : MonoBehaviour
             enemy.yOscillationSpeed = UtilJSON.TryReadFloat(enemyNode["y oscillation speed"], 0.0f);
             enemy.secondsBetweenVolleys = UtilJSON.TryReadFloat(enemyNode["seconds between volleys"], 1.0f);
             enemy.volleyDirectionDeltaPerShot = UtilJSON.TryReadFloat(enemyNode["volley direction delta per shot"], 0.0f);
+            
             // Read volley data.
             JSONNode volleyNode = enemyNode["volley"];
             VolleyData volley = new VolleyData();
@@ -92,6 +94,16 @@ public class EnemySpawner : MonoBehaviour
             volley.spreadAngle = UtilJSON.TryReadFloat(volleyNode["spread angle"], 0.0f);
             volley.projectilePunchable = UtilJSON.TryReadBool(volleyNode["projectile punchable"], true);
             volley.aimAtPlayer = UtilJSON.TryReadBool(volleyNode["aims at player"], false);
+            string colString = UtilJSON.TryReadString(volleyNode["color"], "#ffffff");
+            if (ColorUtility.TryParseHtmlString(colString, out volley.color))
+            {
+                //Debug.Log(colString + " : " + volley.color);
+            }
+            else
+            {
+                Debug.Log(enemyName + ": Could not parse HTML color for volley!");
+            }
+
             enemy.volley = volley;
             // Add the enemy to the possible enemies pool.
             possibleEnemies.Add(enemy);
@@ -135,15 +147,20 @@ public class EnemySpawner : MonoBehaviour
         // Filter out all enemies that have too high of a challenge.
         List<EnemyData> viableEnemies =
             possibleEnemies.FindAll(x => x.GetChallenge() <= challengeRemaining);
+
         // Choose one of these enemies randomly.
         EnemyData enemy = viableEnemies[Random.Range(0, viableEnemies.Count)];
         challengeCurrent += enemy.GetChallenge();
+
         // Instantiate the enemy.
         GameObject obj = Instantiate(prefabEnemy, spawnPos, Quaternion.identity);
+
         EnemyAttack attack = obj.GetComponent<EnemyAttack>();
         attack.Init(enemy.volley, enemy.secondsBetweenVolleys, enemy.volleyDirectionDeltaPerShot);
+
         EnemyMovement movement = obj.GetComponent<EnemyMovement>();
         movement.SetMovementLeftSpeed(enemy.leftMovementSpeed);
+
         OscillatePosition2D oscillatePos = obj.GetComponent<OscillatePosition2D>();
         oscillatePos.Init(0.0f, 0.0f, enemy.yOscillationMagnitude, enemy.yOscillationSpeed);
     }

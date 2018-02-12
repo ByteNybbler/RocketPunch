@@ -144,6 +144,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   angleSpeedMovement: {fileID: 114732567538762674}
+  spriteRenderer: {fileID: 212181404096150732}
   punchable: 0
   damage: 20
 --- !u!114 &114939350077573304

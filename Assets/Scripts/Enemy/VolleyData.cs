@@ -26,4 +26,7 @@ public class VolleyData
     [SerializeField]
     [Tooltip("Whether the volley is aimed at the player.")]
     public bool aimAtPlayer;
+    [SerializeField]
+    [Tooltip("The color of the volley.")]
+    public Color color;
 }
