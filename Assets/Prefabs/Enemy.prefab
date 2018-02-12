@@ -164,14 +164,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   prefabProjectile: {fileID: 1135632966150198, guid: 043942ae4394c8548b41ca637778e8fe,
     type: 2}
+  volley:
+    speed: 0
+    direction: 0
+    projectileCount: 0
+    spreadAngle: 0
+    projectilePunchable: 0
+    aimAtPlayer: 0
+    color: {r: 0, g: 0, b: 0, a: 0}
   secondsBetweenVolleys: 0.2
-  volleySpeed: 6
-  volleyDirection: 0
   volleyDirectionDeltaPerShot: 0
-  volleyProjectileCount: 1
-  volleySpreadAngle: 90
-  projectilePunchable: 1
-  volleyAimAtPlayer: 0
 --- !u!114 &114654272223199436
 MonoBehaviour:
   m_ObjectHideFlags: 1
