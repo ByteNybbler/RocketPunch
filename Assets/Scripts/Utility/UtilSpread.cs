@@ -16,7 +16,7 @@ public class UtilSpread
         float difference = max - min;
         if (count == 1)
         {
-            result.Add(difference * 0.5f);
+            result.Add(min + difference * 0.5f);
         }
         else
         {

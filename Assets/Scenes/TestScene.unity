@@ -898,6 +898,40 @@ Prefab:
       propertyPath: m_RootOrder
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: 114654272223199436, guid: ce1c5d080d80f7140a07301059d540a3,
+        type: 2}
+      propertyPath: movementLeftSpeed
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114074414304747704, guid: ce1c5d080d80f7140a07301059d540a3,
+        type: 2}
+      propertyPath: volley.speed
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 114074414304747704, guid: ce1c5d080d80f7140a07301059d540a3,
+        type: 2}
+      propertyPath: volley.direction
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114074414304747704, guid: ce1c5d080d80f7140a07301059d540a3,
+        type: 2}
+      propertyPath: volley.projectileCount
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 1669846950066600, guid: ce1c5d080d80f7140a07301059d540a3, type: 2}
+      propertyPath: m_Name
+      value: Enemyyyy
+      objectReference: {fileID: 0}
+    - target: {fileID: 114074414304747704, guid: ce1c5d080d80f7140a07301059d540a3,
+        type: 2}
+      propertyPath: volley.spreadAngle
+      value: 315
+      objectReference: {fileID: 0}
+    - target: {fileID: 114074414304747704, guid: ce1c5d080d80f7140a07301059d540a3,
+        type: 2}
+      propertyPath: volley.projectilePunchable
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: ce1c5d080d80f7140a07301059d540a3, type: 2}
   m_IsPrefabParent: 0

@@ -4,6 +4,7 @@
 		{
 			"name" : "EnemyBasic",
 			"challenge" : 1,
+			"left movement speed" : 0.02,
 			"y oscillation magnitude" : 1.0,
 			"y oscillation speed" : 2.0,
 			"seconds between volleys" : 1.0,
@@ -26,8 +27,9 @@
 			"volley" :
 			{
 				"speed" : 3,
+				"direction" : 22.5,
 				"projectile count" : 8,
-				"spread angle" : 360
+				"spread angle" : 315
 			}
 		},
 		{

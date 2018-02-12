@@ -57,6 +57,14 @@ public class EnemyAttack : MonoBehaviour
     {
         player = ServiceLocator.GetPlayer();
         timerVolley = new Timer(secondsBetweenVolleys);
+
+        /*
+        float[] angles = UtilSpread.PopulateAngle(volley.spreadAngle, volley.direction, volley.projectileCount);
+        foreach (float angle in angles)
+        {
+            Debug.Log(name + ": " + angle);
+        }
+        */
     }
 
     private void FixedUpdate()

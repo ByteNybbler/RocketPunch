@@ -86,7 +86,7 @@ public class EnemySpawner : MonoBehaviour
             // Read volley data.
             JSONNode volleyNode = enemyNode["volley"];
             VolleyData volley = new VolleyData();
-            volley.speed = UtilJSON.TryReadFloat(volleyNode["speed"], 3.0f);
+            volley.speed = UtilJSON.TryReadFloat(volleyNode["speed"], 4.0f);
             volley.direction = UtilJSON.TryReadFloat(volleyNode["direction"], 180.0f);
             volley.projectileCount = UtilJSON.TryReadInt(volleyNode["projectile count"], 1);
             volley.spreadAngle = UtilJSON.TryReadFloat(volleyNode["spread angle"], 0.0f);
