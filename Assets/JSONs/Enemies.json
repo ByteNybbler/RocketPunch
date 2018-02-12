@@ -7,35 +7,49 @@
 			"y oscillation magnitude" : 1.0,
 			"y oscillation speed" : 2.0,
 			"seconds between volleys" : 1.0,
-			"volley speed" : 3.0
+			"volley" :
+			{
+				"speed" : 3.0
+			}
 		},
 		{
 			"name" : "EnemyAimer",
 			"challenge" : 2,
-			"volley aims at player" : true
+			"volley" :
+			{
+				"aims at player" : true
+			}
 		},
 		{
 			"name" : "EnemyPulse",
 			"challenge" : 2,
-			"volley speed" : 3,
-			"volley direction" : 22.5,
-			"volley projectile count" : 8,
-			"volley spread angle" : 360
+			"volley" :
+			{
+				"speed" : 3,
+				"projectile count" : 8,
+				"spread angle" : 360
+			}
 		},
 		{
 			"name" : "EnemyForked",
 			"challenge" : 3,
-			"volley direction" : 180,
-			"volley projectile count" : 2,
-			"volley spread angle" : 90
+			"volley" :
+			{
+				"direction" : 180,
+				"projectile count" : 2,
+				"spread angle" : 90
+			}
 		},
 		{
 			"name" : "EnemySpiral",
 			"challenge" : 4,
 			"seconds between volleys" : 0.3,
-			"volley direction" : 180,
-			"volley speed" : 3.0,
-			"volley direction delta per shot" : 30
+			"volley direction delta per shot" : 30,
+			"volley" :
+			{
+				"direction" : 180,
+				"speed" : 3.0
+			}
 		}
 	]
 }

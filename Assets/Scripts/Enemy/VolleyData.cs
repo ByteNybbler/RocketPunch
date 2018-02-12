@@ -10,23 +10,20 @@ public class VolleyData
 {
     [SerializeField]
     [Tooltip("The speed of fired volleys.")]
-    float volleySpeed;
+    public float speed;
     [SerializeField]
     [Tooltip("The (initial) direction of fired volleys.")]
-    float volleyDirection;
-    [SerializeField]
-    [Tooltip("The change in volley direction between each shot.")]
-    float volleyDirectionDeltaPerShot;
+    public float direction;
     [SerializeField]
     [Tooltip("How many projectiles are spawned per volley.")]
-    int volleyProjectileCount;
+    public int projectileCount;
     [SerializeField]
     [Tooltip("The spread of projectiles (in degrees) across one volley.")]
-    float volleySpreadAngle;
+    public float spreadAngle;
     [SerializeField]
     [Tooltip("Whether the fired projectiles are punchable.")]
-    bool projectilePunchable;
+    public bool projectilePunchable;
     [SerializeField]
-    [Tooltip("Whether the enemy aims its volleys at the player.")]
-    bool volleyAimAtPlayer;
+    [Tooltip("Whether the volley is aimed at the player.")]
+    public bool aimAtPlayer;
 }

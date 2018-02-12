@@ -81,6 +81,19 @@ public class EnemySpawner : MonoBehaviour
             enemy.leftMovementSpeed = UtilJSON.TryReadFloat(enemyNode["left movement speed"], 0.05f);
             enemy.yOscillationMagnitude = UtilJSON.TryReadFloat(enemyNode["y oscillation magnitude"], 0.0f);
             enemy.yOscillationSpeed = UtilJSON.TryReadFloat(enemyNode["y oscillation speed"], 0.0f);
+            enemy.secondsBetweenVolleys = UtilJSON.TryReadFloat(enemyNode["seconds between volleys"], 1.0f);
+            enemy.volleyDirectionDeltaPerShot = UtilJSON.TryReadFloat(enemyNode["volley direction delta per shot"], 0.0f);
+            // Read volley data.
+            JSONNode volleyNode = enemyNode["volley"];
+            VolleyData volley = new VolleyData();
+            volley.speed = UtilJSON.TryReadFloat(volleyNode["speed"], 3.0f);
+            volley.direction = UtilJSON.TryReadFloat(volleyNode["direction"], 180.0f);
+            volley.projectileCount = UtilJSON.TryReadInt(volleyNode["projectile count"], 1);
+            volley.spreadAngle = UtilJSON.TryReadFloat(volleyNode["spread angle"], 0.0f);
+            volley.projectilePunchable = UtilJSON.TryReadBool(volleyNode["projectile punchable"], true);
+            volley.aimAtPlayer = UtilJSON.TryReadBool(volleyNode["aims at player"], false);
+            enemy.volley = volley;
+            // Add the enemy to the possible enemies pool.
             possibleEnemies.Add(enemy);
         }
     }
@@ -128,10 +141,11 @@ public class EnemySpawner : MonoBehaviour
         // Instantiate the enemy.
         GameObject obj = Instantiate(prefabEnemy, spawnPos, Quaternion.identity);
         EnemyAttack attack = obj.GetComponent<EnemyAttack>();
+        attack.Init(enemy.volley, enemy.secondsBetweenVolleys, enemy.volleyDirectionDeltaPerShot);
         EnemyMovement movement = obj.GetComponent<EnemyMovement>();
+        movement.SetMovementLeftSpeed(enemy.leftMovementSpeed);
         OscillatePosition2D oscillatePos = obj.GetComponent<OscillatePosition2D>();
         oscillatePos.Init(0.0f, 0.0f, enemy.yOscillationMagnitude, enemy.yOscillationSpeed);
-        movement.SetMovementLeftSpeed(enemy.leftMovementSpeed);
     }
 
     private Vector3 GetRandomSpawnPosition()

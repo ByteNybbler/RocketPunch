@@ -11,6 +11,9 @@ public class EnemyData
     public float leftMovementSpeed;
     public float yOscillationMagnitude;
     public float yOscillationSpeed;
+    public VolleyData volley;
+    public float secondsBetweenVolleys;
+    public float volleyDirectionDeltaPerShot;
 
     public EnemyData(int challenge)
     {
