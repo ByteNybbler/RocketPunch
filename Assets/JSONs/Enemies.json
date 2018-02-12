@@ -38,9 +38,11 @@
 		{
 			"name" : "EnemyForked",
 			"challenge" : 3,
+			"seconds between volleys" : 0.2,
 			"volley" :
 			{
 				"direction" : 180,
+				"speed" : 7,
 				"projectile count" : 2,
 				"spread angle" : 90,
 				"color" : "#0000ff"
@@ -49,12 +51,12 @@
 		{
 			"name" : "EnemySpiral",
 			"challenge" : 4,
-			"seconds between volleys" : 0.3,
-			"volley direction delta per shot" : 30,
+			"seconds between volleys" : 0.1,
+			"volley direction delta per shot" : 10,
 			"volley" :
 			{
 				"direction" : 180,
-				"speed" : 3.0,
+				"speed" : 4,
 				"color" : "#00ff00"
 			}
 		}
