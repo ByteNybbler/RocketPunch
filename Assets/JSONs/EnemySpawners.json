@@ -2,7 +2,7 @@
 	"initial challenge" : 1,
 	"challenge increase per spawn group" : 1,
 	"spawn groups per dead time" : 3,
-	"seconds between spawns" : 0.6,
+	"seconds between spawns" : 0.7,
 	"seconds between spawn groups" : 1.5,
-	"seconds per dead time" : 3.5
+	"seconds per dead time" : 3.7
 }
