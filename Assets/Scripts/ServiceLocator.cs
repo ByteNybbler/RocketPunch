@@ -17,16 +17,21 @@ public class ServiceLocator : MonoBehaviour
     [SerializeField]
     [Tooltip("Reference to the InputManager component.")]
     InputManager inputManager;
+    [SerializeField]
+    [Tooltip("Reference to the AudioController component.")]
+    AudioController audioController;
 
     static GameObject instancePlayer = null;
     static Translator instanceTranslator = null;
     static InputManager instanceInputManager = null;
+    static AudioController instanceAudioController = null;
 
     private void Awake()
     {
         instancePlayer = player;
         instanceTranslator = translator;
         instanceInputManager = inputManager;
+        instanceAudioController = audioController;
     }
 
     public static GameObject GetPlayer()
@@ -40,5 +45,9 @@ public class ServiceLocator : MonoBehaviour
     public static InputManager GetInputManager()
     {
         return instanceInputManager;
+    }
+    public static AudioController GetAudioController()
+    {
+        return instanceAudioController;
     }
 }

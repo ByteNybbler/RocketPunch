@@ -22,9 +22,9 @@ public class EnemySpawner : MonoBehaviour
     GameObject[] spawns;
 
     // The current maximum challenge value for the spawn groups.
-    int challengeMax;
+    float challengeMax;
     // How much the challenge value increases every time an enemy spawn group finishes.
-    int challengeIncreasePerSpawnGroup;
+    float challengeIncreasePerSpawnGroup;
     // How many spawn groups are required to begin the dead time.
     int spawnGroupsPerDeadTime;
     // How many seconds must pass between each spawn.
@@ -43,9 +43,11 @@ public class EnemySpawner : MonoBehaviour
     // How many spawn groups have occurred since the last dead time.
     int spawnGroupsSinceLastDeadTime = 0;
     // The current amount of challenge accumulated in this spawn group.
-    int challengeCurrent = 0;
+    float challengeCurrent = 0.0f;
     // The current spawn position to use to spawn new enemies.
     Vector3 spawnPos;
+    // Whether the current spawn group has finished or not.
+    bool spawnGroupActive = true;
 
     private void Awake()
     {
@@ -64,8 +66,8 @@ public class EnemySpawner : MonoBehaviour
     private void Tune()
     {
         JSONNode json = JSON.Parse(enemySpawnersFile.ToString());
-        challengeMax = json["initial challenge"].AsInt;
-        challengeIncreasePerSpawnGroup = json["challenge increase per spawn group"].AsInt;
+        challengeMax = json["initial challenge"].AsFloat;
+        challengeIncreasePerSpawnGroup = json["challenge increase per spawn group"].AsFloat;
         spawnGroupsPerDeadTime = json["spawn groups per dead time"].AsInt;
         secondsBetweenSpawns = json["seconds between spawns"].AsFloat;
         secondsBetweenSpawnGroups = json["seconds between spawn groups"].AsFloat;
@@ -77,7 +79,7 @@ public class EnemySpawner : MonoBehaviour
         {
             JSONNode enemyNode = enemyArray[i];
             string enemyName = UtilJSON.TryReadString(enemyNode["name"], "UNNAMED");
-            int challenge = UtilJSON.TryReadInt(enemyNode["challenge"], 1);
+            float challenge = UtilJSON.TryReadFloat(enemyNode["challenge"], 1.0f);
             EnemyData enemy = new EnemyData(challenge);
             enemy.leftMovementSpeed = UtilJSON.TryReadFloat(enemyNode["left movement speed"], 0.05f);
             enemy.yOscillationMagnitude = UtilJSON.TryReadFloat(enemyNode["y oscillation magnitude"], 0.0f);
@@ -114,7 +116,7 @@ public class EnemySpawner : MonoBehaviour
     {
         if (spawnGroupsSinceLastDeadTime < spawnGroupsPerDeadTime)
         {
-            if (challengeCurrent < challengeMax)
+            if (spawnGroupActive)
             {
                 while (timerSpawn.TimeUp(Time.deltaTime))
                 {
@@ -125,8 +127,9 @@ public class EnemySpawner : MonoBehaviour
             {
                 while (timerSpawnGroup.TimeUp(Time.deltaTime))
                 {
-                    challengeCurrent = 0;
+                    challengeCurrent = 0.0f;
                     challengeMax += challengeIncreasePerSpawnGroup;
+                    spawnGroupActive = true;
                     ChooseRandomSpawnPosition();
                     spawnGroupsSinceLastDeadTime += 1;
                 }
@@ -144,10 +147,8 @@ public class EnemySpawner : MonoBehaviour
     // Choose a viable enemy based on the current level of challenge and spawn it.
     private void SpawnEnemy()
     {
-        int challengeRemaining = challengeMax - challengeCurrent;
         // Filter out all enemies that have too high of a challenge.
-        List<EnemyData> viableEnemies =
-            possibleEnemies.FindAll(x => x.GetChallenge() <= challengeRemaining);
+        List<EnemyData> viableEnemies = GetViableEnemies();
 
         // Choose one of these enemies randomly.
         EnemyData enemy = viableEnemies[Random.Range(0, viableEnemies.Count)];
@@ -164,6 +165,17 @@ public class EnemySpawner : MonoBehaviour
 
         OscillatePosition2D oscillatePos = obj.GetComponent<OscillatePosition2D>();
         oscillatePos.Init(0.0f, 0.0f, enemy.yOscillationMagnitude, enemy.yOscillationSpeed);
+
+        // Check if there are any viable enemies left.
+        // If not, it's time to move on to the next spawn group.
+        viableEnemies = GetViableEnemies();
+        spawnGroupActive = (viableEnemies.Count != 0);
+    }
+
+    private List<EnemyData> GetViableEnemies()
+    {
+        float challengeRemaining = challengeMax - challengeCurrent;
+        return possibleEnemies.FindAll(x => x.GetChallenge() <= challengeRemaining);
     }
 
     private Vector3 GetRandomSpawnPosition()

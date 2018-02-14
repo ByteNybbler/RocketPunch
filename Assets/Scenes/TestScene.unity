@@ -675,6 +675,8 @@ GameObject:
   - component: {fileID: 1393724123}
   - component: {fileID: 1393724122}
   - component: {fileID: 1393724121}
+  - component: {fileID: 1393724125}
+  - component: {fileID: 1393724126}
   m_Layer: 0
   m_Name: ServiceLocator
   m_TagString: Untagged
@@ -723,6 +725,7 @@ MonoBehaviour:
   player: {fileID: 2109147852}
   translator: {fileID: 1393724122}
   inputManager: {fileID: 1393724121}
+  audioController: {fileID: 1393724125}
 --- !u!4 &1393724124
 Transform:
   m_ObjectHideFlags: 0
@@ -736,6 +739,35 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1393724125
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1393724120}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 63dff6141af00714e9ed54225e40774d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  groupMusic: {fileID: 243257605468147166, guid: ff98622eb62353c41a656249542fc88d,
+    type: 2}
+  groupSFX: {fileID: 243888803352446948, guid: ff98622eb62353c41a656249542fc88d, type: 2}
+--- !u!114 &1393724126
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1393724120}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7d1f2451f3e8d44428a2c0c6c4a9168a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  audioMixer: {fileID: 24100000, guid: ff98622eb62353c41a656249542fc88d, type: 2}
+  parameterNames:
+  - musicVol
+  - sfxVol
 --- !u!1 &1603887250
 GameObject:
   m_ObjectHideFlags: 0

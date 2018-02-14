@@ -7,7 +7,7 @@ using UnityEngine;
 
 public class EnemyData
 {
-    int challenge;
+    float challenge;
     public float leftMovementSpeed;
     public float yOscillationMagnitude;
     public float yOscillationSpeed;
@@ -15,12 +15,12 @@ public class EnemyData
     public float secondsBetweenVolleys;
     public float volleyDirectionDeltaPerShot;
 
-    public EnemyData(int challenge)
+    public EnemyData(float challenge)
     {
         this.challenge = challenge;
     }
 
-    public int GetChallenge()
+    public float GetChallenge()
     {
         return challenge;
     }
