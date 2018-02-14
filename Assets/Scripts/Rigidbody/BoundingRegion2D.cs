@@ -17,7 +17,6 @@ public class BoundingRegion2D : MonoBehaviour
         {
             if (other.CompareTag(tagName))
             {
-                //Debug.Log(other.name + " (" + other.tag + ") has logged off.");
                 Destroy(other.transform.root.gameObject);
             }
         }
