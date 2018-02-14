@@ -1,5 +1,5 @@
 {
 	"seconds of punching" : 0.2,
-	"seconds of punch cooldown" : 1.0,
+	"seconds of punch cooldown" : 0.8,
 	"max health" : 100
 }
