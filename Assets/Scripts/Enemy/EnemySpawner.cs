@@ -91,7 +91,7 @@ public class EnemySpawner : MonoBehaviour
             string enemyName = UtilJSON.TryReadString(enemyNode["name"], "UNNAMED");
             float challenge = UtilJSON.TryReadFloat(enemyNode["challenge"], 1.0f);
             EnemyData enemy = new EnemyData(challenge);
-            enemy.leftMovementSpeedBonus = UtilJSON.TryReadFloat(enemyNode["left movement speed bonus"], 0.0f);
+            enemy.leftMovementSpeedBonus = UtilJSON.TryReadFloat(enemyNode["left movement speed increase"], 0.0f);
             enemy.yOscillationMagnitude = UtilJSON.TryReadFloat(enemyNode["y oscillation magnitude"], 0.0f);
             enemy.yOscillationSpeed = UtilJSON.TryReadFloat(enemyNode["y oscillation speed"], 0.0f);
             enemy.secondsBetweenVolleys = UtilJSON.TryReadFloat(enemyNode["seconds between volleys"], 1.0f);
