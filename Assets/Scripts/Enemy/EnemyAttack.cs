@@ -19,52 +19,28 @@ public class EnemyAttack : MonoBehaviour
     [SerializeField]
     [Tooltip("The change in volley direction between each shot.")]
     float volleyDirectionDeltaPerShot;
-    /*
     [SerializeField]
-    [Tooltip("The speed of fired volleys.")]
-    float volleySpeed;
-    [SerializeField]
-    [Tooltip("The (initial) direction of fired volleys.")]
-    float volleyDirection;
-    [SerializeField]
-    [Tooltip("The change in volley direction between each shot.")]
-    float volleyDirectionDeltaPerShot;
-    [SerializeField]
-    [Tooltip("How many projectiles are spawned per volley.")]
-    int volleyProjectileCount;
-    [SerializeField]
-    [Tooltip("The spread of projectiles (in degrees) across one volley.")]
-    float volleySpreadAngle;
-    [SerializeField]
-    [Tooltip("Whether the fired projectiles are punchable.")]
-    bool projectilePunchable;
-    [SerializeField]
-    [Tooltip("Whether the enemy aims its volleys at the player.")]
-    bool volleyAimAtPlayer;
-    */
+    [Tooltip("The left speed that will be applied to fired projectiles.")]
+    float projectileLeftSpeed;
 
+    // Reference to the player object.
     GameObject player;
+    // Timer for firing volleys.
     Timer timerVolley;
 
-    public void Init(VolleyData volley, float secondsBetweenVolleys, float volleyDirectionDeltaPerShot)
+    public void Init(VolleyData volley, float secondsBetweenVolleys, float volleyDirectionDeltaPerShot,
+        float projectileLeftSpeed)
     {
         this.volley = volley;
         this.secondsBetweenVolleys = secondsBetweenVolleys;
         this.volleyDirectionDeltaPerShot = volleyDirectionDeltaPerShot;
+        this.projectileLeftSpeed = projectileLeftSpeed;
     }
 
     private void Start()
     {
         player = ServiceLocator.GetPlayer();
         timerVolley = new Timer(secondsBetweenVolleys);
-
-        /*
-        float[] angles = UtilSpread.PopulateAngle(volley.spreadAngle, volley.direction, volley.projectileCount);
-        foreach (float angle in angles)
-        {
-            Debug.Log(name + ": " + angle);
-        }
-        */
     }
 
     private void FixedUpdate()
@@ -86,6 +62,8 @@ public class EnemyAttack : MonoBehaviour
                 proj.SetAngleSpeed(angle, volley.speed);
                 proj.SetPunchable(volley.projectilePunchable);
                 proj.SetColor(volley.color);
+                LeftMovement lm = projectile.GetComponent<LeftMovement>();
+                lm.SetMovementLeftSpeed(projectileLeftSpeed);
             }
             volley.direction += volleyDirectionDeltaPerShot;
         }

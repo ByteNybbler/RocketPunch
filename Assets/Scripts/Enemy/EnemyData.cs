@@ -8,7 +8,7 @@ using UnityEngine;
 public class EnemyData
 {
     float challenge;
-    public float leftMovementSpeed;
+    public float leftMovementSpeedBonus;
     public float yOscillationMagnitude;
     public float yOscillationSpeed;
     public VolleyData volley;

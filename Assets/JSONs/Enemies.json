@@ -4,7 +4,7 @@
 		{
 			"name" : "EnemyBasic",
 			"challenge" : 1,
-			"left movement speed" : 0.04,
+			"left movement speed increase" : -0.01,
 			"y oscillation magnitude" : 1.2,
 			"y oscillation speed" : 2.0,
 			"seconds between volleys" : 1.3,

@@ -14,6 +14,11 @@ public class EnemySpawner : MonoBehaviour
     [SerializeField]
     [Tooltip("File containing enemy spawner data.")]
     TextAsset enemySpawnersFile;
+    /*
+    [SerializeField]
+    [Tooltip("File containing player data.")]
+    TextAsset playerFile;
+    */
     [SerializeField]
     [Tooltip("The enemy prefab.")]
     GameObject prefabEnemy;
@@ -33,6 +38,10 @@ public class EnemySpawner : MonoBehaviour
     float secondsBetweenSpawnGroups;
     // How many seconds must pass during dead time.
     float secondsPerDeadTime;
+    // How quickly all of the enemies move to the left.
+    // Also affects how quickly enemy projectiles move to the left.
+    // This creates the illusion that the player is moving to the right.
+    float enemyBaseLeftMovementSpeed;
 
     Timer timerSpawn;
     Timer timerSpawnGroup;
@@ -72,6 +81,7 @@ public class EnemySpawner : MonoBehaviour
         secondsBetweenSpawns = json["seconds between spawns"].AsFloat;
         secondsBetweenSpawnGroups = json["seconds between spawn groups"].AsFloat;
         secondsPerDeadTime = json["seconds per dead time"].AsFloat;
+        enemyBaseLeftMovementSpeed = json["enemy base left movement speed"].AsFloat;
 
         json = JSON.Parse(enemiesFile.ToString());
         JSONArray enemyArray = json["enemies"].AsArray;
@@ -81,7 +91,7 @@ public class EnemySpawner : MonoBehaviour
             string enemyName = UtilJSON.TryReadString(enemyNode["name"], "UNNAMED");
             float challenge = UtilJSON.TryReadFloat(enemyNode["challenge"], 1.0f);
             EnemyData enemy = new EnemyData(challenge);
-            enemy.leftMovementSpeed = UtilJSON.TryReadFloat(enemyNode["left movement speed"], 0.05f);
+            enemy.leftMovementSpeedBonus = UtilJSON.TryReadFloat(enemyNode["left movement speed bonus"], 0.0f);
             enemy.yOscillationMagnitude = UtilJSON.TryReadFloat(enemyNode["y oscillation magnitude"], 0.0f);
             enemy.yOscillationSpeed = UtilJSON.TryReadFloat(enemyNode["y oscillation speed"], 0.0f);
             enemy.secondsBetweenVolleys = UtilJSON.TryReadFloat(enemyNode["seconds between volleys"], 1.0f);
@@ -158,10 +168,11 @@ public class EnemySpawner : MonoBehaviour
         GameObject obj = Instantiate(prefabEnemy, spawnPos, Quaternion.identity);
 
         EnemyAttack attack = obj.GetComponent<EnemyAttack>();
-        attack.Init(enemy.volley, enemy.secondsBetweenVolleys, enemy.volleyDirectionDeltaPerShot);
+        attack.Init(enemy.volley, enemy.secondsBetweenVolleys, enemy.volleyDirectionDeltaPerShot,
+            enemyBaseLeftMovementSpeed);
 
-        EnemyMovement movement = obj.GetComponent<EnemyMovement>();
-        movement.SetMovementLeftSpeed(enemy.leftMovementSpeed);
+        LeftMovement movement = obj.GetComponent<LeftMovement>();
+        movement.SetMovementLeftSpeed(enemyBaseLeftMovementSpeed + enemy.leftMovementSpeedBonus);
 
         OscillatePosition2D oscillatePos = obj.GetComponent<OscillatePosition2D>();
         oscillatePos.Init(0.0f, 0.0f, enemy.yOscillationMagnitude, enemy.yOscillationSpeed);
