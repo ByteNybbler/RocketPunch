@@ -1,8 +1,8 @@
 {
-	"initial challenge" : 1,
-	"challenge increase per spawn group" : 1,
+	"initial challenge" : 1.50,
+	"challenge increase per spawn group" : 0.75,
 	"spawn groups per dead time" : 3,
 	"seconds between spawns" : 0.7,
 	"seconds between spawn groups" : 1.5,
-	"seconds per dead time" : 3.7
+	"seconds per dead time" : 4.5
 }
