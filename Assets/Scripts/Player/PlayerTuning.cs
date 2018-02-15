@@ -12,6 +12,9 @@ public class PlayerTuning : MonoBehaviour
     [Tooltip("Reference to the PlayerPunch component.")]
     PlayerPunch playerPunch;
     [SerializeField]
+    [Tooltip("Reference to the PlayerHealth component.")]
+    PlayerHealth playerHealth;
+    [SerializeField]
     [Tooltip("Reference to the Health component.")]
     Health health;
 
@@ -25,6 +28,7 @@ public class PlayerTuning : MonoBehaviour
         JSONNode json = JSON.Parse(playerFile.ToString());
         playerPunch.SetSecondsOfPunching(json["seconds of punching"].AsFloat);
         playerPunch.SetSecondsOfPunchCooldown(json["seconds of punch cooldown"].AsFloat);
+        playerHealth.SetSecondsOfInvincibilityWhenDamaged(json["seconds of invincibility when damaged"].AsFloat);
         health.SetMaxHealth(json["max health"].AsInt);
         health.FullHeal();
     }

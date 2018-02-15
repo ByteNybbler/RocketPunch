@@ -10,14 +10,67 @@ public class PlayerHealth : MonoBehaviour
     [SerializeField]
     [Tooltip("Reference to the Health component.")]
     Health health;
+    [SerializeField]
+    [Tooltip("Reference to the renderer.")]
+    SpriteRenderer render;
+    [SerializeField]
+    [Tooltip("The color alpha the player has when invincible.")]
+    float damageAlpha;
+
+    Timer timerInvincible = new Timer();
+    bool vincible = true;
 
     private void Start()
     {
         health.Died += Health_Died;
     }
 
+    public void SetSecondsOfInvincibilityWhenDamaged(float val)
+    {
+        timerInvincible.SetTargetTime(val);
+    }
+
+    private void FixedUpdate()
+    {
+        if (!vincible)
+        {
+            while (timerInvincible.TimeUp(Time.deltaTime))
+            {
+                MakeVincible();
+            }
+        }
+    }
+
     private void Health_Died()
     {
         UtilScene.ResetScene();
+    }
+
+    public void Damage(int amount)
+    {
+        if (vincible)
+        {
+            health.Damage(amount);
+            MakeInvincible();
+            SetSpriteAlpha(damageAlpha);
+        }
+    }
+
+    private void MakeVincible()
+    {
+        vincible = true;
+        SetSpriteAlpha(1.0f);
+    }
+
+    private void MakeInvincible()
+    {
+        vincible = false;
+    }
+
+    private void SetSpriteAlpha(float alpha)
+    {
+        Color col = render.color;
+        col.a = alpha;
+        render.color = col;
     }
 }

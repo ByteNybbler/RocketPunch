@@ -35,4 +35,10 @@ public class Timer
     {
         secondsTarget = seconds;
     }
+
+    // Reset the timer.
+    public void Reset()
+    {
+        secondsCurrent = 0.0f;
+    }
 }

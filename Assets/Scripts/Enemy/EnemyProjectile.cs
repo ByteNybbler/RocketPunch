@@ -52,7 +52,7 @@ public class EnemyProjectile : MonoBehaviour
         }
         else if (collision.CompareTag("PlayerSelfHitbox"))
         {
-            collision.transform.root.GetComponent<Health>().Damage(damage);
+            collision.transform.root.GetComponent<PlayerHealth>().Damage(damage);
             Kill();
         }
     }

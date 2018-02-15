@@ -1546,6 +1546,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   health: {fileID: 2109147859}
+  render: {fileID: 1821427861}
+  damageAlpha: 0.5
 --- !u!114 &2109147861
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1559,4 +1561,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerFile: {fileID: 4900000, guid: b147a2e343e34c34a991cb21c7bbdeb0, type: 3}
   playerPunch: {fileID: 2109147858}
+  playerHealth: {fileID: 2109147860}
   health: {fileID: 2109147859}
