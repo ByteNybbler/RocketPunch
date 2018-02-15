@@ -22,6 +22,12 @@ public class EnemyAttack : MonoBehaviour
     [SerializeField]
     [Tooltip("The left speed that will be applied to fired projectiles.")]
     float projectileLeftSpeed;
+    [SerializeField]
+    [Tooltip("How many points each projectile gives when punched.")]
+    int pointsPerProjectilePunched;
+    [SerializeField]
+    [Tooltip("Reference to the Score instance.")]
+    Score score;
 
     // Reference to the player object.
     GameObject player;
@@ -29,12 +35,14 @@ public class EnemyAttack : MonoBehaviour
     Timer timerVolley;
 
     public void Init(VolleyData volley, float secondsBetweenVolleys, float volleyDirectionDeltaPerShot,
-        float projectileLeftSpeed)
+        float projectileLeftSpeed, Score score)
     {
         this.volley = volley;
         this.secondsBetweenVolleys = secondsBetweenVolleys;
         this.volleyDirectionDeltaPerShot = volleyDirectionDeltaPerShot;
         this.projectileLeftSpeed = projectileLeftSpeed;
+        this.score = score;
+        this.pointsPerProjectilePunched = score.GetPointsPerProjectilePunched();
     }
 
     private void Start()
@@ -62,6 +70,8 @@ public class EnemyAttack : MonoBehaviour
                 proj.SetAngleSpeed(angle, volley.speed);
                 proj.SetPunchable(volley.projectilePunchable);
                 proj.SetColor(volley.color);
+                proj.SetScore(score);
+                proj.SetPoints(pointsPerProjectilePunched);
                 LeftMovement lm = projectile.GetComponent<LeftMovement>();
                 lm.SetMovementLeftSpeed(projectileLeftSpeed);
             }

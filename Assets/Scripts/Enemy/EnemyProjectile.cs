@@ -14,11 +14,17 @@ public class EnemyProjectile : MonoBehaviour
     [Tooltip("Reference to the SpriteRenderer component.")]
     SpriteRenderer spriteRenderer;
     [SerializeField]
+    [Tooltip("Reference to the Score instance.")]
+    Score score;
+    [SerializeField]
     [Tooltip("Whether the projectile is punchable or not.")]
     bool punchable;
     [SerializeField]
     [Tooltip("How much damage the projectile does.")]
     int damage;
+    [SerializeField]
+    [Tooltip("How many points the projectile gives when punched.")]
+    int points;
 
     public void SetAngleSpeed(float angle, float speed)
     {
@@ -34,11 +40,24 @@ public class EnemyProjectile : MonoBehaviour
     {
         spriteRenderer.color = val;
     }
+    public void SetScore(Score val)
+    {
+        score = val;
+    }
+    public void SetPoints(int val)
+    {
+        points = val;
+    }
 
     // Kills the projectile, destroying it.
     public void Kill()
     {
         Destroy(gameObject);
+    }
+
+    private void PunchedByPlayer()
+    {
+        score.Add(points);
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -47,6 +66,7 @@ public class EnemyProjectile : MonoBehaviour
         {
             if (punchable)
             {
+                PunchedByPlayer();
                 Kill();
             }
         }

@@ -14,11 +14,9 @@ public class EnemySpawner : MonoBehaviour
     [SerializeField]
     [Tooltip("File containing enemy spawner data.")]
     TextAsset enemySpawnersFile;
-    /*
     [SerializeField]
-    [Tooltip("File containing player data.")]
-    TextAsset playerFile;
-    */
+    [Tooltip("Reference to the Score instance.")]
+    Score score;
     [SerializeField]
     [Tooltip("The enemy prefab.")]
     GameObject prefabEnemy;
@@ -169,13 +167,18 @@ public class EnemySpawner : MonoBehaviour
 
         EnemyAttack attack = obj.GetComponent<EnemyAttack>();
         attack.Init(enemy.volley, enemy.secondsBetweenVolleys, enemy.volleyDirectionDeltaPerShot,
-            enemyBaseLeftMovementSpeed);
+            enemyBaseLeftMovementSpeed, score);
 
         LeftMovement movement = obj.GetComponent<LeftMovement>();
         movement.SetMovementLeftSpeed(enemyBaseLeftMovementSpeed + enemy.leftMovementSpeedBonus);
 
         OscillatePosition2D oscillatePos = obj.GetComponent<OscillatePosition2D>();
         oscillatePos.Init(0.0f, 0.0f, enemy.yOscillationMagnitude, enemy.yOscillationSpeed);
+
+        EnemyHealth enemyHealth = obj.GetComponent<EnemyHealth>();
+        enemyHealth.SetScore(score);
+        enemyHealth.SetPointsWhenKilled(score.GetPointsPerEnemyKilled());
+        enemyHealth.SetPointsPerFullHealthHealthKit(score.GetPointsPerFullHealthHealthKit());
 
         // Check if there are any viable enemies left.
         // If not, it's time to move on to the next spawn group.
