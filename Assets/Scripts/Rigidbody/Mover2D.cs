@@ -20,7 +20,7 @@ public class Mover2D : MonoBehaviour
 {
     [SerializeField]
     [Tooltip("Reference to the Rigidbody component to move.")]
-    Rigidbody2D rb;
+    Rigidbody2D myRigidbody;
 
     Vector2 differencePosition = Vector2.zero;
     float differenceRotation = 0.0f;
@@ -35,10 +35,30 @@ public class Mover2D : MonoBehaviour
         differenceRotation += change;
     }
 
+    public void TeleportPosition(Vector2 newPos)
+    {
+        myRigidbody.position = newPos;
+    }
+
+    public void TeleportRotation(float newRotation)
+    {
+        myRigidbody.rotation = newRotation;
+    }
+
+    public Vector2 GetPosition()
+    {
+        return myRigidbody.position;
+    }
+
+    public float GetRotation()
+    {
+        return myRigidbody.rotation;
+    }
+
     private void FixedUpdate()
     {
-        rb.MovePosition(rb.position + differencePosition);
-        rb.MoveRotation(rb.rotation + differenceRotation);
+        myRigidbody.MovePosition(myRigidbody.position + differencePosition);
+        myRigidbody.MoveRotation(myRigidbody.rotation + differenceRotation);
         differencePosition = Vector2.zero;
         differenceRotation = 0.0f;
     }
