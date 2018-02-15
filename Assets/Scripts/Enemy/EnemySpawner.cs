@@ -15,6 +15,9 @@ public class EnemySpawner : MonoBehaviour
     [Tooltip("File containing enemy spawner data.")]
     TextAsset enemySpawnersFile;
     [SerializeField]
+    [Tooltip("File containing item data.")]
+    TextAsset itemsFile;
+    [SerializeField]
     [Tooltip("Reference to the Score instance.")]
     Score score;
     [SerializeField]
@@ -40,6 +43,14 @@ public class EnemySpawner : MonoBehaviour
     // Also affects how quickly enemy projectiles move to the left.
     // This creates the illusion that the player is moving to the right.
     float enemyBaseLeftMovementSpeed;
+    // How much health a single health kit should give.
+    int healthPerHealthKit;
+
+    float dropRateHealthKit;
+    float dropRateBattleAxe;
+    float dropRateMoreArms;
+    // Drop rates for items.
+    Probability<ItemType> probItem = new Probability<ItemType>(ItemType.None);
 
     Timer timerSpawn;
     Timer timerSpawnGroup;
@@ -118,6 +129,15 @@ public class EnemySpawner : MonoBehaviour
             // Add the enemy to the possible enemies pool.
             possibleEnemies.Add(enemy);
         }
+
+        json = JSON.Parse(itemsFile.ToString());
+        dropRateHealthKit = json["health kit drop rate"].AsFloat;
+        dropRateBattleAxe = json["battle axe drop rate"].AsFloat;
+        dropRateMoreArms = json["more arms drop rate"].AsFloat;
+        probItem.SetChance(ItemType.HealthKit, dropRateHealthKit);
+        probItem.SetChance(ItemType.BattleAxe, dropRateBattleAxe);
+        probItem.SetChance(ItemType.MoreArms, dropRateMoreArms);
+        healthPerHealthKit = json["health per health kit"].AsInt;
     }
 
     private void FixedUpdate()
@@ -178,6 +198,8 @@ public class EnemySpawner : MonoBehaviour
         EnemyHealth enemyHealth = obj.GetComponent<EnemyHealth>();
         enemyHealth.SetScore(score);
         enemyHealth.SetPointsWhenKilled(score.GetPointsPerEnemyKilled());
+        enemyHealth.SetProbItem(probItem);
+        enemyHealth.SetHealthPerHealthKit(healthPerHealthKit);
         enemyHealth.SetPointsPerFullHealthHealthKit(score.GetPointsPerFullHealthHealthKit());
 
         // Check if there are any viable enemies left.

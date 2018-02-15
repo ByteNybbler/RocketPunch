@@ -17,8 +17,12 @@ public class PlayerHealth : MonoBehaviour
     [Tooltip("The color alpha the player has when invincible.")]
     float damageAlpha;
 
+    // Invincibility timer.
     Timer timerInvincible = new Timer();
+    // Whether the player can currently be damaged.
     bool vincible = true;
+    // Whether a powerup effect is currently active.
+    bool powerupActive = false;
 
     private void Start()
     {
@@ -28,6 +32,11 @@ public class PlayerHealth : MonoBehaviour
     public void SetSecondsOfInvincibilityWhenDamaged(float val)
     {
         timerInvincible.SetTargetTime(val);
+    }
+
+    public bool GetPowerupActive()
+    {
+        return powerupActive;
     }
 
     private void FixedUpdate()
@@ -54,6 +63,11 @@ public class PlayerHealth : MonoBehaviour
             MakeInvincible();
             SetSpriteAlpha(damageAlpha);
         }
+    }
+
+    public void Heal(int amount)
+    {
+        health.Heal(amount);
     }
 
     private void MakeVincible()

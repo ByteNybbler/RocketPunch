@@ -1,5 +1,6 @@
 {
 	"health kit drop rate" : 0.1,
 	"battle axe drop rate" : 0.1,
-	"more arms drop rate" : 0.1
+	"more arms drop rate" : 0.1,
+	"health per health kit" : 50
 }

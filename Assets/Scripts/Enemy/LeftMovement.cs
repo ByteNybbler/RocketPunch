@@ -24,4 +24,9 @@ public class LeftMovement : MonoBehaviour
     {
         movementLeftSpeed = value;
     }
+
+    public float GetMovementLeftSpeed()
+    {
+        return movementLeftSpeed;
+    }
 }

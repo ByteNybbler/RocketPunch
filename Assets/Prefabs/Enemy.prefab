@@ -213,8 +213,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a010d390eb73fd645becc0b6da72543d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  leftMovement: {fileID: 114654272223199436}
+  prefabHealthKit: {fileID: 1906263251835348, guid: 7e8711ee05f7a6443a451bca286859f7,
+    type: 2}
+  prefabBattleAxe: {fileID: 1195104256440672, guid: b786e26929d56424d82a4630c43f9da4,
+    type: 2}
+  prefabMoreArms: {fileID: 1473690354280622, guid: fadae3906e703e24f8c6bff1e4a11deb,
+    type: 2}
   score: {fileID: 0}
   pointsWhenKilled: 0
+  healthPerHealthKit: 0
   pointsPerFullHealthHealthKit: 0
 --- !u!114 &114986227821880174
 MonoBehaviour:

@@ -1119,6 +1119,7 @@ MonoBehaviour:
   boundedTags:
   - Enemy
   - EnemyProjectile
+  - Item
 --- !u!1 &1783250722
 GameObject:
   m_ObjectHideFlags: 0
@@ -1409,6 +1410,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemiesFile: {fileID: 4900000, guid: 3a104f9241f72c04889a8ab9cbe1035c, type: 3}
   enemySpawnersFile: {fileID: 4900000, guid: 7ffc3dcf022d00143bcfe17e636c9dc9, type: 3}
+  itemsFile: {fileID: 4900000, guid: 567362ae94168a147b640a397c25be89, type: 3}
   score: {fileID: 1575159212}
   prefabEnemy: {fileID: 1669846950066600, guid: ce1c5d080d80f7140a07301059d540a3,
     type: 2}
