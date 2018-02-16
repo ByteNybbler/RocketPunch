@@ -75,7 +75,7 @@ AudioMixerGroupController:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: Music
+  m_Name: MusicMaster
   m_AudioMixer: {fileID: 24100000}
   m_GroupID: fa57b7a2ddc86e14f9df4162e5004566
   m_Children: []
@@ -92,7 +92,7 @@ AudioMixerGroupController:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: SFX
+  m_Name: SFXMaster
   m_AudioMixer: {fileID: 24100000}
   m_GroupID: 2b86d4cbbae86df4aa3c0a6c9ac6df70
   m_Children: []
