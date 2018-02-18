@@ -7,46 +7,74 @@ using UnityEngine;
 
 public class EnemyProjectile : MonoBehaviour
 {
+    [System.Serializable]
+    public class Data : IDeepCopyable<Data>
+    {
+        [Tooltip("Whether the projectile is punchable or not.")]
+        public bool punchable;
+        [Tooltip("How much damage the projectile does.")]
+        public int damage;
+        [Tooltip("How many points the projectile gives when punched.")]
+        public int pointsWhenPunched;
+        [Tooltip("The color of the projectile.")]
+        public Color color;
+        [Tooltip("The angle (direction) of the projectile.")]
+        public float angle;
+        [Tooltip("The speed of the projectile.")]
+        public float speed;
+        [Tooltip("Reference to the Score instance.")]
+        public Score score;
+
+        public Data(bool punchable, int damage, int pointsWhenPunched, Color color,
+            float angle, float speed, Score score)
+        {
+            this.punchable = punchable;
+            this.damage = damage;
+            this.pointsWhenPunched = pointsWhenPunched;
+            this.color = color;
+            this.angle = angle;
+            this.speed = speed;
+            this.score = score;
+        }
+
+        public Data DeepCopy()
+        {
+            return new Data(punchable, damage, pointsWhenPunched, color,
+                angle, speed, score);
+        }
+    }
+    [SerializeField]
+    Data data;
+
     [SerializeField]
     [Tooltip("Reference to the AngleSpeedMovement component.")]
     AngleSpeedMovement2D angleSpeedMovement;
     [SerializeField]
     [Tooltip("Reference to the SpriteRenderer component.")]
     SpriteRenderer spriteRenderer;
-    [SerializeField]
-    [Tooltip("Reference to the Score instance.")]
-    Score score;
-    [SerializeField]
-    [Tooltip("Whether the projectile is punchable or not.")]
-    bool punchable;
-    [SerializeField]
-    [Tooltip("How much damage the projectile does.")]
-    int damage;
-    [SerializeField]
-    [Tooltip("How many points the projectile gives when punched.")]
-    int points;
+
+    public void SetData(Data val)
+    {
+        data = val;
+    }
+
+    private void Start()
+    {
+        SetAngleSpeed(data.angle, data.speed);
+        SetColor(data.color);
+    }
 
     public void SetAngleSpeed(float angle, float speed)
     {
+        data.angle = angle;
+        data.speed = speed;
         angleSpeedMovement.SetAngleSpeed(angle, speed);
-    }
-
-    public void SetPunchable(bool val)
-    {
-        punchable = val;
     }
 
     public void SetColor(Color val)
     {
+        data.color = val;
         spriteRenderer.color = val;
-    }
-    public void SetScore(Score val)
-    {
-        score = val;
-    }
-    public void SetPoints(int val)
-    {
-        points = val;
     }
 
     // Kills the projectile, destroying it.
@@ -57,14 +85,14 @@ public class EnemyProjectile : MonoBehaviour
 
     private void PunchedByPlayer()
     {
-        score.Add(points);
+        data.score.Add(data.pointsWhenPunched);
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.CompareTag("PlayerPunch"))
         {
-            if (punchable)
+            if (data.punchable)
             {
                 PunchedByPlayer();
                 Kill();
@@ -72,7 +100,7 @@ public class EnemyProjectile : MonoBehaviour
         }
         else if (collision.CompareTag("PlayerSelfHitbox"))
         {
-            collision.transform.root.GetComponent<PlayerHealth>().Damage(damage);
+            collision.transform.root.GetComponent<PlayerHealth>().Damage(data.damage);
             Kill();
         }
     }

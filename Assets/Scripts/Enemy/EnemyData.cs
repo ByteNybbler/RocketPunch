@@ -5,23 +5,20 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[System.Serializable]
 public class EnemyData
 {
-    float challenge;
+    public float challenge;
     public float leftMovementSpeedBonus;
-    public float yOscillationMagnitude;
-    public float yOscillationSpeed;
-    public VolleyData volley;
-    public float secondsBetweenVolleys;
-    public float volleyDirectionDeltaPerShot;
+    public OscillatePosition2D.Data oscData;
+    public EnemyAttack.Data attackData;
 
-    public EnemyData(float challenge)
+    public EnemyData(float challenge, float leftMovementSpeedBonus,
+        OscillatePosition2D.Data oscData, EnemyAttack.Data attackData)
     {
         this.challenge = challenge;
-    }
-
-    public float GetChallenge()
-    {
-        return challenge;
+        this.leftMovementSpeedBonus = leftMovementSpeedBonus;
+        this.oscData = oscData;
+        this.attackData = attackData;
     }
 }

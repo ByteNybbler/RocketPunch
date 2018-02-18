@@ -2,5 +2,6 @@
 	"seconds of punching" : 0.2,
 	"seconds of punch cooldown" : 0.8,
 	"seconds of invincibility when damaged" : 1.0,
-	"max health" : 100
+	"max health" : 100,
+	"base punch hitbox size" : 1.4
 }

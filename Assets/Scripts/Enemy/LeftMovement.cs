@@ -7,26 +7,37 @@ using UnityEngine;
 
 public class LeftMovement : MonoBehaviour
 {
+    [System.Serializable]
+    public class Data
+    {
+        [Tooltip("How quickly the GameObject moves to the left.")]
+        public float movementLeftSpeed;
+    }
+    [SerializeField]
+    Data data;
+
     [SerializeField]
     [Tooltip("Reference to the Mover component.")]
     Mover2D mover;
-    [SerializeField]
-    [Tooltip("How quickly the GameObject moves to the left.")]
-    float movementLeftSpeed;
+
+    public void SetData(Data val)
+    {
+        data = val;
+    }
 
     private void FixedUpdate()
     {
-        Vector2 change = new Vector2(-movementLeftSpeed, 0.0f);
+        Vector2 change = new Vector2(-data.movementLeftSpeed, 0.0f);
         mover.MovePosition(change);
     }
 
     public void SetMovementLeftSpeed(float value)
     {
-        movementLeftSpeed = value;
+        data.movementLeftSpeed = value;
     }
 
     public float GetMovementLeftSpeed()
     {
-        return movementLeftSpeed;
+        return data.movementLeftSpeed;
     }
 }

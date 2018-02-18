@@ -7,6 +7,31 @@ using UnityEngine;
 
 public class EnemyHealth : MonoBehaviour
 {
+    [System.Serializable]
+    public class Data
+    {
+        [Tooltip("The health kit to drop when dead.")]
+        public ItemHealthKit.Data healthKit;
+        [Tooltip("How many points the enemy gives when it's killed.")]
+        public int pointsWhenKilled;
+        [Tooltip("Item drop rates.")]
+        public Probability<ItemType> probItem;
+        [Tooltip("Reference to the Score instance.")]
+        public Score score;
+
+        public Data(ItemHealthKit.Data healthKit, int pointsWhenKilled,
+            Probability<ItemType> probItem, Score score)
+        {
+            this.healthKit = healthKit;
+            this.pointsWhenKilled = pointsWhenKilled;
+            this.probItem = probItem;
+            this.score = score;
+        }
+    }
+    [SerializeField]
+    [Tooltip("Data for EnemyHealth.")]
+    Data data;
+
     [SerializeField]
     [Tooltip("Reference to the enemy's LeftMovement component.")]
     LeftMovement leftMovement;
@@ -20,53 +45,22 @@ public class EnemyHealth : MonoBehaviour
     [Tooltip("The prefab to use to spawn the More Arms powerup.")]
     GameObject prefabMoreArms;
 
-    [SerializeField]
-    [Tooltip("Reference to the Score instance.")]
-    Score score;
-    [SerializeField]
-    [Tooltip("How many points the enemy gives when it's killed.")]
-    int pointsWhenKilled;
-    [SerializeField]
-    [Tooltip("How much health a health kit gives.")]
-    int healthPerHealthKit;
-    [SerializeField]
-    [Tooltip("How many points the dropped health kit gives when the player is at full health.")]
-    int pointsPerFullHealthHealthKit;
+    PlayerPowerup playerPowerup;
 
-    // Item drop rates.
-    Probability<ItemType> probItem;
-    // Reference to the player's health.
-    PlayerHealth playerHealth;
+    public void SetData(Data val)
+    {
+        data = val;
+    }
 
     private void Awake()
     {
-        playerHealth = ServiceLocator.GetPlayer().GetComponent<PlayerHealth>();
-    }
-
-    public void SetScore(Score val)
-    {
-        score = val;
-    }
-    public void SetPointsWhenKilled(int val)
-    {
-        pointsWhenKilled = val;
-    }
-    public void SetHealthPerHealthKit(int val)
-    {
-        healthPerHealthKit = val;
-    }
-    public void SetPointsPerFullHealthHealthKit(int val)
-    {
-        pointsPerFullHealthHealthKit = val;
-    }
-    public void SetProbItem(Probability<ItemType> val)
-    {
-        probItem = val;
+        GameObject player = ServiceLocator.GetPlayer();
+        playerPowerup = player.GetComponent<PlayerPowerup>();
     }
 
     public void Kill()
     {
-        score.Add(pointsWhenKilled);
+        data.score.Add(data.pointsWhenKilled);
         DropItem();
         Destroy(gameObject);
     }
@@ -74,30 +68,37 @@ public class EnemyHealth : MonoBehaviour
     // Attempt to drop something.
     private void DropItem()
     {
-        ItemType it = probItem.Roll();
-        switch (it)
+        ItemType it = data.probItem.Roll();
+        if (it == ItemType.None)
         {
-            case ItemType.HealthKit:
-                GameObject pup = Instantiate(prefabHealthKit, transform.position, Quaternion.identity);
-                ItemHealthKit hk = pup.GetComponent<ItemHealthKit>();
-                hk.SetHeal(healthPerHealthKit);
-                hk.SetPointsPerFullHealthHealthKit(pointsPerFullHealthHealthKit);
-                hk.SetScore(score);
-                LeftMovement lm = pup.GetComponent<LeftMovement>();
-                lm.SetMovementLeftSpeed(leftMovement.GetMovementLeftSpeed());
-                break;
-            case ItemType.BattleAxe:
-                if (!playerHealth.GetPowerupActive())
+            return;
+        }
+        if (it == ItemType.HealthKit)
+        {
+            GameObject pup = Instantiate(prefabHealthKit, transform.position, Quaternion.identity);
+            ItemHealthKit hk = pup.GetComponent<ItemHealthKit>();
+            hk.SetData(data.healthKit);
+            LeftMovement lm = pup.GetComponent<LeftMovement>();
+            lm.SetMovementLeftSpeed(leftMovement.GetMovementLeftSpeed());
+        }
+        else
+        {
+            // Only drop these powerups if none currently exist.
+            if (!playerPowerup.GetPowerupExists())
+            {
+                GameObject powerup = null;
+                switch (it)
                 {
-                    Instantiate(prefabBattleAxe, transform.position, Quaternion.identity);
+                    case ItemType.BattleAxe:
+                        powerup = Instantiate(prefabBattleAxe, transform.position, Quaternion.identity);
+                        break;
+                    case ItemType.MoreArms:
+                        powerup = Instantiate(prefabMoreArms, transform.position, Quaternion.identity);
+                        break;
                 }
-                break;
-            case ItemType.MoreArms:
-                if (!playerHealth.GetPowerupActive())
-                {
-                    Instantiate(prefabMoreArms, transform.position, Quaternion.identity);
-                }
-                break;
+                ItemPowerup pup = powerup.GetComponent<ItemPowerup>();
+                pup.SetPlayerPowerup(playerPowerup);
+            }
         }
     }
 

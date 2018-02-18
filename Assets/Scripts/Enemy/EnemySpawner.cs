@@ -98,25 +98,13 @@ public class EnemySpawner : MonoBehaviour
         {
             JSONNode enemyNode = enemyArray[i];
             string enemyName = UtilJSON.TryReadString(enemyNode["name"], "UNNAMED");
-            float challenge = UtilJSON.TryReadFloat(enemyNode["challenge"], 1.0f);
-            EnemyData enemy = new EnemyData(challenge);
-            enemy.leftMovementSpeedBonus = UtilJSON.TryReadFloat(enemyNode["left movement speed increase"], 0.0f);
-            enemy.yOscillationMagnitude = UtilJSON.TryReadFloat(enemyNode["y oscillation magnitude"], 0.0f);
-            enemy.yOscillationSpeed = UtilJSON.TryReadFloat(enemyNode["y oscillation speed"], 0.0f);
-            enemy.secondsBetweenVolleys = UtilJSON.TryReadFloat(enemyNode["seconds between volleys"], 1.0f);
-            enemy.volleyDirectionDeltaPerShot = UtilJSON.TryReadFloat(enemyNode["volley direction delta per shot"], 0.0f);
-            
+
             // Read volley data.
             JSONNode volleyNode = enemyNode["volley"];
-            VolleyData volley = new VolleyData();
-            volley.speed = UtilJSON.TryReadFloat(volleyNode["speed"], 4.0f);
-            volley.direction = UtilJSON.TryReadFloat(volleyNode["direction"], 180.0f);
-            volley.projectileCount = UtilJSON.TryReadInt(volleyNode["projectile count"], 1);
-            volley.spreadAngle = UtilJSON.TryReadFloat(volleyNode["spread angle"], 0.0f);
-            volley.projectilePunchable = UtilJSON.TryReadBool(volleyNode["projectile punchable"], true);
-            volley.aimAtPlayer = UtilJSON.TryReadBool(volleyNode["aims at player"], false);
+
             string colString = UtilJSON.TryReadString(volleyNode["color"], "#ffffff");
-            if (ColorUtility.TryParseHtmlString(colString, out volley.color))
+            Color projColor;
+            if (ColorUtility.TryParseHtmlString(colString, out projColor))
             {
                 //Debug.Log(colString + " : " + volley.color);
             }
@@ -124,8 +112,34 @@ public class EnemySpawner : MonoBehaviour
             {
                 Debug.Log(enemyName + ": Could not parse HTML color for volley!");
             }
+            EnemyProjectile.Data projectile = new EnemyProjectile.Data(
+                UtilJSON.TryReadBool(volleyNode["projectile punchable"], true),
+                UtilJSON.TryReadInt(volleyNode["projectile damage"], 20),
+                score.GetPointsPerProjectilePunched(),
+                projColor,
+                UtilJSON.TryReadFloat(volleyNode["direction"], 180.0f),
+                UtilJSON.TryReadFloat(volleyNode["speed"], 4.0f),
+                score);
 
-            enemy.volley = volley;
+            VolleyData volley = new VolleyData(projectile,
+                UtilJSON.TryReadInt(volleyNode["projectile count"], 1),
+                UtilJSON.TryReadFloat(volleyNode["spread angle"], 0.0f),
+                UtilJSON.TryReadBool(volleyNode["aims at player"], false));
+
+            OscillatePosition2D.Data oscData = new OscillatePosition2D.Data(0.0f, 0.0f,
+                UtilJSON.TryReadFloat(enemyNode["y oscillation magnitude"], 0.0f),
+                UtilJSON.TryReadFloat(enemyNode["y oscillation speed"], 0.0f));
+
+            EnemyAttack.Data attack = new EnemyAttack.Data(volley,
+                UtilJSON.TryReadFloat(enemyNode["seconds between volleys"], 1.0f),
+                UtilJSON.TryReadFloat(enemyNode["volley direction delta per shot"], 0.0f),
+                enemyBaseLeftMovementSpeed);
+
+            EnemyData enemy = new EnemyData(UtilJSON.TryReadFloat(enemyNode["challenge"], 1.0f),
+                UtilJSON.TryReadFloat(enemyNode["left movement speed increase"], 0.0f),
+                oscData,
+                attack);
+
             // Add the enemy to the possible enemies pool.
             possibleEnemies.Add(enemy);
         }
@@ -180,27 +194,29 @@ public class EnemySpawner : MonoBehaviour
 
         // Choose one of these enemies randomly.
         EnemyData enemy = viableEnemies[Random.Range(0, viableEnemies.Count)];
-        challengeCurrent += enemy.GetChallenge();
+        challengeCurrent += enemy.challenge;
 
         // Instantiate the enemy.
         GameObject obj = Instantiate(prefabEnemy, spawnPos, Quaternion.identity);
 
         EnemyAttack attack = obj.GetComponent<EnemyAttack>();
-        attack.Init(enemy.volley, enemy.secondsBetweenVolleys, enemy.volleyDirectionDeltaPerShot,
-            enemyBaseLeftMovementSpeed, score);
+        attack.SetData(enemy.attackData);
 
         LeftMovement movement = obj.GetComponent<LeftMovement>();
         movement.SetMovementLeftSpeed(enemyBaseLeftMovementSpeed + enemy.leftMovementSpeedBonus);
 
         OscillatePosition2D oscillatePos = obj.GetComponent<OscillatePosition2D>();
-        oscillatePos.Init(0.0f, 0.0f, enemy.yOscillationMagnitude, enemy.yOscillationSpeed);
+        oscillatePos.SetData(enemy.oscData);
 
         EnemyHealth enemyHealth = obj.GetComponent<EnemyHealth>();
-        enemyHealth.SetScore(score);
-        enemyHealth.SetPointsWhenKilled(score.GetPointsPerEnemyKilled());
-        enemyHealth.SetProbItem(probItem);
-        enemyHealth.SetHealthPerHealthKit(healthPerHealthKit);
-        enemyHealth.SetPointsPerFullHealthHealthKit(score.GetPointsPerFullHealthHealthKit());
+        ItemHealthKit.Data healthKitData = new ItemHealthKit.Data(healthPerHealthKit,
+            score.GetPointsPerFullHealthHealthKit(),
+            score);
+        EnemyHealth.Data enemyHealthData = new EnemyHealth.Data(healthKitData,
+            score.GetPointsPerEnemyKilled(),
+            probItem,
+            score);
+        enemyHealth.SetData(enemyHealthData);
 
         // Check if there are any viable enemies left.
         // If not, it's time to move on to the next spawn group.
@@ -211,7 +227,7 @@ public class EnemySpawner : MonoBehaviour
     private List<EnemyData> GetViableEnemies()
     {
         float challengeRemaining = challengeMax - challengeCurrent;
-        return possibleEnemies.FindAll(x => x.GetChallenge() <= challengeRemaining);
+        return possibleEnemies.FindAll(x => x.challenge <= challengeRemaining);
     }
 
     private Vector3 GetRandomSpawnPosition()

@@ -21,8 +21,6 @@ public class PlayerHealth : MonoBehaviour
     Timer timerInvincible = new Timer();
     // Whether the player can currently be damaged.
     bool vincible = true;
-    // Whether a powerup effect is currently active.
-    bool powerupActive = false;
 
     private void Start()
     {
@@ -32,11 +30,6 @@ public class PlayerHealth : MonoBehaviour
     public void SetSecondsOfInvincibilityWhenDamaged(float val)
     {
         timerInvincible.SetTargetTime(val);
-    }
-
-    public bool GetPowerupActive()
-    {
-        return powerupActive;
     }
 
     private void FixedUpdate()

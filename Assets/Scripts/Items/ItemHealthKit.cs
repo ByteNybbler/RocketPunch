@@ -7,27 +7,31 @@ using UnityEngine;
 
 public class ItemHealthKit : MonoBehaviour
 {
-    [SerializeField]
-    [Tooltip("How much the health kit heals.")]
-    int heal;
-    [SerializeField]
-    [Tooltip("How many points the health kit gives when the player is at full health.")]
-    int pointsPerFullHealthHealthKit;
-    [SerializeField]
-    [Tooltip("Reference to the Score instance.")]
-    Score score;
+    [System.Serializable]
+    public class Data
+    {
+        [Tooltip("How much the health kit heals.")]
+        public int heal;
+        [Tooltip("How many points the health kit gives when the player is at full health.")]
+        public int pointsPerFullHealthHealthKit;
+        [Tooltip("Reference to the Score instance.")]
+        public Score score;
 
-    public void SetHeal(int val)
-    {
-        heal = val;
+        public Data(int heal, int pointsPerFullHealthHealthKit,
+            Score score)
+        {
+            this.heal = heal;
+            this.pointsPerFullHealthHealthKit = pointsPerFullHealthHealthKit;
+            this.score = score;
+        }
     }
-    public void SetPointsPerFullHealthHealthKit(int val)
+    [SerializeField]
+    [Tooltip("Health kit data.")]
+    Data data;
+
+    public void SetData(Data val)
     {
-        pointsPerFullHealthHealthKit = val;
-    }
-    public void SetScore(Score val)
-    {
-        score = val;
+        data = val;
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -39,12 +43,12 @@ public class ItemHealthKit : MonoBehaviour
             Health health = root.GetComponent<Health>();
             if (health.IsHealthFull())
             {
-                // Reward points.
-                score.Add(pointsPerFullHealthHealthKit);
+                // Award points.
+                data.score.Add(data.pointsPerFullHealthHealthKit);
             }
             else
             {
-                playerHealth.Heal(heal);
+                playerHealth.Heal(data.heal);
             }
             Destroy(gameObject);
         }

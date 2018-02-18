@@ -7,55 +7,67 @@ using UnityEngine;
 
 public class EnemyAttack : MonoBehaviour
 {
+    [System.Serializable]
+    public class Data
+    {
+        [Tooltip("The volley that the enemy should fire.")]
+        public VolleyData volley;
+        [Tooltip("How many seconds should pass between each volley.")]
+        public float secondsBetweenVolleys;
+        [Tooltip("The change in volley direction between each shot.")]
+        public float volleyDirectionDeltaPerShot;
+        [Tooltip("The left speed that will be applied to fired projectiles.")]
+        public float projectileLeftSpeed;
+
+        /*
+        [Tooltip("How many points each projectile gives when punched.")]
+        public int pointsPerProjectilePunched;
+        [Tooltip("Reference to the Score instance.")]
+        public Score score;
+        */
+
+        public Data(VolleyData volley,
+            float secondsBetweenVolleys,
+            float volleyDirectionDeltaPerShot,
+            float projectileLeftSpeed)
+        {
+            this.volley = volley;
+            this.secondsBetweenVolleys = secondsBetweenVolleys;
+            this.volleyDirectionDeltaPerShot = volleyDirectionDeltaPerShot;
+            this.projectileLeftSpeed = projectileLeftSpeed;
+        }
+    }
+    [SerializeField]
+    Data data;
+
     [SerializeField]
     [Tooltip("Prefab to use for the projectile.")]
     GameObject prefabProjectile;
-    [SerializeField]
-    [Tooltip("The volley that the enemy should fire.")]
-    VolleyData volley;
-    [SerializeField]
-    [Tooltip("How many seconds should pass between each volley.")]
-    float secondsBetweenVolleys;
-    [SerializeField]
-    [Tooltip("The change in volley direction between each shot.")]
-    float volleyDirectionDeltaPerShot;
-    [SerializeField]
-    [Tooltip("The left speed that will be applied to fired projectiles.")]
-    float projectileLeftSpeed;
-    [SerializeField]
-    [Tooltip("How many points each projectile gives when punched.")]
-    int pointsPerProjectilePunched;
-    [SerializeField]
-    [Tooltip("Reference to the Score instance.")]
-    Score score;
 
     // Reference to the player object.
     GameObject player;
     // Timer for firing volleys.
     Timer timerVolley;
 
-    public void Init(VolleyData volley, float secondsBetweenVolleys, float volleyDirectionDeltaPerShot,
-        float projectileLeftSpeed, Score score)
+    public void SetData(Data val)
     {
-        this.volley = volley;
-        this.secondsBetweenVolleys = secondsBetweenVolleys;
-        this.volleyDirectionDeltaPerShot = volleyDirectionDeltaPerShot;
-        this.projectileLeftSpeed = projectileLeftSpeed;
-        this.score = score;
-        this.pointsPerProjectilePunched = score.GetPointsPerProjectilePunched();
+        data = val;
     }
 
     private void Start()
     {
         player = ServiceLocator.GetPlayer();
-        timerVolley = new Timer(secondsBetweenVolleys);
+        timerVolley = new Timer(data.secondsBetweenVolleys);
     }
 
     private void FixedUpdate()
     {
         while (timerVolley.TimeUp(Time.deltaTime))
         {
-            float[] angles = UtilSpread.PopulateAngle(volley.spreadAngle, volley.direction, volley.projectileCount);
+            VolleyData volley = data.volley;
+            float[] angles = UtilSpread.PopulateAngle(volley.spreadAngle,
+                data.volley.projectile.angle,
+                volley.projectileCount);
             foreach (float a in angles)
             {
                 float angle = a;
@@ -67,15 +79,13 @@ public class EnemyAttack : MonoBehaviour
                 Quaternion rotation = Quaternion.AngleAxis(angle, Vector3.forward);
                 GameObject projectile = Instantiate(prefabProjectile, transform.position, rotation);
                 EnemyProjectile proj = projectile.GetComponent<EnemyProjectile>();
-                proj.SetAngleSpeed(angle, volley.speed);
-                proj.SetPunchable(volley.projectilePunchable);
-                proj.SetColor(volley.color);
-                proj.SetScore(score);
-                proj.SetPoints(pointsPerProjectilePunched);
+                EnemyProjectile.Data projData = data.volley.projectile.DeepCopy();
+                projData.angle = angle;
+                proj.SetData(projData);
                 LeftMovement lm = projectile.GetComponent<LeftMovement>();
-                lm.SetMovementLeftSpeed(projectileLeftSpeed);
+                lm.SetMovementLeftSpeed(data.projectileLeftSpeed);
             }
-            volley.direction += volleyDirectionDeltaPerShot;
+            data.volley.projectile.angle += data.volleyDirectionDeltaPerShot;
         }
     }
 }

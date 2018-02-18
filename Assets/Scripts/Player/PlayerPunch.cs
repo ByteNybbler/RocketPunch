@@ -11,6 +11,12 @@ public class PlayerPunch : MonoBehaviour
     [Tooltip("The GameObject to use for punching.")]
     GameObject punchingObject;
     [SerializeField]
+    [Tooltip("The punching object child to use for regular punching.")]
+    GameObject childRegularPunch;
+    [SerializeField]
+    [Tooltip("The punching object child to use for the Battle Axe powerup.")]
+    GameObject childBattleAxe;
+    [SerializeField]
     [Tooltip("How many seconds the punch lasts for.")]
     float secondsOfPunching;
     [SerializeField]
@@ -34,9 +40,22 @@ public class PlayerPunch : MonoBehaviour
         timerPunchCooldown.SetTargetTime(secondsOfPunchCooldown);
     }
 
+    public void UseBattleAxe(bool willUseAxe)
+    {
+        childRegularPunch.SetActive(!willUseAxe);
+        childBattleAxe.SetActive(willUseAxe);
+    }
+
+    // Returns true if the player currently has the Battle Axe.
+    public bool HasBattleAxe()
+    {
+        return childBattleAxe.activeSelf;
+    }
+
     private void Start()
     {
         punchingObject.SetActive(false);
+        UseBattleAxe(false);
         timerPunching.SetTargetTime(secondsOfPunching);
         timerPunchCooldown.SetTargetTime(secondsOfPunchCooldown);
     }
@@ -52,7 +71,7 @@ public class PlayerPunch : MonoBehaviour
     // Returns true if the player is punching.
     private bool IsPunching()
     {
-        return punchingObject.activeInHierarchy;
+        return punchingObject.activeSelf;
     }
 
     private void FixedUpdate()

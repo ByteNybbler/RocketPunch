@@ -22,6 +22,7 @@ GameObject:
   - component: {fileID: 114248151477659728}
   - component: {fileID: 114193274503796242}
   - component: {fileID: 50232640633634154}
+  - component: {fileID: 114078266123513586}
   m_Layer: 0
   m_Name: BattleAxe
   m_TagString: Item
@@ -118,6 +119,18 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.16, y: 0.16}
   m_EdgeRadius: 0
+--- !u!114 &114078266123513586
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1195104256440672}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7f467f5dd5564ec4995296562829fced, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerPowerup: {fileID: 0}
 --- !u!114 &114193274503796242
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -141,15 +154,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2f9fcd1c96f7d6d488457b9101df6443, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  data:
+    movementLeftSpeed: 0
   mover: {fileID: 114193274503796242}
-  movementLeftSpeed: 1
 --- !u!212 &212467656377575608
 SpriteRenderer:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1331429508926136}
-  m_Enabled: 0
+  m_Enabled: 1
   m_CastShadows: 0
   m_ReceiveShadows: 0
   m_DynamicOccludee: 1
@@ -178,7 +192,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
-  m_Color: {r: 1, g: 0, b: 0, a: 1}
+  m_Color: {r: 0.94482756, g: 1, b: 0, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0

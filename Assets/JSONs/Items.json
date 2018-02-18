@@ -2,5 +2,8 @@
 	"health kit drop rate" : 0.1,
 	"battle axe drop rate" : 0.1,
 	"more arms drop rate" : 0.1,
-	"health per health kit" : 50
+	"health per health kit" : 50,
+	"seconds of battle axe" : 10.0,
+	"seconds of more arms" : 10.0,
+	"battle axe hitbox size" : 2.0
 }

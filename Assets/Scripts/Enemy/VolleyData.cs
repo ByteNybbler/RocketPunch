@@ -8,25 +8,27 @@ using UnityEngine;
 [System.Serializable]
 public class VolleyData
 {
-    [SerializeField]
-    [Tooltip("The speed of fired volleys.")]
+    [Tooltip("The projectile to fire.")]
+    public EnemyProjectile.Data projectile;
+    /*
+    [Tooltip("The speed of the fired volleys.")]
     public float speed;
-    [SerializeField]
-    [Tooltip("The (initial) direction of fired volleys.")]
+    [Tooltip("The direction of the fired volleys.")]
     public float direction;
-    [SerializeField]
+    */
     [Tooltip("How many projectiles are spawned per volley.")]
     public int projectileCount;
-    [SerializeField]
     [Tooltip("The spread of projectiles (in degrees) across one volley.")]
     public float spreadAngle;
-    [SerializeField]
-    [Tooltip("Whether the fired projectiles are punchable.")]
-    public bool projectilePunchable;
-    [SerializeField]
     [Tooltip("Whether the volley is aimed at the player.")]
     public bool aimAtPlayer;
-    [SerializeField]
-    [Tooltip("The color of the volley.")]
-    public Color color;
+
+    public VolleyData(EnemyProjectile.Data projectile, int projectileCount,
+        float spreadAngle, bool aimAtPlayer)
+    {
+        this.projectile = projectile;
+        this.projectileCount = projectileCount;
+        this.spreadAngle = spreadAngle;
+        this.aimAtPlayer = aimAtPlayer;
+    }
 }

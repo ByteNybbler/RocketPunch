@@ -7,37 +7,45 @@ using UnityEngine;
 
 public class OscillatePosition2D : MonoBehaviour
 {
+    [System.Serializable]
+    public class Data
+    {
+        [Tooltip("The size of the x oscillation.")]
+        public float xMagnitude;
+        [Tooltip("The speed of the x oscillation.")]
+        public float xSpeed;
+        [Tooltip("The size of the y oscillation.")]
+        public float yMagnitude;
+        [Tooltip("The speed of the y oscillation.")]
+        public float ySpeed;
+
+        public Data(float xMagnitude, float xSpeed, float yMagnitude, float ySpeed)
+        {
+            this.xMagnitude = xMagnitude;
+            this.xSpeed = xSpeed;
+            this.yMagnitude = yMagnitude;
+            this.ySpeed = ySpeed;
+        }
+    }
+    [SerializeField]
+    Data data;
+
     [SerializeField]
     [Tooltip("Reference to the Mover component.")]
     Mover2D mover;
-    [SerializeField]
-    [Tooltip("The size of the x oscillation.")]
-    float xMagnitude;
-    [SerializeField]
-    [Tooltip("The speed of the x oscillation.")]
-    float xSpeed;
-    [SerializeField]
-    [Tooltip("The size of the y oscillation.")]
-    float yMagnitude;
-    [SerializeField]
-    [Tooltip("The speed of the y oscillation.")]
-    float ySpeed;
 
     Oscillator oscX;
     Oscillator oscY;
 
-    public void Init(float xMagnitude, float xSpeed, float yMagnitude, float ySpeed)
+    public void SetData(Data val)
     {
-        this.xMagnitude = xMagnitude;
-        this.xSpeed = xSpeed;
-        this.yMagnitude = yMagnitude;
-        this.ySpeed = ySpeed;
+        data = val;
     }
 
     private void Start()
     {
-        oscX = new Oscillator(xMagnitude, xSpeed, Mathf.Sin);
-        oscY = new Oscillator(yMagnitude, ySpeed, Mathf.Sin);
+        oscX = new Oscillator(data.xMagnitude, data.xSpeed, Mathf.Sin);
+        oscY = new Oscillator(data.yMagnitude, data.ySpeed, Mathf.Sin);
     }
 
     private void FixedUpdate()
@@ -45,8 +53,6 @@ public class OscillatePosition2D : MonoBehaviour
         float xDifference = oscX.SampleDelta(Time.deltaTime);
         float yDifference = oscY.SampleDelta(Time.deltaTime);
         Vector2 change = new Vector2(xDifference, yDifference);
-        //Vector2 newPos = rb.position + change;
-        //rb.MovePosition(newPos);
         mover.MovePosition(change);
     }
 }
