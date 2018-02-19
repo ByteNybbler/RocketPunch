@@ -58,6 +58,7 @@ GameObject:
   - component: {fileID: 114654272223199436}
   - component: {fileID: 114074414304747704}
   - component: {fileID: 114801970132755550}
+  - component: {fileID: 114624920237121732}
   m_Layer: 0
   m_Name: Enemy
   m_TagString: Enemy
@@ -180,6 +181,31 @@ MonoBehaviour:
     projectileLeftSpeed: 0
   prefabProjectile: {fileID: 1135632966150198, guid: 043942ae4394c8548b41ca637778e8fe,
     type: 2}
+--- !u!114 &114624920237121732
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1669846950066600}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fddbfce0928f3ca48b14ec0f1118cfd6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  data:
+    spriteName: 
+  spriteDict:
+  - name: basic
+    sprite: {fileID: 21300000, guid: a9f98e054483869458fd7b808107844c, type: 3}
+  - name: forked
+    sprite: {fileID: 21300000, guid: 43e696a29dbe28c42ab2542fc2150643, type: 3}
+  - name: pulse
+    sprite: {fileID: 21300000, guid: 674039663ed04ff48ae2d2b7ff3d1adf, type: 3}
+  - name: spiral
+    sprite: {fileID: 21300000, guid: 387df74110aea4b4b82fc45ddac52a69, type: 3}
+  - name: tracking
+    sprite: {fileID: 21300000, guid: cfc2b61238e02ad4996802927bf074e2, type: 3}
+  render: {fileID: 212558432114885774}
 --- !u!114 &114654272223199436
 MonoBehaviour:
   m_ObjectHideFlags: 1

@@ -3,6 +3,7 @@
 	[
 		{
 			"name" : "EnemyBasic",
+			"sprite name" : "basic",
 			"challenge" : 1,
 			"left movement speed increase" : -0.01,
 			"y oscillation magnitude" : 1.2,
@@ -16,6 +17,7 @@
 		},
 		{
 			"name" : "EnemyAimer",
+			"sprite name" : "tracking",
 			"challenge" : 2,
 			"volley" :
 			{
@@ -26,6 +28,7 @@
 		},
 		{
 			"name" : "EnemyPulse",
+			"sprite name" : "pulse",
 			"challenge" : 2,
 			"volley" :
 			{
@@ -38,6 +41,7 @@
 		},
 		{
 			"name" : "EnemyForked",
+			"sprite name" : "forked",
 			"challenge" : 3,
 			"seconds between volleys" : 0.2,
 			"volley" :
@@ -51,6 +55,7 @@
 		},
 		{
 			"name" : "EnemySpiral",
+			"sprite name" : "spiral",
 			"challenge" : 4,
 			"seconds between volleys" : 0.2,
 			"volley direction delta per shot" : 10,

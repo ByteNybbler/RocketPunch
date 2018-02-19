@@ -135,10 +135,13 @@ public class EnemySpawner : MonoBehaviour
                 UtilJSON.TryReadFloat(enemyNode["volley direction delta per shot"], 0.0f),
                 enemyBaseLeftMovementSpeed);
 
+            EnemySprite.Data enemySprite = new EnemySprite.Data(enemyNode["sprite name"]);
+
             EnemyData enemy = new EnemyData(UtilJSON.TryReadFloat(enemyNode["challenge"], 1.0f),
                 UtilJSON.TryReadFloat(enemyNode["left movement speed increase"], 0.0f),
                 oscData,
-                attack);
+                attack,
+                enemySprite);
 
             // Add the enemy to the possible enemies pool.
             possibleEnemies.Add(enemy);
@@ -217,6 +220,9 @@ public class EnemySpawner : MonoBehaviour
             probItem,
             score);
         enemyHealth.SetData(enemyHealthData);
+
+        EnemySprite enemySprite = obj.GetComponent<EnemySprite>();
+        enemySprite.SetData(enemy.spriteData);
 
         // Check if there are any viable enemies left.
         // If not, it's time to move on to the next spawn group.

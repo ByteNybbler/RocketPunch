@@ -12,13 +12,16 @@ public class EnemyData
     public float leftMovementSpeedBonus;
     public OscillatePosition2D.Data oscData;
     public EnemyAttack.Data attackData;
+    public EnemySprite.Data spriteData;
 
     public EnemyData(float challenge, float leftMovementSpeedBonus,
-        OscillatePosition2D.Data oscData, EnemyAttack.Data attackData)
+        OscillatePosition2D.Data oscData, EnemyAttack.Data attackData,
+        EnemySprite.Data spriteData)
     {
         this.challenge = challenge;
         this.leftMovementSpeedBonus = leftMovementSpeedBonus;
         this.oscData = oscData;
         this.attackData = attackData;
+        this.spriteData = spriteData;
     }
 }
