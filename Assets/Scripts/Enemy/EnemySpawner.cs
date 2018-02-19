@@ -165,6 +165,7 @@ public class EnemySpawner : MonoBehaviour
             {
                 while (timerSpawn.TimeUp(Time.deltaTime))
                 {
+                    ChooseRandomSpawnPosition();
                     SpawnEnemy();
                 }
             }
@@ -175,7 +176,7 @@ public class EnemySpawner : MonoBehaviour
                     challengeCurrent = 0.0f;
                     challengeMax += challengeIncreasePerSpawnGroup;
                     spawnGroupActive = true;
-                    ChooseRandomSpawnPosition();
+                    //ChooseRandomSpawnPosition();
                     spawnGroupsSinceLastDeadTime += 1;
                 }
             }
