@@ -57,7 +57,7 @@
 			"name" : "EnemySpiral",
 			"sprite name" : "spiral",
 			"challenge" : 4,
-			"seconds between volleys" : 0.2,
+			"seconds between volleys" : 0.15,
 			"volley direction delta per shot" : 10,
 			"volley" :
 			{
