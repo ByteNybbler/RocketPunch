@@ -1769,11 +1769,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4334cdbef6fc82341972ab1d1e380ee0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  data:
+    secondsOfPunching: 0
+    secondsOfPunchCooldown: 0
+    basePunchHitboxSize: 0
+    battleAxeHitboxSize: 0
   punchingObject: {fileID: 1783250722}
   childRegularPunch: {fileID: 1603887250}
   childBattleAxe: {fileID: 767649913}
-  secondsOfPunching: 0.2
-  secondsOfPunchCooldown: 0
 --- !u!114 &2109147859
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1813,8 +1816,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerFile: {fileID: 4900000, guid: b147a2e343e34c34a991cb21c7bbdeb0, type: 3}
+  itemFile: {fileID: 4900000, guid: 567362ae94168a147b640a397c25be89, type: 3}
   playerPunch: {fileID: 2109147858}
   playerHealth: {fileID: 2109147860}
+  playerPowerup: {fileID: 2109147862}
   health: {fileID: 2109147859}
 --- !u!114 &2109147862
 MonoBehaviour:
@@ -1827,4 +1832,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3c419296404ed86468f9d34c33698c8e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  data:
+    secondsOfBattleAxe: 0
+    secondsOfMoreArms: 0
   playerPunch: {fileID: 2109147858}

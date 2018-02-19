@@ -23,6 +23,7 @@ GameObject:
   - component: {fileID: 114193274503796242}
   - component: {fileID: 50232640633634154}
   - component: {fileID: 114078266123513586}
+  - component: {fileID: 114497160787679274}
   m_Layer: 0
   m_Name: BattleAxe
   m_TagString: Item
@@ -157,6 +158,17 @@ MonoBehaviour:
   data:
     movementLeftSpeed: 0
   mover: {fileID: 114193274503796242}
+--- !u!114 &114497160787679274
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1195104256440672}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b07cc55d1fdadfd47804807fe3f858a3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!212 &212467656377575608
 SpriteRenderer:
   m_ObjectHideFlags: 1

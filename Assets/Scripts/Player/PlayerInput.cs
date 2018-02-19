@@ -5,7 +5,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerInput : MonoBehaviour, IInputSubscriber
+public class PlayerInput : MonoBehaviour, IPlayable
 {
     [SerializeField]
     [Tooltip("Reference to the Mover component.")]

@@ -98,6 +98,8 @@ public class EnemyHealth : MonoBehaviour
                 }
                 ItemPowerup pup = powerup.GetComponent<ItemPowerup>();
                 pup.SetPlayerPowerup(playerPowerup);
+                LeftMovement lm = powerup.GetComponent<LeftMovement>();
+                lm.SetMovementLeftSpeed(leftMovement.GetMovementLeftSpeed());
             }
         }
     }

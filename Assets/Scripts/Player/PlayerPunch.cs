@@ -7,6 +7,30 @@ using UnityEngine;
 
 public class PlayerPunch : MonoBehaviour
 {
+    [System.Serializable]
+    public class Data
+    {
+        [Tooltip("How many seconds the punch lasts for.")]
+        public float secondsOfPunching;
+        [Tooltip("How many seconds of cooldown occur after the end of the punch before a punch can happen again.")]
+        public float secondsOfPunchCooldown;
+        [Tooltip("The scale of the base punch's hitbox.")]
+        public float basePunchHitboxSize;
+        [Tooltip("The scale of the Battle Axe hitbox.")]
+        public float battleAxeHitboxSize;
+
+        public Data(float secondsOfPunching, float secondsOfPunchCooldown,
+            float basePunchHitboxSize, float battleAxeHitboxSize)
+        {
+            this.secondsOfPunching = secondsOfPunching;
+            this.secondsOfPunchCooldown = secondsOfPunchCooldown;
+            this.basePunchHitboxSize = basePunchHitboxSize;
+            this.battleAxeHitboxSize = battleAxeHitboxSize;
+        }
+    }
+    [SerializeField]
+    Data data;
+
     [SerializeField]
     [Tooltip("The GameObject to use for punching.")]
     GameObject punchingObject;
@@ -16,12 +40,6 @@ public class PlayerPunch : MonoBehaviour
     [SerializeField]
     [Tooltip("The punching object child to use for the Battle Axe powerup.")]
     GameObject childBattleAxe;
-    [SerializeField]
-    [Tooltip("How many seconds the punch lasts for.")]
-    float secondsOfPunching;
-    [SerializeField]
-    [Tooltip("How many seconds of cooldown occur after the end of the punch before a punch can happen again.")]
-    float secondsOfPunchCooldown;
 
     Timer timerPunching = new Timer();
     Timer timerPunchCooldown = new Timer();
@@ -29,16 +47,31 @@ public class PlayerPunch : MonoBehaviour
     // Whether or not the punch cooldown is occurring.
     bool punchIsCoolingDown = false;
 
+    public void SetData(Data val)
+    {
+        data = val;
+    }
+
+    private void Start()
+    {
+        punchingObject.SetActive(false);
+        UseBattleAxe(false);
+        timerPunching.SetTargetTime(data.secondsOfPunching);
+        timerPunchCooldown.SetTargetTime(data.secondsOfPunchCooldown);
+    }
+
+    /*
     public void SetSecondsOfPunching(float val)
     {
-        secondsOfPunching = val;
-        timerPunching.SetTargetTime(secondsOfPunching);
+        data.secondsOfPunching = val;
+        timerPunching.SetTargetTime(data.secondsOfPunching);
     }
     public void SetSecondsOfPunchCooldown(float val)
     {
-        secondsOfPunchCooldown = val;
-        timerPunchCooldown.SetTargetTime(secondsOfPunchCooldown);
+        data.secondsOfPunchCooldown = val;
+        timerPunchCooldown.SetTargetTime(data.secondsOfPunchCooldown);
     }
+    */
 
     public void UseBattleAxe(bool willUseAxe)
     {
@@ -50,14 +83,6 @@ public class PlayerPunch : MonoBehaviour
     public bool HasBattleAxe()
     {
         return childBattleAxe.activeSelf;
-    }
-
-    private void Start()
-    {
-        punchingObject.SetActive(false);
-        UseBattleAxe(false);
-        timerPunching.SetTargetTime(secondsOfPunching);
-        timerPunchCooldown.SetTargetTime(secondsOfPunchCooldown);
     }
 
     public void Punch()

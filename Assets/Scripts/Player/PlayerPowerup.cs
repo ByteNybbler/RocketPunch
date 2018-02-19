@@ -7,6 +7,23 @@ using UnityEngine;
 
 public class PlayerPowerup : MonoBehaviour
 {
+    [System.Serializable]
+    public class Data
+    {
+        [Tooltip("How many seconds the Battle Axe powerup lasts.")]
+        public float secondsOfBattleAxe;
+        [Tooltip("How many seconds the More Arms powerup lasts.")]
+        public float secondsOfMoreArms;
+
+        public Data(float secondsOfBattleAxe, float secondsOfMoreArms)
+        {
+            this.secondsOfBattleAxe = secondsOfBattleAxe;
+            this.secondsOfMoreArms = secondsOfMoreArms;
+        }
+    }
+    [SerializeField]
+    Data data;
+
     [SerializeField]
     [Tooltip("Reference to the PlayerPunch component.")]
     PlayerPunch playerPunch;
@@ -17,6 +34,16 @@ public class PlayerPowerup : MonoBehaviour
 
     // Timer for the Battle Axe powerup effect.
     Timer timerBattleAxe = new Timer();
+
+    public void SetData(Data val)
+    {
+        data = val;
+    }
+
+    private void Start()
+    {
+        timerBattleAxe.SetTargetTime(data.secondsOfBattleAxe);
+    }
 
     public bool GetPowerupExists()
     {

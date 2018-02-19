@@ -162,21 +162,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aee3b9c4d435c284398fca4df4809a72, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  data:
+    volley:
+      projectile:
+        punchable: 0
+        damage: 0
+        pointsWhenPunched: 0
+        color: {r: 0, g: 0, b: 0, a: 0}
+        angle: 0
+        speed: 0
+        score: {fileID: 0}
+      projectileCount: 0
+      spreadAngle: 0
+      aimAtPlayer: 0
+    secondsBetweenVolleys: 0
+    volleyDirectionDeltaPerShot: 0
+    projectileLeftSpeed: 0
   prefabProjectile: {fileID: 1135632966150198, guid: 043942ae4394c8548b41ca637778e8fe,
     type: 2}
-  volley:
-    speed: 0
-    direction: 0
-    projectileCount: 0
-    spreadAngle: 0
-    projectilePunchable: 0
-    aimAtPlayer: 0
-    color: {r: 0, g: 0, b: 0, a: 0}
-  secondsBetweenVolleys: 0.2
-  volleyDirectionDeltaPerShot: 0
-  projectileLeftSpeed: 0
-  pointsPerProjectilePunched: 0
-  score: {fileID: 0}
 --- !u!114 &114654272223199436
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -188,8 +191,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2f9fcd1c96f7d6d488457b9101df6443, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  data:
+    movementLeftSpeed: 0
   mover: {fileID: 114780961635302164}
-  movementLeftSpeed: 0.03
 --- !u!114 &114780961635302164
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -213,17 +217,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a010d390eb73fd645becc0b6da72543d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  data:
+    healthKit:
+      heal: 0
+      pointsPerFullHealthHealthKit: 0
+      score: {fileID: 0}
+    pointsWhenKilled: 0
+    score: {fileID: 0}
   leftMovement: {fileID: 114654272223199436}
   prefabHealthKit: {fileID: 1906263251835348, guid: 7e8711ee05f7a6443a451bca286859f7,
     type: 2}
   prefabBattleAxe: {fileID: 1195104256440672, guid: b786e26929d56424d82a4630c43f9da4,
     type: 2}
-  prefabMoreArms: {fileID: 1473690354280622, guid: fadae3906e703e24f8c6bff1e4a11deb,
+  prefabMoreArms: {fileID: 1195104256440672, guid: b786e26929d56424d82a4630c43f9da4,
     type: 2}
-  score: {fileID: 0}
-  pointsWhenKilled: 0
-  healthPerHealthKit: 0
-  pointsPerFullHealthHealthKit: 0
 --- !u!114 &114986227821880174
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -235,11 +242,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2e4837cd6506c1a45b10c44e945bdb47, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  data:
+    xMagnitude: 0
+    xSpeed: 0
+    yMagnitude: 0
+    ySpeed: 0
   mover: {fileID: 114780961635302164}
-  xMagnitude: 0
-  xSpeed: 0
-  yMagnitude: 0
-  ySpeed: 0
 --- !u!212 &212536006043163158
 SpriteRenderer:
   m_ObjectHideFlags: 1

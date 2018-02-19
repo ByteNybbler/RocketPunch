@@ -8,7 +8,7 @@ using UnityEngine;
 public class InputManager : MonoBehaviour
 {
     InputData inputData = new InputData();
-    HashSet<IInputSubscriber> subscribers = new HashSet<IInputSubscriber>();
+    HashSet<IPlayable> subscribers = new HashSet<IPlayable>();
 
     private void Update()
     {
@@ -22,19 +22,19 @@ public class InputManager : MonoBehaviour
         inputData.Clear();
     }
 
-    public void AddSubscriber(IInputSubscriber subscriber)
+    public void AddSubscriber(IPlayable subscriber)
     {
         subscribers.Add(subscriber);
     }
 
-    public void RemoveSubscriber(IInputSubscriber subscriber)
+    public void RemoveSubscriber(IPlayable subscriber)
     {
         subscribers.Remove(subscriber);
     }
 
     private void SendInputToSubscribers()
     {
-        foreach (IInputSubscriber sub in subscribers)
+        foreach (IPlayable sub in subscribers)
         {
             sub.ReceiveInput(inputData);
         }
