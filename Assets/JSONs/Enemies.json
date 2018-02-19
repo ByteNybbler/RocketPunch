@@ -11,7 +11,7 @@
 			"volley" :
 			{
 				"speed" : 3.0,
-				"color" : "#ffff00"
+				"color" : "#ffdc3f"
 			}
 		},
 		{
@@ -21,7 +21,7 @@
 			{
 				"aims at player" : true,
 				"direction" : 0,
-				"color" : "#ff0000"
+				"color" : "#f42424"
 			}
 		},
 		{
@@ -33,7 +33,7 @@
 				"direction" : 22.5,
 				"projectile count" : 8,
 				"spread angle" : 315,
-				"color" : "#ff00ff"
+				"color" : "#ff61fc"
 			}
 		},
 		{
@@ -46,7 +46,7 @@
 				"speed" : 7,
 				"projectile count" : 2,
 				"spread angle" : 90,
-				"color" : "#0000ff"
+				"color" : "#02c4ff"
 			}
 		},
 		{
@@ -58,7 +58,7 @@
 			{
 				"direction" : 180,
 				"speed" : 4,
-				"color" : "#00ff00"
+				"color" : "#70e181"
 			}
 		}
 	]
