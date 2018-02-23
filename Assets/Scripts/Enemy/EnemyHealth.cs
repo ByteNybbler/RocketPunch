@@ -8,7 +8,7 @@ using UnityEngine;
 public class EnemyHealth : MonoBehaviour
 {
     [System.Serializable]
-    public class Data
+    public class Data : IDeepCopyable<Data>
     {
         [Tooltip("The health kit to drop when dead.")]
         public ItemHealthKit.Data healthKit;
@@ -26,6 +26,20 @@ public class EnemyHealth : MonoBehaviour
             this.pointsWhenKilled = pointsWhenKilled;
             this.probItem = probItem;
             this.score = score;
+
+            if (probItem == null)
+            {
+                Debug.Log("CONSTRUCTOR1 OH CRAP!!!");
+            }
+            if (this.probItem == null)
+            {
+                Debug.Log("CONSTRUCTOR2 OH CRAP!!!");
+            }
+        }
+
+        public Data DeepCopy()
+        {
+            return new Data(healthKit.DeepCopy(), pointsWhenKilled, probItem.DeepCopy(), score);
         }
     }
     [SerializeField]

@@ -8,7 +8,7 @@ using UnityEngine;
 public class ItemHealthKit : MonoBehaviour
 {
     [System.Serializable]
-    public class Data
+    public class Data : IDeepCopyable<Data>
     {
         [Tooltip("How much the health kit heals.")]
         public int heal;
@@ -23,6 +23,11 @@ public class ItemHealthKit : MonoBehaviour
             this.heal = heal;
             this.pointsPerFullHealthHealthKit = pointsPerFullHealthHealthKit;
             this.score = score;
+        }
+
+        public Data DeepCopy()
+        {
+            return new Data(heal, pointsPerFullHealthHealthKit, score);
         }
     }
     [SerializeField]

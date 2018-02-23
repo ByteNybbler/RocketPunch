@@ -16,9 +16,6 @@ public class Score : MonoBehaviour
     UIValueText textScore;
 
     int pointsPerSecondPlaying;
-    int pointsPerEnemyKilled;
-    int pointsPerProjectilePunched;
-    int pointsPerFullHealthHealthKit;
     Timer timerPointsPerSecond = new Timer(1.0f);
 
     private void Awake()
@@ -30,9 +27,6 @@ public class Score : MonoBehaviour
     {
         JSONNode json = JSON.Parse(scoreFile.ToString());
         pointsPerSecondPlaying = json["points per second playing"].AsInt;
-        pointsPerEnemyKilled = json["points per enemy killed"].AsInt;
-        pointsPerProjectilePunched = json["points per projectile punched"].AsInt;
-        pointsPerFullHealthHealthKit = json["points per full health health kit"].AsInt;
     }
 
     private void FixedUpdate()
@@ -46,18 +40,5 @@ public class Score : MonoBehaviour
     public void Add(int val)
     {
         textScore.AddValue(val);
-    }
-
-    public int GetPointsPerEnemyKilled()
-    {
-        return pointsPerEnemyKilled;
-    }
-    public int GetPointsPerProjectilePunched()
-    {
-        return pointsPerProjectilePunched;
-    }
-    public int GetPointsPerFullHealthHealthKit()
-    {
-        return pointsPerFullHealthHealthKit;
     }
 }

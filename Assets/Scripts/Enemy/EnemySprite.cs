@@ -8,7 +8,7 @@ using UnityEngine;
 public class EnemySprite : MonoBehaviour
 {
     [System.Serializable]
-    public class Data
+    public class Data : IDeepCopyable<Data>
     {
         [Tooltip("The name of the sprite to use.")]
         public string spriteName;
@@ -16,6 +16,11 @@ public class EnemySprite : MonoBehaviour
         public Data (string spriteName)
         {
             this.spriteName = spriteName;
+        }
+
+        public Data DeepCopy()
+        {
+            return new Data(spriteName);
         }
     }
     [SerializeField]

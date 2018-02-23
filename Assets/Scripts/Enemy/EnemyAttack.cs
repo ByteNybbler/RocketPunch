@@ -8,7 +8,7 @@ using UnityEngine;
 public class EnemyAttack : MonoBehaviour
 {
     [System.Serializable]
-    public class Data
+    public class Data : IDeepCopyable<Data>
     {
         [Tooltip("The volley that the enemy should fire.")]
         public VolleyData volley;
@@ -19,13 +19,6 @@ public class EnemyAttack : MonoBehaviour
         [Tooltip("The left speed that will be applied to fired projectiles.")]
         public float projectileLeftSpeed;
 
-        /*
-        [Tooltip("How many points each projectile gives when punched.")]
-        public int pointsPerProjectilePunched;
-        [Tooltip("Reference to the Score instance.")]
-        public Score score;
-        */
-
         public Data(VolleyData volley,
             float secondsBetweenVolleys,
             float volleyDirectionDeltaPerShot,
@@ -35,6 +28,14 @@ public class EnemyAttack : MonoBehaviour
             this.secondsBetweenVolleys = secondsBetweenVolleys;
             this.volleyDirectionDeltaPerShot = volleyDirectionDeltaPerShot;
             this.projectileLeftSpeed = projectileLeftSpeed;
+        }
+
+        public Data DeepCopy()
+        {
+            return new global::EnemyAttack.Data(volley,
+                secondsBetweenVolleys,
+                volleyDirectionDeltaPerShot,
+                projectileLeftSpeed);
         }
     }
     [SerializeField]

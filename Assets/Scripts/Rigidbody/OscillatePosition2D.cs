@@ -8,7 +8,7 @@ using UnityEngine;
 public class OscillatePosition2D : MonoBehaviour
 {
     [System.Serializable]
-    public class Data
+    public class Data : IDeepCopyable<Data>
     {
         [Tooltip("The size of the x oscillation.")]
         public float xMagnitude;
@@ -25,6 +25,11 @@ public class OscillatePosition2D : MonoBehaviour
             this.xSpeed = xSpeed;
             this.yMagnitude = yMagnitude;
             this.ySpeed = ySpeed;
+        }
+
+        public Data DeepCopy()
+        {
+            return new Data(xMagnitude, xSpeed, yMagnitude, ySpeed);
         }
     }
     [SerializeField]

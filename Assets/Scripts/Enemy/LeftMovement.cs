@@ -8,10 +8,20 @@ using UnityEngine;
 public class LeftMovement : MonoBehaviour
 {
     [System.Serializable]
-    public class Data
+    public class Data : IDeepCopyable<Data>
     {
         [Tooltip("How quickly the GameObject moves to the left.")]
         public float movementLeftSpeed;
+
+        public Data(float movementLeftSpeed)
+        {
+            this.movementLeftSpeed = movementLeftSpeed;
+        }
+
+        public Data DeepCopy()
+        {
+            return new Data(movementLeftSpeed);
+        }
     }
     [SerializeField]
     Data data;

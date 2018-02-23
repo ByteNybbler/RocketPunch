@@ -4,7 +4,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using SimpleJSON;
 
 public class EnemySpawner : MonoBehaviour
 {
@@ -17,6 +16,9 @@ public class EnemySpawner : MonoBehaviour
     [SerializeField]
     [Tooltip("File containing item data.")]
     TextAsset itemsFile;
+    [SerializeField]
+    [Tooltip("File to read score tuning from.")]
+    TextAsset scoreFile;
     [SerializeField]
     [Tooltip("Reference to the Score instance.")]
     Score score;
@@ -43,21 +45,13 @@ public class EnemySpawner : MonoBehaviour
     // Also affects how quickly enemy projectiles move to the left.
     // This creates the illusion that the player is moving to the right.
     float enemyBaseLeftMovementSpeed;
-    // How much health a single health kit should give.
-    int healthPerHealthKit;
-
-    float dropRateHealthKit;
-    float dropRateBattleAxe;
-    float dropRateMoreArms;
-    // Drop rates for items.
-    Probability<ItemType> probItem = new Probability<ItemType>(ItemType.None);
 
     Timer timerSpawn;
     Timer timerSpawnGroup;
     Timer timerDeadTime;
 
     // A collection of all the possible enemies that can spawn.
-    List<EnemyData> possibleEnemies = new List<EnemyData>();
+    List<Enemy.Data> possibleEnemies = new List<Enemy.Data>();
     // How many spawn groups have occurred since the last dead time.
     int spawnGroupsSinceLastDeadTime = 0;
     // The current amount of challenge accumulated in this spawn group.
@@ -72,89 +66,115 @@ public class EnemySpawner : MonoBehaviour
         Tune();
     }
 
-    private void Start()
+    // Read data from the files.
+    private void Tune()
     {
+        JSONNodeReader reader = new JSONNodeReader(enemySpawnersFile);
+        challengeMax = reader.TryGetFloat("initial challenge", 1.0f);
+        challengeIncreasePerSpawnGroup = reader.TryGetFloat("challenge increase per spawn group", 1.0f);
+        spawnGroupsPerDeadTime = reader.TryGetInt("spawn groups per dead time", 3);
+        secondsBetweenSpawns = reader.TryGetFloat("seconds between spawns", 1.0f);
+        secondsBetweenSpawnGroups = reader.TryGetFloat("seconds between spawn groups", 2.0f);
+        secondsPerDeadTime = reader.TryGetFloat("seconds per dead time", 3.0f);
+        enemyBaseLeftMovementSpeed = reader.TryGetFloat("enemy base left movement speed", 0.05f);
+
         timerSpawn = new Timer(secondsBetweenSpawns);
         timerSpawnGroup = new Timer(secondsBetweenSpawnGroups);
         timerDeadTime = new Timer(secondsPerDeadTime);
         ChooseRandomSpawnPosition();
-    }
 
-    // Read data from the files.
-    private void Tune()
-    {
-        JSONNode json = JSON.Parse(enemySpawnersFile.ToString());
-        challengeMax = json["initial challenge"].AsFloat;
-        challengeIncreasePerSpawnGroup = json["challenge increase per spawn group"].AsFloat;
-        spawnGroupsPerDeadTime = json["spawn groups per dead time"].AsInt;
-        secondsBetweenSpawns = json["seconds between spawns"].AsFloat;
-        secondsBetweenSpawnGroups = json["seconds between spawn groups"].AsFloat;
-        secondsPerDeadTime = json["seconds per dead time"].AsFloat;
-        enemyBaseLeftMovementSpeed = json["enemy base left movement speed"].AsFloat;
+        // How much health a single health kit should give.
+        int healthPerHealthKit;
+        int pointsPerEnemyKilled;
+        int pointsPerProjectilePunched;
+        int pointsPerFullHealthHealthKit;
 
-        json = JSON.Parse(enemiesFile.ToString());
-        JSONArray enemyArray = json["enemies"].AsArray;
-        for (int i = 0; i < enemyArray.Count; ++i)
+        reader.SetFile(scoreFile);
+        pointsPerEnemyKilled = reader.TryGetInt("points per enemy killed", 100);
+        pointsPerProjectilePunched = reader.TryGetInt("points per projectile punched", 10);
+        pointsPerFullHealthHealthKit = reader.TryGetInt("points per full health health kit", 100);
+
+        // Drop rates for items.
+        Probability<ItemType> probItem = new Probability<ItemType>(ItemType.None);
+        float dropRateHealthKit;
+        float dropRateBattleAxe;
+        float dropRateMoreArms;
+
+        reader.SetFile(itemsFile);
+        dropRateHealthKit = reader.TryGetFloat("health kit drop rate", 0.07f);
+        dropRateBattleAxe = reader.TryGetFloat("battle axe drop rate", 0.05f);
+        dropRateMoreArms = reader.TryGetFloat("more arms drop rate", 0.05f);
+        probItem.SetChance(ItemType.HealthKit, dropRateHealthKit);
+        probItem.SetChance(ItemType.BattleAxe, dropRateBattleAxe);
+        probItem.SetChance(ItemType.MoreArms, dropRateMoreArms);
+        healthPerHealthKit = reader.TryGetInt("health per health kit", 50);
+
+        reader.SetFile(enemiesFile);
+        JSONArrayReader enemyArray = reader.TryGetArray("enemies");
+        //for (int i = 0; i < enemyArray.GetCount(); ++i)
+        JSONNodeReader enemyNode;
+        while (enemyArray.GetNextNode(out enemyNode))
         {
-            JSONNode enemyNode = enemyArray[i];
-            string enemyName = UtilJSON.TryReadString(enemyNode["name"], "UNNAMED");
+            //JSONNodeReader enemyNode = enemyArray.GetNode(i);
+            string enemyName = enemyNode.TryGetString("name", "UNNAMED");
 
             // Read volley data.
-            JSONNode volleyNode = enemyNode["volley"];
+            JSONNodeReader volleyNode = enemyNode.TryGetNode("volley");
 
-            string colString = UtilJSON.TryReadString(volleyNode["color"], "#ffffff");
+            string colString = volleyNode.TryGetString("color", "#ffffff");
             Color projColor;
-            if (ColorUtility.TryParseHtmlString(colString, out projColor))
-            {
-                //Debug.Log(colString + " : " + volley.color);
-            }
-            else
+            if (!ColorUtility.TryParseHtmlString(colString, out projColor))
             {
                 Debug.Log(enemyName + ": Could not parse HTML color for volley!");
             }
             EnemyProjectile.Data projectile = new EnemyProjectile.Data(
-                UtilJSON.TryReadBool(volleyNode["projectile punchable"], true),
-                UtilJSON.TryReadInt(volleyNode["projectile damage"], 20),
-                score.GetPointsPerProjectilePunched(),
+                volleyNode.TryGetBool("projectile punchable", true),
+                volleyNode.TryGetInt("projectile damage", 20),
+                pointsPerProjectilePunched,
                 projColor,
-                UtilJSON.TryReadFloat(volleyNode["direction"], 180.0f),
-                UtilJSON.TryReadFloat(volleyNode["speed"], 4.0f),
+                volleyNode.TryGetFloat("direction", 180.0f),
+                volleyNode.TryGetFloat("speed", 4.0f),
                 score);
 
             VolleyData volley = new VolleyData(projectile,
-                UtilJSON.TryReadInt(volleyNode["projectile count"], 1),
-                UtilJSON.TryReadFloat(volleyNode["spread angle"], 0.0f),
-                UtilJSON.TryReadBool(volleyNode["aims at player"], false));
+                volleyNode.TryGetInt("projectile count", 1),
+                volleyNode.TryGetFloat("spread angle", 0.0f),
+                volleyNode.TryGetBool("aims at player", false));
 
             OscillatePosition2D.Data oscData = new OscillatePosition2D.Data(0.0f, 0.0f,
-                UtilJSON.TryReadFloat(enemyNode["y oscillation magnitude"], 0.0f),
-                UtilJSON.TryReadFloat(enemyNode["y oscillation speed"], 0.0f));
+                enemyNode.TryGetFloat("y oscillation magnitude", 0.0f),
+                enemyNode.TryGetFloat("y oscillation speed", 0.0f));
 
             EnemyAttack.Data attack = new EnemyAttack.Data(volley,
-                UtilJSON.TryReadFloat(enemyNode["seconds between volleys"], 1.0f),
-                UtilJSON.TryReadFloat(enemyNode["volley direction delta per shot"], 0.0f),
+                enemyNode.TryGetFloat("seconds between volleys", 1.0f),
+                enemyNode.TryGetFloat("volley direction delta per shot", 0.0f),
                 enemyBaseLeftMovementSpeed);
 
-            EnemySprite.Data enemySprite = new EnemySprite.Data(enemyNode["sprite name"]);
+            EnemySprite.Data enemySprite = new EnemySprite.Data(
+                enemyNode.TryGetString("sprite name", "basic"));
 
-            EnemyData enemy = new EnemyData(UtilJSON.TryReadFloat(enemyNode["challenge"], 1.0f),
-                UtilJSON.TryReadFloat(enemyNode["left movement speed increase"], 0.0f),
+            LeftMovement.Data leftMovement = new LeftMovement.Data(
+                enemyNode.TryGetFloat("left movement speed increase", 0.0f)
+                + enemyBaseLeftMovementSpeed);
+
+            ItemHealthKit.Data healthKitData = new ItemHealthKit.Data(healthPerHealthKit,
+                pointsPerFullHealthHealthKit,
+                score);
+            EnemyHealth.Data enemyHealthData = new EnemyHealth.Data(healthKitData,
+                pointsPerEnemyKilled,
+                probItem,
+                score);
+
+            Enemy.Data enemy = new Enemy.Data(enemyNode.TryGetFloat("challenge", 1.0f),
                 oscData,
                 attack,
-                enemySprite);
+                enemySprite,
+                leftMovement,
+                enemyHealthData);
 
             // Add the enemy to the possible enemies pool.
             possibleEnemies.Add(enemy);
         }
-
-        json = JSON.Parse(itemsFile.ToString());
-        dropRateHealthKit = json["health kit drop rate"].AsFloat;
-        dropRateBattleAxe = json["battle axe drop rate"].AsFloat;
-        dropRateMoreArms = json["more arms drop rate"].AsFloat;
-        probItem.SetChance(ItemType.HealthKit, dropRateHealthKit);
-        probItem.SetChance(ItemType.BattleAxe, dropRateBattleAxe);
-        probItem.SetChance(ItemType.MoreArms, dropRateMoreArms);
-        healthPerHealthKit = json["health per health kit"].AsInt;
     }
 
     private void FixedUpdate()
@@ -194,36 +214,16 @@ public class EnemySpawner : MonoBehaviour
     private void SpawnEnemy()
     {
         // Filter out all enemies that have too high of a challenge.
-        List<EnemyData> viableEnemies = GetViableEnemies();
+        List<Enemy.Data> viableEnemies = GetViableEnemies();
 
         // Choose one of these enemies randomly.
-        EnemyData enemy = viableEnemies[Random.Range(0, viableEnemies.Count)];
+        Enemy.Data enemy = viableEnemies[Random.Range(0, viableEnemies.Count)];
         challengeCurrent += enemy.challenge;
 
         // Instantiate the enemy.
-        GameObject obj = Instantiate(prefabEnemy, spawnPos, Quaternion.identity);
-
-        EnemyAttack attack = obj.GetComponent<EnemyAttack>();
-        attack.SetData(enemy.attackData);
-
-        LeftMovement movement = obj.GetComponent<LeftMovement>();
-        movement.SetMovementLeftSpeed(enemyBaseLeftMovementSpeed + enemy.leftMovementSpeedBonus);
-
-        OscillatePosition2D oscillatePos = obj.GetComponent<OscillatePosition2D>();
-        oscillatePos.SetData(enemy.oscData);
-
-        EnemyHealth enemyHealth = obj.GetComponent<EnemyHealth>();
-        ItemHealthKit.Data healthKitData = new ItemHealthKit.Data(healthPerHealthKit,
-            score.GetPointsPerFullHealthHealthKit(),
-            score);
-        EnemyHealth.Data enemyHealthData = new EnemyHealth.Data(healthKitData,
-            score.GetPointsPerEnemyKilled(),
-            probItem,
-            score);
-        enemyHealth.SetData(enemyHealthData);
-
-        EnemySprite enemySprite = obj.GetComponent<EnemySprite>();
-        enemySprite.SetData(enemy.spriteData);
+        GameObject newEnemy = Instantiate(prefabEnemy, spawnPos, Quaternion.identity);
+        Enemy en = newEnemy.GetComponent<Enemy>();
+        en.SetData(enemy.DeepCopy());
 
         // Check if there are any viable enemies left.
         // If not, it's time to move on to the next spawn group.
@@ -231,7 +231,7 @@ public class EnemySpawner : MonoBehaviour
         spawnGroupActive = (viableEnemies.Count != 0);
     }
 
-    private List<EnemyData> GetViableEnemies()
+    private List<Enemy.Data> GetViableEnemies()
     {
         float challengeRemaining = challengeMax - challengeCurrent;
         return possibleEnemies.FindAll(x => x.challenge <= challengeRemaining);
