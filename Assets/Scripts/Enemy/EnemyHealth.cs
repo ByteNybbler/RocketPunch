@@ -26,15 +26,6 @@ public class EnemyHealth : MonoBehaviour
             this.pointsWhenKilled = pointsWhenKilled;
             this.probItem = probItem;
             this.score = score;
-
-            if (probItem == null)
-            {
-                Debug.Log("CONSTRUCTOR1 OH CRAP!!!");
-            }
-            if (this.probItem == null)
-            {
-                Debug.Log("CONSTRUCTOR2 OH CRAP!!!");
-            }
         }
 
         public Data DeepCopy()

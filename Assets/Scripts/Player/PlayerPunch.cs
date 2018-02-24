@@ -58,20 +58,23 @@ public class PlayerPunch : MonoBehaviour
         UseBattleAxe(false);
         timerPunching.SetTargetTime(data.secondsOfPunching);
         timerPunchCooldown.SetTargetTime(data.secondsOfPunchCooldown);
+        childRegularPunch.transform.localScale = new Vector3(data.basePunchHitboxSize,
+            data.basePunchHitboxSize, 1.0f);
+        childBattleAxe.transform.localScale = new Vector3(data.battleAxeHitboxSize,
+            data.battleAxeHitboxSize, 1.0f);
     }
 
-    /*
     public void SetSecondsOfPunching(float val)
     {
         data.secondsOfPunching = val;
         timerPunching.SetTargetTime(data.secondsOfPunching);
     }
+
     public void SetSecondsOfPunchCooldown(float val)
     {
         data.secondsOfPunchCooldown = val;
         timerPunchCooldown.SetTargetTime(data.secondsOfPunchCooldown);
     }
-    */
 
     public void UseBattleAxe(bool willUseAxe)
     {
