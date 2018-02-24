@@ -14,7 +14,6 @@ public class ItemBattleAxe : MonoBehaviour
             Transform root = collision.transform.root;
             PlayerPowerup playerPowerup = root.GetComponent<PlayerPowerup>();
             playerPowerup.GivePowerup(ItemType.BattleAxe);
-            Destroy(gameObject);
         }
     }
 }

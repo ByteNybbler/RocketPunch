@@ -11,23 +11,35 @@ public class ItemPowerup : MonoBehaviour
     [Tooltip("Reference to the player's powerup-tracking component.")]
     PlayerPowerup playerPowerup;
 
+    bool collectedByPlayer = false;
+
     public void SetPlayerPowerup(PlayerPowerup val)
     {
         playerPowerup = val;
+        NotifyPowerupExists();
     }
 
-    private void Start()
+    // Notify the player that a powerup exists in the scene.
+    private void NotifyPowerupExists()
     {
-        // Notify the player that a powerup exists in the scene.
         playerPowerup.SetPowerupExists(true);
     }
 
     // The powerup no longer exists, so notify the player that there are no powerups left.
     private void OnDestroy()
     {
-        if (playerPowerup != null)
+        if (playerPowerup != null && !collectedByPlayer)
         {
             playerPowerup.SetPowerupExists(false);
+        }
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.CompareTag("PlayerSelfHitbox"))
+        {
+            collectedByPlayer = true;
+            Destroy(gameObject);
         }
     }
 }

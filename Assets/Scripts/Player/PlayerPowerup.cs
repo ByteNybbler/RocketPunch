@@ -71,6 +71,7 @@ public class PlayerPowerup : MonoBehaviour
             while (timerBattleAxe.TimeUp(Time.deltaTime))
             {
                 playerPunch.UseBattleAxe(false);
+                SetPowerupExists(false);
             }
         }
     }
