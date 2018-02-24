@@ -1,7 +1,7 @@
 ﻿// Author(s): Invertex (via Unity Answers)
 // https://forum.unity.com/threads/collision-with-sides-of-screen.228865/
 // Generates colliders on the edges of a Camera view.
-// Should be placed on the Camera object
+// Targets the main camera in this case.
 
 using System.Collections;
 using System.Collections.Generic;

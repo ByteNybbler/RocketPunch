@@ -8,7 +8,7 @@ using UnityEngine;
 public class ItemPowerup : MonoBehaviour
 {
     [SerializeField]
-    [Tooltip("lol")]
+    [Tooltip("Reference to the player's powerup-tracking component.")]
     PlayerPowerup playerPowerup;
 
     public void SetPlayerPowerup(PlayerPowerup val)
