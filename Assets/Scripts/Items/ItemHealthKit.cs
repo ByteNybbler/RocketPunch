@@ -10,28 +10,35 @@ public class ItemHealthKit : MonoBehaviour
     [System.Serializable]
     public class Data : IDeepCopyable<Data>
     {
+        [System.Serializable]
+        public class Refs
+        {
+            public Score score;
+
+            public Refs(Score score)
+            {
+                this.score = score;
+            }
+        }
+        public Refs refs;
         [Tooltip("How much the health kit heals.")]
         public int heal;
         [Tooltip("How many points the health kit gives when the player is at full health.")]
         public int pointsPerFullHealthHealthKit;
-        [Tooltip("Reference to the Score instance.")]
-        public Score score;
 
-        public Data(int heal, int pointsPerFullHealthHealthKit,
-            Score score)
+        public Data(Refs refs, int heal, int pointsPerFullHealthHealthKit)
         {
+            this.refs = refs;
             this.heal = heal;
             this.pointsPerFullHealthHealthKit = pointsPerFullHealthHealthKit;
-            this.score = score;
         }
 
         public Data DeepCopy()
         {
-            return new Data(heal, pointsPerFullHealthHealthKit, score);
+            return new Data(refs, heal, pointsPerFullHealthHealthKit);
         }
     }
     [SerializeField]
-    [Tooltip("Health kit data.")]
     Data data;
 
     public void SetData(Data val)
@@ -49,7 +56,7 @@ public class ItemHealthKit : MonoBehaviour
             if (health.IsHealthFull())
             {
                 // Award points.
-                data.score.Add(data.pointsPerFullHealthHealthKit);
+                data.refs.score.Add(data.pointsPerFullHealthHealthKit);
             }
             else
             {

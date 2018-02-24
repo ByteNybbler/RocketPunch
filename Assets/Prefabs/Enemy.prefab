@@ -51,7 +51,6 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4665594541806308}
-  - component: {fileID: 212536006043163158}
   - component: {fileID: 50293428977744468}
   - component: {fileID: 114780961635302164}
   - component: {fileID: 114370859041840364}
@@ -165,6 +164,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   data:
+    refs:
+      player: {fileID: 0}
     volley:
       projectile:
         punchable: 1
@@ -261,12 +262,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   data:
+    refs:
+      score: {fileID: 0}
+      playerPowerup: {fileID: 0}
     healthKit:
+      refs:
+        score: {fileID: 0}
       heal: 40
       pointsPerFullHealthHealthKit: 100
-      score: {fileID: 0}
     pointsWhenKilled: 100
-    score: {fileID: 0}
   leftMovement: {fileID: 114654272223199436}
   prefabHealthKit: {fileID: 1906263251835348, guid: 7e8711ee05f7a6443a451bca286859f7,
     type: 2}
@@ -291,50 +295,6 @@ MonoBehaviour:
     yMagnitude: 1.2
     ySpeed: 2
   mover: {fileID: 114780961635302164}
---- !u!212 &212536006043163158
-SpriteRenderer:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1669846950066600}
-  m_Enabled: 0
-  m_CastShadows: 0
-  m_ReceiveShadows: 0
-  m_DynamicOccludee: 1
-  m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
-  m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
-  m_StaticBatchInfo:
-    firstSubMesh: 0
-    subMeshCount: 0
-  m_StaticBatchRoot: {fileID: 0}
-  m_ProbeAnchor: {fileID: 0}
-  m_LightProbeVolumeOverride: {fileID: 0}
-  m_ScaleInLightmap: 1
-  m_PreserveUVs: 0
-  m_IgnoreNormalsForChartDetection: 0
-  m_ImportantGI: 0
-  m_StitchLightmapSeams: 0
-  m_SelectedEditorRenderState: 0
-  m_MinimumChartSize: 4
-  m_AutoUVMaxDistance: 0.5
-  m_AutoUVMaxAngle: 89
-  m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
-  m_Sprite: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
-  m_Color: {r: 1, g: 0, b: 0.84827566, a: 1}
-  m_FlipX: 0
-  m_FlipY: 0
-  m_DrawMode: 0
-  m_Size: {x: 0.16, y: 0.16}
-  m_AdaptiveModeThreshold: 0.5
-  m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
-  m_MaskInteraction: 0
 --- !u!212 &212558432114885774
 SpriteRenderer:
   m_ObjectHideFlags: 1
@@ -366,8 +326,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: 257153995
+  m_SortingLayer: -1
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: a9f98e054483869458fd7b808107844c, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}

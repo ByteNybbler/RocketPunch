@@ -2205,6 +2205,7 @@ MonoBehaviour:
   itemsFile: {fileID: 4900000, guid: 567362ae94168a147b640a397c25be89, type: 3}
   scoreFile: {fileID: 4900000, guid: ef4956dde04b30946b25972f449f9b78, type: 3}
   score: {fileID: 1575159212}
+  playerPowerup: {fileID: 2109147862}
   prefabEnemy: {fileID: 1669846950066600, guid: ce1c5d080d80f7140a07301059d540a3,
     type: 2}
   spawns:

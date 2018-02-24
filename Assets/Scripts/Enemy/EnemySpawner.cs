@@ -23,6 +23,9 @@ public class EnemySpawner : MonoBehaviour
     [Tooltip("Reference to the Score instance.")]
     Score score;
     [SerializeField]
+    [Tooltip("Reference to the PlayerPowerup instance.")]
+    PlayerPowerup playerPowerup;
+    [SerializeField]
     [Tooltip("The enemy prefab.")]
     GameObject prefabEnemy;
     [SerializeField]
@@ -145,7 +148,9 @@ public class EnemySpawner : MonoBehaviour
                 enemyNode.TryGetFloat("y oscillation magnitude", 0.0f),
                 enemyNode.TryGetFloat("y oscillation speed", 0.0f));
 
-            EnemyAttack.Data attack = new EnemyAttack.Data(volley,
+            EnemyAttack.Data attack = new EnemyAttack.Data(
+                new EnemyAttack.Data.Refs(playerPowerup.gameObject),
+                volley,
                 enemyNode.TryGetFloat("seconds between volleys", 1.0f),
                 enemyNode.TryGetFloat("volley direction delta per shot", 0.0f),
                 enemyBaseLeftMovementSpeed);
@@ -157,13 +162,15 @@ public class EnemySpawner : MonoBehaviour
                 enemyNode.TryGetFloat("left movement speed increase", 0.0f)
                 + enemyBaseLeftMovementSpeed);
 
-            ItemHealthKit.Data healthKitData = new ItemHealthKit.Data(healthPerHealthKit,
-                pointsPerFullHealthHealthKit,
-                score);
-            EnemyHealth.Data enemyHealthData = new EnemyHealth.Data(healthKitData,
+            ItemHealthKit.Data healthKitData = new ItemHealthKit.Data(
+                new ItemHealthKit.Data.Refs(score),
+                healthPerHealthKit,
+                pointsPerFullHealthHealthKit);
+            EnemyHealth.Data enemyHealthData = new EnemyHealth.Data(
+                new EnemyHealth.Data.Refs(score, playerPowerup),
+                healthKitData,
                 pointsPerEnemyKilled,
-                probItem,
-                score);
+                probItem);
 
             Enemy.Data enemy = new Enemy.Data(enemyNode.TryGetFloat("challenge", 1.0f),
                 oscData,

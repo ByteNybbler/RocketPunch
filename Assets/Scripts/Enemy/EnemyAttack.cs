@@ -10,6 +10,18 @@ public class EnemyAttack : MonoBehaviour
     [System.Serializable]
     public class Data : IDeepCopyable<Data>
     {
+        [System.Serializable]
+        public class Refs
+        {
+            [Tooltip("Reference to the player.")]
+            public GameObject player;
+
+            public Refs(GameObject player)
+            {
+                this.player = player;
+            }
+        }
+        public Refs refs;
         [Tooltip("The volley that the enemy should fire.")]
         public VolleyData volley;
         [Tooltip("How many seconds should pass between each volley.")]
@@ -19,11 +31,13 @@ public class EnemyAttack : MonoBehaviour
         [Tooltip("The left speed that will be applied to fired projectiles.")]
         public float projectileLeftSpeed;
 
-        public Data(VolleyData volley,
+        public Data(Refs refs,
+            VolleyData volley,
             float secondsBetweenVolleys,
             float volleyDirectionDeltaPerShot,
             float projectileLeftSpeed)
         {
+            this.refs = refs;
             this.volley = volley;
             this.secondsBetweenVolleys = secondsBetweenVolleys;
             this.volleyDirectionDeltaPerShot = volleyDirectionDeltaPerShot;
@@ -32,7 +46,8 @@ public class EnemyAttack : MonoBehaviour
 
         public Data DeepCopy()
         {
-            return new global::EnemyAttack.Data(volley,
+            return new global::EnemyAttack.Data(refs,
+                volley,
                 secondsBetweenVolleys,
                 volleyDirectionDeltaPerShot,
                 projectileLeftSpeed);
@@ -45,8 +60,6 @@ public class EnemyAttack : MonoBehaviour
     [Tooltip("Prefab to use for the projectile.")]
     GameObject prefabProjectile;
 
-    // Reference to the player object.
-    GameObject player;
     // Timer for firing volleys.
     Timer timerVolley;
 
@@ -57,7 +70,6 @@ public class EnemyAttack : MonoBehaviour
 
     private void Start()
     {
-        player = ServiceLocator.GetPlayer();
         timerVolley = new Timer(data.secondsBetweenVolleys);
     }
 
@@ -74,8 +86,8 @@ public class EnemyAttack : MonoBehaviour
                 float angle = a;
                 if (volley.aimAtPlayer)
                 {
-                    Vector3 playerPos = player.transform.position;
-                    angle += Vector3.Angle(Vector3.left, transform.position - playerPos);
+                    Vector3 playerPos = data.refs.player.transform.position;
+                    angle += UtilVector.GetSignedDirectionToPoint(transform.position, playerPos);
                 }
                 Quaternion rotation = Quaternion.AngleAxis(angle, Vector3.forward);
                 GameObject projectile = Instantiate(prefabProjectile, transform.position, rotation);

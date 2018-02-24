@@ -10,27 +10,39 @@ public class EnemyHealth : MonoBehaviour
     [System.Serializable]
     public class Data : IDeepCopyable<Data>
     {
+        [System.Serializable]
+        public class Refs
+        {
+            public Score score;
+            public PlayerPowerup playerPowerup;
+
+            public Refs(Score score, PlayerPowerup playerPowerup)
+            {
+                this.score = score;
+                this.playerPowerup = playerPowerup;
+            }
+        }
+        public Refs refs;
         [Tooltip("The health kit to drop when dead.")]
         public ItemHealthKit.Data healthKit;
         [Tooltip("How many points the enemy gives when it's killed.")]
         public int pointsWhenKilled;
         [Tooltip("Item drop rates.")]
         public Probability<ItemType> probItem;
-        [Tooltip("Reference to the Score instance.")]
-        public Score score;
 
-        public Data(ItemHealthKit.Data healthKit, int pointsWhenKilled,
-            Probability<ItemType> probItem, Score score)
+        public Data(Refs refs, ItemHealthKit.Data healthKit, int pointsWhenKilled,
+            Probability<ItemType> probItem)
         {
+            this.refs = refs;
             this.healthKit = healthKit;
             this.pointsWhenKilled = pointsWhenKilled;
             this.probItem = probItem;
-            this.score = score;
         }
 
         public Data DeepCopy()
         {
-            return new Data(healthKit.DeepCopy(), pointsWhenKilled, probItem.DeepCopy(), score);
+            return new Data(refs, healthKit.DeepCopy(),
+                pointsWhenKilled, probItem.DeepCopy());
         }
     }
     [SerializeField]
@@ -50,22 +62,14 @@ public class EnemyHealth : MonoBehaviour
     [Tooltip("The prefab to use to spawn the More Arms powerup.")]
     GameObject prefabMoreArms;
 
-    PlayerPowerup playerPowerup;
-
     public void SetData(Data val)
     {
         data = val;
     }
 
-    private void Awake()
-    {
-        GameObject player = ServiceLocator.GetPlayer();
-        playerPowerup = player.GetComponent<PlayerPowerup>();
-    }
-
     public void Kill()
     {
-        data.score.Add(data.pointsWhenKilled);
+        data.refs.score.Add(data.pointsWhenKilled);
         DropItem();
         Destroy(gameObject);
     }
@@ -89,7 +93,7 @@ public class EnemyHealth : MonoBehaviour
         else
         {
             // Only drop these powerups if none currently exist.
-            if (!playerPowerup.GetPowerupExists())
+            if (!data.refs.playerPowerup.GetPowerupExists())
             {
                 GameObject powerup = null;
                 switch (it)
@@ -102,7 +106,7 @@ public class EnemyHealth : MonoBehaviour
                         break;
                 }
                 ItemPowerup pup = powerup.GetComponent<ItemPowerup>();
-                pup.SetPlayerPowerup(playerPowerup);
+                pup.SetPlayerPowerup(data.refs.playerPowerup);
                 LeftMovement lm = powerup.GetComponent<LeftMovement>();
                 lm.SetMovementLeftSpeed(leftMovement.GetMovementLeftSpeed());
             }
