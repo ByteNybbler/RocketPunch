@@ -2284,11 +2284,11 @@ GameObject:
   - component: {fileID: 2109147853}
   - component: {fileID: 2109147855}
   - component: {fileID: 2109147857}
+  - component: {fileID: 2109147861}
   - component: {fileID: 2109147856}
   - component: {fileID: 2109147858}
   - component: {fileID: 2109147859}
   - component: {fileID: 2109147860}
-  - component: {fileID: 2109147861}
   - component: {fileID: 2109147862}
   m_Layer: 0
   m_Name: Player
@@ -2467,6 +2467,7 @@ MonoBehaviour:
   playerPunch: {fileID: 2109147858}
   playerHealth: {fileID: 2109147860}
   playerPowerup: {fileID: 2109147862}
+  playerInput: {fileID: 2109147856}
   health: {fileID: 2109147859}
 --- !u!114 &2109147862
 MonoBehaviour:

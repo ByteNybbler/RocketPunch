@@ -8,12 +8,15 @@ public class Player : MonoBehaviour
     {
         public PlayerPunch.Data punchData;
         public PlayerPowerup.Data powerupData;
+        public PlayerInput.Data inputData;
 
         public Data(PlayerPunch.Data punchData,
-            PlayerPowerup.Data powerupData)
+            PlayerPowerup.Data powerupData,
+            PlayerInput.Data inputData)
         {
             this.punchData = punchData;
             this.powerupData = powerupData;
+            this.inputData = inputData;
         }
     }
 
@@ -33,6 +36,9 @@ public class Player : MonoBehaviour
     [Tooltip("Reference to the PlayerPowerup component.")]
     PlayerPowerup playerPowerup;
     [SerializeField]
+    [Tooltip("Reference to the PlayerInput component.")]
+    PlayerInput playerInput;
+    [SerializeField]
     [Tooltip("Reference to the Health component.")]
     Health health;
 
@@ -40,6 +46,7 @@ public class Player : MonoBehaviour
     {
         playerPunch.SetData(val.punchData);
         playerPowerup.SetData(val.powerupData);
+        playerInput.SetData(val.inputData);
     }
 
     private void Awake()
@@ -63,6 +70,8 @@ public class Player : MonoBehaviour
             jsonP.TryGetFloat("seconds of invincibility when damaged", 1.0f));
         health.SetMaxHealth(jsonP.TryGetInt("max health", 100));
         health.FullHeal();
-        SetData(new global::Player.Data(punchData, powerupData));
+        PlayerInput.Data inputData = new PlayerInput.Data(
+            jsonP.TryGetFloat("base movement speed", 10.0f));
+        SetData(new Data(punchData, powerupData, inputData));
     }
 }

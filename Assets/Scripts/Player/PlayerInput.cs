@@ -28,6 +28,11 @@ public class PlayerInput : MonoBehaviour, IPlayable
     [Tooltip("Reference to the PlayerPunch component.")]
     PlayerPunch playerPunch;
 
+    public void SetData(Data val)
+    {
+        data = val;
+    }
+
     private void Start()
     {
         ServiceLocator.GetInputManager().AddSubscriber(this);
