@@ -212,17 +212,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   data:
     spriteName: basic
-  spriteDict:
-  - name: basic
-    sprite: {fileID: 21300000, guid: a9f98e054483869458fd7b808107844c, type: 3}
-  - name: forked
-    sprite: {fileID: 21300000, guid: 43e696a29dbe28c42ab2542fc2150643, type: 3}
-  - name: pulse
-    sprite: {fileID: 21300000, guid: 674039663ed04ff48ae2d2b7ff3d1adf, type: 3}
-  - name: spiral
-    sprite: {fileID: 21300000, guid: 387df74110aea4b4b82fc45ddac52a69, type: 3}
-  - name: tracking
-    sprite: {fileID: 21300000, guid: cfc2b61238e02ad4996802927bf074e2, type: 3}
+  possibleSprites: {fileID: 11400000, guid: 14353d9b0ce71054d86c3bbe5b15b49b, type: 2}
   render: {fileID: 212558432114885774}
 --- !u!114 &114654272223199436
 MonoBehaviour:

@@ -26,16 +26,9 @@ public class EnemySprite : MonoBehaviour
     [SerializeField]
     Data data;
 
-    [System.Serializable]
-    class SpriteDictEntry
-    {
-        public string name = null;
-        public Sprite sprite = null;
-    }
-
     [SerializeField]
-    [Tooltip("Dictionary of the values to use.")]
-    SpriteDictEntry[] spriteDict;
+    [Tooltip("The possible sprites to use.")]
+    SOKVStringToSprite possibleSprites;
     [SerializeField]
     [Tooltip("Reference to the renderer to use.")]
     SpriteRenderer render;
@@ -47,13 +40,8 @@ public class EnemySprite : MonoBehaviour
 
     private void Start()
     {
-        foreach (SpriteDictEntry sde in spriteDict)
-        {
-            if (sde.name == data.spriteName)
-            {
-                render.sprite = sde.sprite;
-                break;
-            }
-        }
+        Sprite spr = render.sprite;
+        possibleSprites.TryGetValue(data.spriteName, out spr);
+        render.sprite = spr;
     }
 }

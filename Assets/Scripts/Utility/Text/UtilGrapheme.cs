@@ -1,5 +1,6 @@
 ﻿// Author(s): R. Martinho Fernandes (via StackExchange)
 // https://stackoverflow.com/questions/228038/best-way-to-reverse-a-string
+// Functions for reversing strings in a way that is language-independent.
 
 using System.Collections.Generic;
 using System.Globalization;
