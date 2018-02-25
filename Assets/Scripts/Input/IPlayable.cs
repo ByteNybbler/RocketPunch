@@ -7,5 +7,5 @@ using UnityEngine;
 
 public interface IPlayable
 {
-    void ReceiveInput(InputData inputData);
+    void ReceiveInput(InputReader inputReader);
 }

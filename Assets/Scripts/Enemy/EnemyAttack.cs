@@ -87,7 +87,7 @@ public class EnemyAttack : MonoBehaviour
                 if (volley.aimAtPlayer)
                 {
                     Vector3 playerPos = data.refs.player.transform.position;
-                    angle += UtilVector.GetSignedDirectionToPoint(transform.position, playerPos);
+                    angle += UtilVector.GetSignedAngleToPoint(transform.position, playerPos);
                 }
                 Quaternion rotation = Quaternion.AngleAxis(angle, Vector3.forward);
                 GameObject projectile = Instantiate(prefabProjectile, transform.position, rotation);

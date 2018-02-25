@@ -7,19 +7,27 @@ using UnityEngine;
 
 public class InputManager : MonoBehaviour
 {
-    InputData inputData = new InputData();
+    InputWriter inputWriter;
+    InputReader inputReader;
     HashSet<IPlayable> subscribers = new HashSet<IPlayable>();
+
+    private void Awake()
+    {
+        InputData inputData = new InputData();
+        inputWriter = new InputWriter(inputData);
+        inputReader = new InputReader(inputData);
+    }
 
     private void Update()
     {
-        inputData.PopulateKeys();
+        inputWriter.PopulateKeys();
     }
 
     private void FixedUpdate()
     {
-        inputData.PopulateAxes();
+        inputWriter.PopulateAxes();
         SendInputToSubscribers();
-        inputData.Clear();
+        inputWriter.Clear();
     }
 
     public void AddSubscriber(IPlayable subscriber)
@@ -36,7 +44,7 @@ public class InputManager : MonoBehaviour
     {
         foreach (IPlayable sub in subscribers)
         {
-            sub.ReceiveInput(inputData);
+            sub.ReceiveInput(inputReader);
         }
     }
 }
