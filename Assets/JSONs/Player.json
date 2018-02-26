@@ -4,5 +4,6 @@
 	"seconds of invincibility when damaged" : 1.0,
 	"max health" : 100,
 	"base punch hitbox size" : 1.4,
-	"base movement speed" : 10.0
+	"base movement speed" : 10.0,
+	"chance of saying fuck" : 0.01
 }

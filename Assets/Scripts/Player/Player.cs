@@ -9,14 +9,17 @@ public class Player : MonoBehaviour
         public PlayerPunch.Data punchData;
         public PlayerPowerup.Data powerupData;
         public PlayerInput.Data inputData;
+        public PlayerHealth.Data healthData;
 
         public Data(PlayerPunch.Data punchData,
             PlayerPowerup.Data powerupData,
-            PlayerInput.Data inputData)
+            PlayerInput.Data inputData,
+            PlayerHealth.Data healthData)
         {
             this.punchData = punchData;
             this.powerupData = powerupData;
             this.inputData = inputData;
+            this.healthData = healthData;
         }
     }
 
@@ -38,15 +41,13 @@ public class Player : MonoBehaviour
     [SerializeField]
     [Tooltip("Reference to the PlayerInput component.")]
     PlayerInput playerInput;
-    [SerializeField]
-    [Tooltip("Reference to the Health component.")]
-    Health health;
 
     public void SetData(Data val)
     {
         playerPunch.SetData(val.punchData);
         playerPowerup.SetData(val.powerupData);
         playerInput.SetData(val.inputData);
+        playerHealth.SetData(val.healthData);
     }
 
     private void Awake()
@@ -66,12 +67,13 @@ public class Player : MonoBehaviour
         PlayerPowerup.Data powerupData = new PlayerPowerup.Data(
             jsonI.TryGetFloat("seconds of battle axe", 8.0f),
             jsonI.TryGetFloat("seconds of more arms", 8.0f));
-        playerHealth.SetSecondsOfInvincibilityWhenDamaged(
-            jsonP.TryGetFloat("seconds of invincibility when damaged", 1.0f));
-        health.SetMaxHealth(jsonP.TryGetInt("max health", 100));
-        health.FullHeal();
         PlayerInput.Data inputData = new PlayerInput.Data(
             jsonP.TryGetFloat("base movement speed", 10.0f));
-        SetData(new Data(punchData, powerupData, inputData));
+        PlayerHealth.Data healthData = new PlayerHealth.Data(
+            jsonP.TryGetFloat("seconds of invincibility when damaged", 1.0f),
+            jsonP.TryGetFloat("chance of saying fuck", 0.01f),
+            jsonP.TryGetInt("max health", 100)
+            );
+        SetData(new Data(punchData, powerupData, inputData, healthData));
     }
 }

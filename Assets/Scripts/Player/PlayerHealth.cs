@@ -7,6 +7,27 @@ using UnityEngine;
 
 public class PlayerHealth : MonoBehaviour
 {
+    [System.Serializable]
+    public class Data
+    {
+        [Tooltip("How many seconds the player remains invincible when damaged.")]
+        public float secondsOfInvincibilityWhenDamaged;
+        [Tooltip("The chance that Rocket Puncher has to say fuck when damaged.")]
+        public float chanceOfSayingFuck;
+        [Tooltip("The maximum health that the player should have.")]
+        public int maxHealth;
+
+        public Data(float secondsOfInvincibilityWhenDamaged,
+            float chanceOfSayingFuck, int maxHealth)
+        {
+            this.secondsOfInvincibilityWhenDamaged = secondsOfInvincibilityWhenDamaged;
+            this.chanceOfSayingFuck = chanceOfSayingFuck;
+            this.maxHealth = maxHealth;
+        }
+    }
+    [SerializeField]
+    Data data;
+
     [SerializeField]
     [Tooltip("Reference to the Health component.")]
     Health health;
@@ -16,19 +37,40 @@ public class PlayerHealth : MonoBehaviour
     [SerializeField]
     [Tooltip("The color alpha the player has when invincible.")]
     float damageAlpha;
+    [SerializeField]
+    [Tooltip("The player hurt voice clips.")]
+    SOAAudioClip hurtVoiceClips;
+    [SerializeField]
+    [Tooltip("FUCK")]
+    AudioClip fuck;
 
     // Invincibility timer.
     Timer timerInvincible = new Timer();
     // Whether the player can currently be damaged.
     bool vincible = true;
+    // Probability machine for whether Rocket Puncher will say fuck.
+    Probability<bool> playerSaysFuck = new Probability<bool>(false);
+
+    AudioController ac;
+
+    public void SetData(Data val)
+    {
+        data = val;
+    }
 
     private void Start()
     {
+        ac = ServiceLocator.GetAudioController();
+        health.SetMaxHealth(data.maxHealth);
+        health.FullHeal();
         health.Died += Health_Died;
+        SetSecondsOfInvincibilityWhenDamaged(data.secondsOfInvincibilityWhenDamaged);
+        playerSaysFuck.SetChance(true, data.chanceOfSayingFuck);
     }
 
     public void SetSecondsOfInvincibilityWhenDamaged(float val)
     {
+        data.secondsOfInvincibilityWhenDamaged = val;
         timerInvincible.SetTargetTime(val);
     }
 
@@ -48,6 +90,20 @@ public class PlayerHealth : MonoBehaviour
         UtilScene.ResetScene();
     }
 
+    // Play damage sounds.
+    private void DamageAudio()
+    {
+        bool sayFuck = playerSaysFuck.Roll();
+        if (sayFuck)
+        {
+            ac.PlaySFX(fuck);
+        }
+        else
+        {
+            ac.PlaySFX(hurtVoiceClips.GetRandomElement());
+        }
+    }
+
     public void Damage(int amount)
     {
         if (vincible)
@@ -55,6 +111,7 @@ public class PlayerHealth : MonoBehaviour
             health.Damage(amount);
             MakeInvincible();
             SetSpriteAlpha(damageAlpha);
+            DamageAudio();
         }
     }
 

@@ -2448,9 +2448,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1620e6982db67334a8fa45e3f1eba79d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  data:
+    secondsOfInvincibilityWhenDamaged: 0
+    chanceOfSayingFuck: 0
+    maxHealth: 0
   health: {fileID: 2109147859}
   render: {fileID: 1821427861}
   damageAlpha: 0.5
+  hurtVoiceClips: {fileID: 11400000, guid: d14b9458cdd58264d8ce963788bf1a38, type: 2}
+  fuck: {fileID: 8300000, guid: 869a79705416583479e443fba24642fe, type: 3}
 --- !u!114 &2109147861
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2468,7 +2474,6 @@ MonoBehaviour:
   playerHealth: {fileID: 2109147860}
   playerPowerup: {fileID: 2109147862}
   playerInput: {fileID: 2109147856}
-  health: {fileID: 2109147859}
 --- !u!114 &2109147862
 MonoBehaviour:
   m_ObjectHideFlags: 0
