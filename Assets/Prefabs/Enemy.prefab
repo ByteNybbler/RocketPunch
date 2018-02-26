@@ -22,7 +22,7 @@ GameObject:
   - component: {fileID: 212558432114885774}
   m_Layer: 0
   m_Name: Sprite
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -268,6 +268,7 @@ MonoBehaviour:
     type: 2}
   prefabMoreArms: {fileID: 1195104256440672, guid: b786e26929d56424d82a4630c43f9da4,
     type: 2}
+  enemyDeathSounds: {fileID: 11400000, guid: c09bb90c1f9106d47ad3f2efcfa4b5a7, type: 2}
 --- !u!114 &114986227821880174
 MonoBehaviour:
   m_ObjectHideFlags: 1

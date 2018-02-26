@@ -46,7 +46,6 @@ public class EnemyHealth : MonoBehaviour
         }
     }
     [SerializeField]
-    [Tooltip("Data for EnemyHealth.")]
     Data data;
 
     [SerializeField]
@@ -61,6 +60,16 @@ public class EnemyHealth : MonoBehaviour
     [SerializeField]
     [Tooltip("The prefab to use to spawn the More Arms powerup.")]
     GameObject prefabMoreArms;
+    [SerializeField]
+    [Tooltip("Sounds to play for the enemy dying.")]
+    SOAAudioClip enemyDeathSounds;
+
+    AudioController ac;
+
+    private void Start()
+    {
+        ac = ServiceLocator.GetAudioController();
+    }
 
     public void SetData(Data val)
     {
@@ -71,6 +80,7 @@ public class EnemyHealth : MonoBehaviour
     {
         data.refs.score.Add(data.pointsWhenKilled);
         DropItem();
+        ac.PlaySFX(enemyDeathSounds.GetRandomElement());
         Destroy(gameObject);
     }
 
