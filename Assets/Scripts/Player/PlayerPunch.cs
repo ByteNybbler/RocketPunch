@@ -47,11 +47,23 @@ public class PlayerPunch : MonoBehaviour
     [SerializeField]
     [Tooltip("Voice clips for punching.")]
     SOAAudioClip punchVoiceClips;
+    [SerializeField]
+    [Tooltip("The GameObject to enable when enabling More Arms.")]
+    GameObject moreArmsObject;
+    [SerializeField]
+    [Tooltip("References to the arms to animate.")]
+    Animator[] arms;
+    [SerializeField]
+    [Tooltip("References to the battle axe objects to animate.")]
+    GameObject[] axes;
 
+    AudioController ac;
+    static int hashPunch = Animator.StringToHash("Punch");
     Timer timerPunching;
     Timer timerPunchCooldown;
 
-    AudioController ac;
+    // How many times the player has punched.
+    int punchCount = 0;
 
     public void SetData(Data val)
     {
@@ -62,7 +74,6 @@ public class PlayerPunch : MonoBehaviour
     {
         ac = ServiceLocator.GetAudioController();
         punchingObject.SetActive(false);
-        UseBattleAxe(false);
 
         childRegularPunch.transform.localScale = new Vector3(data.basePunchHitboxSize,
             data.basePunchHitboxSize, 1.0f);
@@ -71,12 +82,19 @@ public class PlayerPunch : MonoBehaviour
 
         timerPunching = new Timer(data.secondsOfPunching, false, false);
         timerPunchCooldown = new Timer(data.secondsOfPunchCooldown, false, false);
+
+        UseBattleAxe(false);
+        UseMoreArms(false);
     }
 
     public void UseBattleAxe(bool willUseAxe)
     {
         childRegularPunch.SetActive(!willUseAxe);
         childBattleAxe.SetActive(willUseAxe);
+        foreach (GameObject axe in axes)
+        {
+            axe.SetActive(willUseAxe);
+        }
     }
 
     public void UseMoreArms(bool willUseMoreArms)
@@ -91,20 +109,43 @@ public class PlayerPunch : MonoBehaviour
             cooldown = data.secondsOfPunchCooldown;
         }
         timerPunchCooldown.SetTargetTime(cooldown);
+        moreArmsObject.SetActive(willUseMoreArms);
     }
 
-    // Returns true if the player currently has the Battle Axe.
+    // Returns true if the player currently has the Battle Axe powerup.
     public bool HasBattleAxe()
     {
         return childBattleAxe.activeSelf;
+    }
+
+    // Returns true if the player currently has the More Arms powerup.
+    public bool HasMoreArms()
+    {
+        return timerPunchCooldown.GetTargetTime() == data.secondsOfMoreArmsPunchCooldown;
+    }
+
+    private void AnimateArm()
+    {
+        int armIndex;
+        if (HasMoreArms())
+        {
+            armIndex = punchCount % 4;
+        }
+        else
+        {
+            armIndex = punchCount % 2;
+        }
+        arms[armIndex].SetTrigger(hashPunch);
     }
 
     public void Punch()
     {
         if (!IsPunching() && !IsPunchCoolingDown())
         {
+            ++punchCount;
             punchingObject.SetActive(true);
             ac.PlaySFX(punchVoiceClips.GetRandomElement());
+            AnimateArm();
             timerPunching.Start();
         }
     }

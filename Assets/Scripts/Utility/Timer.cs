@@ -57,6 +57,12 @@ public class Timer
         secondsTarget = seconds;
     }
 
+    // Get the target time on the timer.
+    public float GetTargetTime()
+    {
+        return secondsTarget;
+    }
+
     // Start or resume the timer.
     public void Start()
     {

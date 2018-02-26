@@ -32,11 +32,11 @@ public class PlayerHealth : MonoBehaviour
     [Tooltip("Reference to the Health component.")]
     Health health;
     [SerializeField]
-    [Tooltip("Reference to the renderer.")]
-    SpriteRenderer render;
+    [Tooltip("Reference to the component for coloring the sprites in the hierarchy.")]
+    HierarchySpriteColor spriteColorer;
     [SerializeField]
-    [Tooltip("The color alpha the player has when invincible.")]
-    float damageAlpha;
+    [Tooltip("The color the player uses when damaged.")]
+    Color colorDamaged;
     [SerializeField]
     [Tooltip("The player hurt voice clips.")]
     SOAAudioClip hurtVoiceClips;
@@ -108,7 +108,7 @@ public class PlayerHealth : MonoBehaviour
         {
             health.Damage(amount);
             MakeInvincible();
-            SetSpriteAlpha(damageAlpha);
+            SetSpriteColor(colorDamaged);
             DamageAudio();
         }
     }
@@ -125,7 +125,7 @@ public class PlayerHealth : MonoBehaviour
 
     private void MakeVincible()
     {
-        SetSpriteAlpha(1.0f);
+        SetSpriteColor(Color.white);
     }
 
     private void MakeInvincible()
@@ -133,10 +133,8 @@ public class PlayerHealth : MonoBehaviour
         timerInvincible.Start();
     }
 
-    private void SetSpriteAlpha(float alpha)
+    private void SetSpriteColor(Color col)
     {
-        Color col = render.color;
-        col.a = alpha;
-        render.color = col;
+        spriteColorer.SetColor(col);
     }
 }
