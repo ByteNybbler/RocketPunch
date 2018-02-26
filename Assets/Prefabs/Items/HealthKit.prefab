@@ -23,7 +23,7 @@ GameObject:
   - component: {fileID: 61545463256270352}
   m_Layer: 0
   m_Name: Sprite
-  m_TagString: Untagged
+  m_TagString: Item
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -145,9 +145,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   data:
+    refs:
+      score: {fileID: 0}
     heal: 0
     pointsPerFullHealthHealthKit: 0
-    score: {fileID: 0}
 --- !u!114 &114983438281088156
 MonoBehaviour:
   m_ObjectHideFlags: 1

@@ -62,6 +62,7 @@ public class ItemHealthKit : MonoBehaviour
             {
                 playerHealth.Heal(data.heal);
             }
+            playerHealth.HealAudio();
             Destroy(gameObject);
         }
     }

@@ -2424,6 +2424,7 @@ MonoBehaviour:
   punchingObject: {fileID: 1783250722}
   childRegularPunch: {fileID: 1080985090}
   childBattleAxe: {fileID: 2111159182}
+  punchVoiceClips: {fileID: 11400000, guid: e4645533a94f4214990f324b1a42e649, type: 2}
 --- !u!114 &2109147859
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2457,6 +2458,7 @@ MonoBehaviour:
   damageAlpha: 0.5
   hurtVoiceClips: {fileID: 11400000, guid: d14b9458cdd58264d8ce963788bf1a38, type: 2}
   fuck: {fileID: 8300000, guid: 869a79705416583479e443fba24642fe, type: 3}
+  healVoiceClips: {fileID: 11400000, guid: 8c58580f55d027a47a7f6f5b895eba28, type: 2}
 --- !u!114 &2109147861
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2474,6 +2476,7 @@ MonoBehaviour:
   playerHealth: {fileID: 2109147860}
   playerPowerup: {fileID: 2109147862}
   playerInput: {fileID: 2109147856}
+  voiceStart: {fileID: 11400000, guid: 7c98d5bce279fcd4b88223c4008e60ef, type: 2}
 --- !u!114 &2109147862
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2489,6 +2492,7 @@ MonoBehaviour:
     secondsOfBattleAxe: 0
     secondsOfMoreArms: 0
   playerPunch: {fileID: 2109147858}
+  voicePowerup: {fileID: 11400000, guid: 6588cc9ce11f7ff48b94f5208628400c, type: 2}
 --- !u!1 &2111159182
 GameObject:
   m_ObjectHideFlags: 0

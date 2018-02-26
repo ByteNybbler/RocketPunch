@@ -27,6 +27,11 @@ public class PlayerPowerup : MonoBehaviour
     [SerializeField]
     [Tooltip("Reference to the PlayerPunch component.")]
     PlayerPunch playerPunch;
+    [SerializeField]
+    [Tooltip("Voice clips for collecting a powerup.")]
+    SOAAudioClip voicePowerup;
+
+    AudioController ac;
 
     // Whether a collectible powerup currently exists in the scene.
     // Is also true if a powerup effect is currently active.
@@ -42,6 +47,7 @@ public class PlayerPowerup : MonoBehaviour
 
     private void Start()
     {
+        ac = ServiceLocator.GetAudioController();
         timerBattleAxe.SetTargetTime(data.secondsOfBattleAxe);
     }
 
@@ -56,6 +62,7 @@ public class PlayerPowerup : MonoBehaviour
 
     public void GivePowerup(ItemType itemType)
     {
+        ac.PlaySFX(voicePowerup.GetRandomElement());
         switch (itemType)
         {
             case ItemType.BattleAxe:

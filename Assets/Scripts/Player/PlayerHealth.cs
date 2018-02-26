@@ -43,6 +43,9 @@ public class PlayerHealth : MonoBehaviour
     [SerializeField]
     [Tooltip("FUCK")]
     AudioClip fuck;
+    [SerializeField]
+    [Tooltip("The player heal voice clips.")]
+    SOAAudioClip healVoiceClips;
 
     // Invincibility timer.
     Timer timerInvincible = new Timer();
@@ -113,6 +116,11 @@ public class PlayerHealth : MonoBehaviour
             SetSpriteAlpha(damageAlpha);
             DamageAudio();
         }
+    }
+
+    public void HealAudio()
+    {
+        ac.PlaySFX(healVoiceClips.GetRandomElement());
     }
 
     public void Heal(int amount)

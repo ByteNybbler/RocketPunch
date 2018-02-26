@@ -42,6 +42,12 @@ public class Player : MonoBehaviour
     [Tooltip("Reference to the PlayerInput component.")]
     PlayerInput playerInput;
 
+    [SerializeField]
+    [Tooltip("Voice clips for starting the level.")]
+    SOAAudioClip voiceStart;
+
+    AudioController ac;
+
     public void SetData(Data val)
     {
         playerPunch.SetData(val.punchData);
@@ -53,6 +59,13 @@ public class Player : MonoBehaviour
     private void Awake()
     {
         Tune();
+    }
+
+    private void Start()
+    {
+        ac = ServiceLocator.GetAudioController();
+
+        ac.PlaySFX(voiceStart.GetRandomElement());
     }
 
     private void Tune()

@@ -40,12 +40,17 @@ public class PlayerPunch : MonoBehaviour
     [SerializeField]
     [Tooltip("The punching object child to use for the Battle Axe powerup.")]
     GameObject childBattleAxe;
+    [SerializeField]
+    [Tooltip("Voice clips for punching.")]
+    SOAAudioClip punchVoiceClips;
 
     Timer timerPunching = new Timer();
     Timer timerPunchCooldown = new Timer();
 
     // Whether or not the punch cooldown is occurring.
     bool punchIsCoolingDown = false;
+
+    AudioController ac;
 
     public void SetData(Data val)
     {
@@ -54,6 +59,7 @@ public class PlayerPunch : MonoBehaviour
 
     private void Start()
     {
+        ac = ServiceLocator.GetAudioController();
         punchingObject.SetActive(false);
         UseBattleAxe(false);
         timerPunching.SetTargetTime(data.secondsOfPunching);
@@ -93,6 +99,7 @@ public class PlayerPunch : MonoBehaviour
         if (!IsPunching() && !punchIsCoolingDown)
         {
             punchingObject.SetActive(true);
+            ac.PlaySFX(punchVoiceClips.GetRandomElement());
         }
     }
 
