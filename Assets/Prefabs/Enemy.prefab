@@ -266,7 +266,7 @@ MonoBehaviour:
     type: 2}
   prefabBattleAxe: {fileID: 1195104256440672, guid: b786e26929d56424d82a4630c43f9da4,
     type: 2}
-  prefabMoreArms: {fileID: 1195104256440672, guid: b786e26929d56424d82a4630c43f9da4,
+  prefabMoreArms: {fileID: 1473690354280622, guid: fadae3906e703e24f8c6bff1e4a11deb,
     type: 2}
   enemyDeathSounds: {fileID: 11400000, guid: c09bb90c1f9106d47ad3f2efcfa4b5a7, type: 2}
 --- !u!114 &114986227821880174

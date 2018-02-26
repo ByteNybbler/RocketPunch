@@ -14,16 +14,20 @@ public class PlayerPunch : MonoBehaviour
         public float secondsOfPunching;
         [Tooltip("How many seconds of cooldown occur after the end of the punch before a punch can happen again.")]
         public float secondsOfPunchCooldown;
+        [Tooltip("Punch cooldown during More Arms powerup.")]
+        public float secondsOfMoreArmsPunchCooldown;
         [Tooltip("The scale of the base punch's hitbox.")]
         public float basePunchHitboxSize;
         [Tooltip("The scale of the Battle Axe hitbox.")]
         public float battleAxeHitboxSize;
 
         public Data(float secondsOfPunching, float secondsOfPunchCooldown,
+            float secondsOfMoreArmsPunchCooldown,
             float basePunchHitboxSize, float battleAxeHitboxSize)
         {
             this.secondsOfPunching = secondsOfPunching;
             this.secondsOfPunchCooldown = secondsOfPunchCooldown;
+            this.secondsOfMoreArmsPunchCooldown = secondsOfMoreArmsPunchCooldown;
             this.basePunchHitboxSize = basePunchHitboxSize;
             this.battleAxeHitboxSize = battleAxeHitboxSize;
         }
@@ -44,11 +48,8 @@ public class PlayerPunch : MonoBehaviour
     [Tooltip("Voice clips for punching.")]
     SOAAudioClip punchVoiceClips;
 
-    Timer timerPunching = new Timer();
-    Timer timerPunchCooldown = new Timer();
-
-    // Whether or not the punch cooldown is occurring.
-    bool punchIsCoolingDown = false;
+    Timer timerPunching;
+    Timer timerPunchCooldown;
 
     AudioController ac;
 
@@ -62,30 +63,34 @@ public class PlayerPunch : MonoBehaviour
         ac = ServiceLocator.GetAudioController();
         punchingObject.SetActive(false);
         UseBattleAxe(false);
-        timerPunching.SetTargetTime(data.secondsOfPunching);
-        timerPunchCooldown.SetTargetTime(data.secondsOfPunchCooldown);
+
         childRegularPunch.transform.localScale = new Vector3(data.basePunchHitboxSize,
             data.basePunchHitboxSize, 1.0f);
         childBattleAxe.transform.localScale = new Vector3(data.battleAxeHitboxSize,
             data.battleAxeHitboxSize, 1.0f);
-    }
 
-    public void SetSecondsOfPunching(float val)
-    {
-        data.secondsOfPunching = val;
-        timerPunching.SetTargetTime(data.secondsOfPunching);
-    }
-
-    public void SetSecondsOfPunchCooldown(float val)
-    {
-        data.secondsOfPunchCooldown = val;
-        timerPunchCooldown.SetTargetTime(data.secondsOfPunchCooldown);
+        timerPunching = new Timer(data.secondsOfPunching, false, false);
+        timerPunchCooldown = new Timer(data.secondsOfPunchCooldown, false, false);
     }
 
     public void UseBattleAxe(bool willUseAxe)
     {
         childRegularPunch.SetActive(!willUseAxe);
         childBattleAxe.SetActive(willUseAxe);
+    }
+
+    public void UseMoreArms(bool willUseMoreArms)
+    {
+        float cooldown;
+        if (willUseMoreArms)
+        {
+            cooldown = data.secondsOfMoreArmsPunchCooldown;
+        }
+        else
+        {
+            cooldown = data.secondsOfPunchCooldown;
+        }
+        timerPunchCooldown.SetTargetTime(cooldown);
     }
 
     // Returns true if the player currently has the Battle Axe.
@@ -96,40 +101,37 @@ public class PlayerPunch : MonoBehaviour
 
     public void Punch()
     {
-        if (!IsPunching() && !punchIsCoolingDown)
+        if (!IsPunching() && !IsPunchCoolingDown())
         {
             punchingObject.SetActive(true);
             ac.PlaySFX(punchVoiceClips.GetRandomElement());
+            timerPunching.Start();
         }
     }
 
     // Returns true if the player is punching.
     private bool IsPunching()
     {
-        return punchingObject.activeSelf;
+        return timerPunching.IsRunning();
+    }
+
+    // Returns true during the punch cooldown.
+    private bool IsPunchCoolingDown()
+    {
+        return timerPunchCooldown.IsRunning();
     }
 
     private void FixedUpdate()
     {
-        if (IsPunching())
+        while (timerPunching.TimeUp(Time.deltaTime))
         {
-            while (timerPunching.TimeUp(Time.deltaTime))
-            {
-                EndPunch();
-            }
+            // Punch finished.
+            punchingObject.SetActive(false);
+            timerPunchCooldown.Start();
         }
-        if (punchIsCoolingDown)
+        while (timerPunchCooldown.TimeUp(Time.deltaTime))
         {
-            while (timerPunchCooldown.TimeUp(Time.deltaTime))
-            {
-                punchIsCoolingDown = false;
-            }
+            // Punch cooldown finished.
         }
-    }
-
-    private void EndPunch()
-    {
-        punchingObject.SetActive(false);
-        punchIsCoolingDown = true;
     }
 }

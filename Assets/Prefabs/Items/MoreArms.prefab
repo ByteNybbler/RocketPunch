@@ -142,6 +142,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f467f5dd5564ec4995296562829fced, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  powerupType: 3
   playerPowerup: {fileID: 0}
 --- !u!114 &114564846699109886
 MonoBehaviour:

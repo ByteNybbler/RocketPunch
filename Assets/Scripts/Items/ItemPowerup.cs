@@ -8,6 +8,9 @@ using UnityEngine;
 public class ItemPowerup : MonoBehaviour
 {
     [SerializeField]
+    [Tooltip("The powerup type.")]
+    ItemType powerupType;
+    [SerializeField]
     [Tooltip("Reference to the player's powerup-tracking component.")]
     PlayerPowerup playerPowerup;
 
@@ -38,6 +41,7 @@ public class ItemPowerup : MonoBehaviour
     {
         if (collision.CompareTag("PlayerSelfHitbox"))
         {
+            playerPowerup.GivePowerup(powerupType);
             collectedByPlayer = true;
             Destroy(gameObject);
         }

@@ -38,7 +38,8 @@ public class PlayerPowerup : MonoBehaviour
     bool powerupExists = false;
 
     // Timer for the Battle Axe powerup effect.
-    Timer timerBattleAxe = new Timer();
+    Timer timerBattleAxe;
+    Timer timerMoreArms;
 
     public void SetData(Data val)
     {
@@ -48,7 +49,8 @@ public class PlayerPowerup : MonoBehaviour
     private void Start()
     {
         ac = ServiceLocator.GetAudioController();
-        timerBattleAxe.SetTargetTime(data.secondsOfBattleAxe);
+        timerBattleAxe = new Timer(data.secondsOfBattleAxe, false, false);
+        timerMoreArms = new Timer(data.secondsOfMoreArms, false, false);
     }
 
     public bool GetPowerupExists()
@@ -67,19 +69,26 @@ public class PlayerPowerup : MonoBehaviour
         {
             case ItemType.BattleAxe:
                 playerPunch.UseBattleAxe(true);
+                timerBattleAxe.Start();
+                break;
+            case ItemType.MoreArms:
+                playerPunch.UseMoreArms(true);
+                timerMoreArms.Start();
                 break;
         }
     }
 
     private void FixedUpdate()
     {
-        if (playerPunch.HasBattleAxe())
+        while (timerBattleAxe.TimeUp(Time.deltaTime))
         {
-            while (timerBattleAxe.TimeUp(Time.deltaTime))
-            {
-                playerPunch.UseBattleAxe(false);
-                SetPowerupExists(false);
-            }
+            playerPunch.UseBattleAxe(false);
+            SetPowerupExists(false);
+        }
+        while (timerMoreArms.TimeUp(Time.deltaTime))
+        {
+            playerPunch.UseMoreArms(false);
+            SetPowerupExists(false);
         }
     }
 }

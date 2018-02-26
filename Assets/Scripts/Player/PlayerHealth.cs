@@ -48,9 +48,7 @@ public class PlayerHealth : MonoBehaviour
     SOAAudioClip healVoiceClips;
 
     // Invincibility timer.
-    Timer timerInvincible = new Timer();
-    // Whether the player can currently be damaged.
-    bool vincible = true;
+    Timer timerInvincible;
     // Probability machine for whether Rocket Puncher will say fuck.
     Probability<bool> playerSaysFuck = new Probability<bool>(false);
 
@@ -67,30 +65,27 @@ public class PlayerHealth : MonoBehaviour
         health.SetMaxHealth(data.maxHealth);
         health.FullHeal();
         health.Died += Health_Died;
-        SetSecondsOfInvincibilityWhenDamaged(data.secondsOfInvincibilityWhenDamaged);
+        timerInvincible = new Timer(data.secondsOfInvincibilityWhenDamaged, false, false);
         playerSaysFuck.SetChance(true, data.chanceOfSayingFuck);
-    }
-
-    public void SetSecondsOfInvincibilityWhenDamaged(float val)
-    {
-        data.secondsOfInvincibilityWhenDamaged = val;
-        timerInvincible.SetTargetTime(val);
     }
 
     private void FixedUpdate()
     {
-        if (!vincible)
+        while (timerInvincible.TimeUp(Time.deltaTime))
         {
-            while (timerInvincible.TimeUp(Time.deltaTime))
-            {
-                MakeVincible();
-            }
+            MakeVincible();
         }
     }
 
     private void Health_Died()
     {
         UtilScene.ResetScene();
+    }
+
+    // Returns whether the player can currently be damaged.
+    private bool IsInvincible()
+    {
+        return timerInvincible.IsRunning();
     }
 
     // Play damage sounds.
@@ -109,7 +104,7 @@ public class PlayerHealth : MonoBehaviour
 
     public void Damage(int amount)
     {
-        if (vincible)
+        if (!IsInvincible())
         {
             health.Damage(amount);
             MakeInvincible();
@@ -130,13 +125,12 @@ public class PlayerHealth : MonoBehaviour
 
     private void MakeVincible()
     {
-        vincible = true;
         SetSpriteAlpha(1.0f);
     }
 
     private void MakeInvincible()
     {
-        vincible = false;
+        timerInvincible.Start();
     }
 
     private void SetSpriteAlpha(float alpha)

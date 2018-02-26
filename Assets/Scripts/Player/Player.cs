@@ -75,6 +75,7 @@ public class Player : MonoBehaviour
         PlayerPunch.Data punchData = new PlayerPunch.Data(
             jsonP.TryGetFloat("seconds of punching", 1.0f),
             jsonP.TryGetFloat("seconds of punch cooldown", 1.0f),
+            jsonI.TryGetFloat("seconds of more arms punch cooldown", 0.1f),
             jsonP.TryGetFloat("base punch hitbox size", 1.4f),
             jsonI.TryGetFloat("battle axe hitbox size", 2.0f));
         PlayerPowerup.Data powerupData = new PlayerPowerup.Data(
