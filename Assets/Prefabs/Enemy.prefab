@@ -53,9 +53,9 @@ GameObject:
   - component: {fileID: 4665594541806308}
   - component: {fileID: 50293428977744468}
   - component: {fileID: 114780961635302164}
+  - component: {fileID: 114855306671082544}
   - component: {fileID: 114370859041840364}
   - component: {fileID: 114986227821880174}
-  - component: {fileID: 114654272223199436}
   - component: {fileID: 114074414304747704}
   - component: {fileID: 114801970132755550}
   - component: {fileID: 114624920237121732}
@@ -195,7 +195,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemyAttack: {fileID: 114074414304747704}
-  leftMovement: {fileID: 114654272223199436}
+  leftMovement: {fileID: 114855306671082544}
   oscillatePosition2D: {fileID: 114986227821880174}
   enemyHealth: {fileID: 114801970132755550}
   enemySprite: {fileID: 114624920237121732}
@@ -214,20 +214,6 @@ MonoBehaviour:
     spriteName: basic
   possibleSprites: {fileID: 11400000, guid: 14353d9b0ce71054d86c3bbe5b15b49b, type: 2}
   render: {fileID: 212558432114885774}
---- !u!114 &114654272223199436
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1669846950066600}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2f9fcd1c96f7d6d488457b9101df6443, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  data:
-    movementLeftSpeed: 0.04
-  mover: {fileID: 114780961635302164}
 --- !u!114 &114780961635302164
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -261,7 +247,7 @@ MonoBehaviour:
       heal: 40
       pointsPerFullHealthHealthKit: 100
     pointsWhenKilled: 100
-  leftMovement: {fileID: 114654272223199436}
+  leftMovement: {fileID: 114855306671082544}
   prefabHealthKit: {fileID: 1906263251835348, guid: 7e8711ee05f7a6443a451bca286859f7,
     type: 2}
   prefabBattleAxe: {fileID: 1195104256440672, guid: b786e26929d56424d82a4630c43f9da4,
@@ -269,6 +255,20 @@ MonoBehaviour:
   prefabMoreArms: {fileID: 1473690354280622, guid: fadae3906e703e24f8c6bff1e4a11deb,
     type: 2}
   enemyDeathSounds: {fileID: 11400000, guid: c09bb90c1f9106d47ad3f2efcfa4b5a7, type: 2}
+--- !u!114 &114855306671082544
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1669846950066600}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9d441ebbb27de9f4c9527b92c0299652, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  data:
+    velocity: {x: 0, y: 0}
+  mover: {fileID: 114780961635302164}
 --- !u!114 &114986227821880174
 MonoBehaviour:
   m_ObjectHideFlags: 1

@@ -19,8 +19,8 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4019628206748604}
-  - component: {fileID: 114564846699109886}
   - component: {fileID: 114369463423680440}
+  - component: {fileID: 114905980679048572}
   - component: {fileID: 50646609068202556}
   - component: {fileID: 114378855934817444}
   m_Layer: 0
@@ -144,7 +144,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   powerupType: 3
   playerPowerup: {fileID: 0}
---- !u!114 &114564846699109886
+--- !u!114 &114905980679048572
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -152,11 +152,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 1473690354280622}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2f9fcd1c96f7d6d488457b9101df6443, type: 3}
+  m_Script: {fileID: 11500000, guid: 9d441ebbb27de9f4c9527b92c0299652, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   data:
-    movementLeftSpeed: 0
+    velocity: {x: 0, y: 0}
   mover: {fileID: 114369463423680440}
 --- !u!212 &212163913269187124
 SpriteRenderer:

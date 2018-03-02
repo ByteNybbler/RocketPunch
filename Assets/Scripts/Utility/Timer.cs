@@ -57,10 +57,23 @@ public class Timer
         secondsTarget = seconds;
     }
 
+    // Get the current time on the timer.
+    public float GetCurrentTime()
+    {
+        return secondsCurrent;
+    }
+
     // Get the target time on the timer.
     public float GetTargetTime()
     {
         return secondsTarget;
+    }
+
+    // Returns how close (in percent) the timer is to reaching the target time.
+    // 1.0 (100%) means the timer has reached the target time.
+    public float GetPercentFinished()
+    {
+        return secondsCurrent / secondsTarget;
     }
 
     // Start or resume the timer.

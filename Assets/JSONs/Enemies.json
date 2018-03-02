@@ -5,7 +5,7 @@
 			"name" : "EnemyBasic",
 			"sprite name" : "basic",
 			"challenge" : 1,
-			"left movement speed increase" : -0.01,
+			"left movement speed increase" : -0.5,
 			"y oscillation magnitude" : 1.2,
 			"y oscillation speed" : 2.0,
 			"seconds between volleys" : 1.3,

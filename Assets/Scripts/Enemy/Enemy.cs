@@ -19,13 +19,13 @@ public class Enemy : MonoBehaviour
         [Tooltip("Sprite configuration.")]
         public EnemySprite.Data spriteData;
         [Tooltip("Left movement data.")]
-        public LeftMovement.Data leftMovementData;
+        public Velocity2D.Data leftMovementData;
         [Tooltip("Enemy health data.")]
         public EnemyHealth.Data enemyHealthData;
 
         public Data(float challenge,
             OscillatePosition2D.Data oscData, EnemyAttack.Data attackData,
-            EnemySprite.Data spriteData, LeftMovement.Data leftMovementData,
+            EnemySprite.Data spriteData, Velocity2D.Data leftMovementData,
             EnemyHealth.Data enemyHealthData)
         {
             this.challenge = challenge;
@@ -47,7 +47,7 @@ public class Enemy : MonoBehaviour
     [SerializeField]
     EnemyAttack enemyAttack;
     [SerializeField]
-    LeftMovement leftMovement;
+    Velocity2D leftMovement;
     [SerializeField]
     OscillatePosition2D oscillatePosition2D;
     [SerializeField]

@@ -46,7 +46,7 @@ public class EnemyAttack : MonoBehaviour
 
         public Data DeepCopy()
         {
-            return new global::EnemyAttack.Data(refs,
+            return new Data(refs,
                 volley,
                 secondsBetweenVolleys,
                 volleyDirectionDeltaPerShot,
@@ -87,7 +87,8 @@ public class EnemyAttack : MonoBehaviour
                 if (volley.aimAtPlayer)
                 {
                     Vector3 playerPos = data.refs.player.transform.position;
-                    angle += UtilVector.GetSignedAngleToPoint(transform.position, playerPos);
+                    //angle += UtilHeading2D.GetSignedAngleToPoint(transform.position, playerPos);
+                    angle += UtilHeading2D.SignedAngleToPoint(transform.position, playerPos);
                 }
                 Quaternion rotation = Quaternion.AngleAxis(angle, Vector3.forward);
                 GameObject projectile = Instantiate(prefabProjectile, transform.position, rotation);
@@ -95,8 +96,8 @@ public class EnemyAttack : MonoBehaviour
                 EnemyProjectile.Data projData = data.volley.projectile.DeepCopy();
                 projData.angle = angle;
                 proj.SetData(projData);
-                LeftMovement lm = projectile.GetComponent<LeftMovement>();
-                lm.SetMovementLeftSpeed(data.projectileLeftSpeed);
+                Velocity2D leftMovement = projectile.GetComponent<Velocity2D>();
+                leftMovement.SetVelocity(new Vector2(-data.projectileLeftSpeed, 0.0f));
             }
             data.volley.projectile.angle += data.volleyDirectionDeltaPerShot;
         }

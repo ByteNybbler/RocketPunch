@@ -31,6 +31,17 @@ public class InputReader
         return inputData.keysUp.Contains(key);
     }
 
+    // Returns a key from the keys down collection.
+    // Returns null if no keys have been pressed down.
+    public KeyCode? GetOneKeyDown()
+    {
+        foreach (KeyCode key in inputData.keysDown)
+        {
+            return key;
+        }
+        return null;
+    }
+
     public float GetAxisHorizontal()
     {
         return inputData.axisHorizontal;

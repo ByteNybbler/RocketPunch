@@ -47,8 +47,8 @@ public class EnemyProjectile : MonoBehaviour
     Data data;
 
     [SerializeField]
-    [Tooltip("Reference to the AngleSpeedMovement component.")]
-    AngleSpeedMovement2D angleSpeedMovement;
+    [Tooltip("Reference to the Velocity2D component.")]
+    Velocity2D velocity;
     [SerializeField]
     [Tooltip("Reference to the SpriteRenderer component.")]
     SpriteRenderer spriteRenderer;
@@ -64,11 +64,11 @@ public class EnemyProjectile : MonoBehaviour
         SetColor(data.color);
     }
 
-    public void SetAngleSpeed(float angle, float speed)
+    public void SetAngleSpeed(float angleDegrees, float speed)
     {
-        data.angle = angle;
+        data.angle = angleDegrees;
         data.speed = speed;
-        angleSpeedMovement.SetAngleSpeed(angle, speed);
+        velocity.SetVelocity(UtilHeading2D.HeadingVectorFromDegrees(angleDegrees) * speed);
     }
 
     public void SetColor(Color val)

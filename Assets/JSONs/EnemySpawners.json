@@ -5,5 +5,5 @@
 	"seconds between spawns" : 0.7,
 	"seconds between spawn groups" : 1.5,
 	"seconds per dead time" : 3.0,
-	"enemy base left movement speed" : 0.05
+	"enemy base left movement speed" : 2.5
 }

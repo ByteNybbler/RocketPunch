@@ -36,10 +36,10 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4446812183422834}
-  - component: {fileID: 114611794552609836}
-  - component: {fileID: 114002944168586178}
   - component: {fileID: 114983438281088156}
+  - component: {fileID: 114760952147550814}
   - component: {fileID: 50020780025810472}
+  - component: {fileID: 114611794552609836}
   m_Layer: 0
   m_Name: HealthKit
   m_TagString: Item
@@ -119,20 +119,6 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 4.45, y: 6.14}
   m_EdgeRadius: 0
---- !u!114 &114002944168586178
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1906263251835348}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2f9fcd1c96f7d6d488457b9101df6443, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  data:
-    movementLeftSpeed: 0
-  mover: {fileID: 114983438281088156}
 --- !u!114 &114611794552609836
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -149,6 +135,20 @@ MonoBehaviour:
       score: {fileID: 0}
     heal: 0
     pointsPerFullHealthHealthKit: 0
+--- !u!114 &114760952147550814
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1906263251835348}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9d441ebbb27de9f4c9527b92c0299652, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  data:
+    velocity: {x: 0, y: 0}
+  mover: {fileID: 114983438281088156}
 --- !u!114 &114983438281088156
 MonoBehaviour:
   m_ObjectHideFlags: 1

@@ -24,7 +24,7 @@ GameObject:
   - component: {fileID: 114939350077573304}
   - component: {fileID: 114732567538762674}
   - component: {fileID: 114900265878424398}
-  - component: {fileID: 114498858034530568}
+  - component: {fileID: 114648459418434102}
   m_Layer: 0
   m_Name: EnemyProjectile
   m_TagString: EnemyProjectile
@@ -120,7 +120,7 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.16, y: 0.16}
   m_EdgeRadius: 0
---- !u!114 &114498858034530568
+--- !u!114 &114648459418434102
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -128,11 +128,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 1135632966150198}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2f9fcd1c96f7d6d488457b9101df6443, type: 3}
+  m_Script: {fileID: 11500000, guid: 9d441ebbb27de9f4c9527b92c0299652, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   data:
-    movementLeftSpeed: 0
+    velocity: {x: 0, y: 0}
   mover: {fileID: 114939350077573304}
 --- !u!114 &114732567538762674
 MonoBehaviour:
@@ -145,6 +145,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9d441ebbb27de9f4c9527b92c0299652, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  data:
+    velocity: {x: 0, y: 0}
   mover: {fileID: 114939350077573304}
 --- !u!114 &114900265878424398
 MonoBehaviour:
@@ -165,7 +167,7 @@ MonoBehaviour:
     angle: 0
     speed: 0
     score: {fileID: 0}
-  angleSpeedMovement: {fileID: 114732567538762674}
+  velocity: {fileID: 114648459418434102}
   spriteRenderer: {fileID: 212181404096150732}
 --- !u!114 &114939350077573304
 MonoBehaviour:

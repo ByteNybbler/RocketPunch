@@ -49,8 +49,8 @@ public class EnemyHealth : MonoBehaviour
     Data data;
 
     [SerializeField]
-    [Tooltip("Reference to the enemy's LeftMovement component.")]
-    LeftMovement leftMovement;
+    [Tooltip("Reference to the enemy's left movement component.")]
+    Velocity2D leftMovement;
     [SerializeField]
     [Tooltip("The prefab to use to spawn health kits.")]
     GameObject prefabHealthKit;
@@ -97,8 +97,8 @@ public class EnemyHealth : MonoBehaviour
             GameObject pup = Instantiate(prefabHealthKit, transform.position, Quaternion.identity);
             ItemHealthKit hk = pup.GetComponent<ItemHealthKit>();
             hk.SetData(data.healthKit);
-            LeftMovement lm = pup.GetComponent<LeftMovement>();
-            lm.SetMovementLeftSpeed(leftMovement.GetMovementLeftSpeed());
+            Velocity2D lm = pup.GetComponent<Velocity2D>();
+            lm.SetVelocity(leftMovement.GetVelocity());
         }
         else
         {
@@ -117,8 +117,8 @@ public class EnemyHealth : MonoBehaviour
                 }
                 ItemPowerup pup = powerup.GetComponent<ItemPowerup>();
                 pup.SetPlayerPowerup(data.refs.playerPowerup);
-                LeftMovement lm = powerup.GetComponent<LeftMovement>();
-                lm.SetMovementLeftSpeed(leftMovement.GetMovementLeftSpeed());
+                Velocity2D lm = powerup.GetComponent<Velocity2D>();
+                lm.SetVelocity(leftMovement.GetVelocity());
             }
         }
     }

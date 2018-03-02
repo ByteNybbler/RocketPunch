@@ -158,9 +158,10 @@ public class EnemySpawner : MonoBehaviour
             EnemySprite.Data enemySprite = new EnemySprite.Data(
                 enemyNode.TryGetString("sprite name", "basic"));
 
-            LeftMovement.Data leftMovement = new LeftMovement.Data(
-                enemyNode.TryGetFloat("left movement speed increase", 0.0f)
-                + enemyBaseLeftMovementSpeed);
+            Velocity2D.Data leftMovement = new Velocity2D.Data(
+                new Vector2(
+                -enemyNode.TryGetFloat("left movement speed increase", 0.0f)
+                - enemyBaseLeftMovementSpeed, 0.0f));
 
             ItemHealthKit.Data healthKitData = new ItemHealthKit.Data(
                 new ItemHealthKit.Data.Refs(score),
