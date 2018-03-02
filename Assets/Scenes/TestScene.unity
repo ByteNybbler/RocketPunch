@@ -895,7 +895,7 @@ GameObject:
   - component: {fileID: 713442387}
   - component: {fileID: 713442391}
   m_Layer: 0
-  m_Name: BGEarth
+  m_Name: BGEarthCircle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
