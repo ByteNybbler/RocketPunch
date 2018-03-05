@@ -33,6 +33,7 @@ public class MainMenu : MonoBehaviour
 
     public void PlayGame()
     {
+        ac.StopMusic();
         TransitionSound();
         SceneManager.LoadScene("MainGame");
     }
@@ -44,13 +45,11 @@ public class MainMenu : MonoBehaviour
 
     public void CreditsShow()
     {
-        TransitionSound();
         credits.SetActive(true);
     }
 
     public void CreditsHide()
     {
-        TransitionSound();
         credits.SetActive(false);
     }
 }
