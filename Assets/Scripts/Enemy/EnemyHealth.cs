@@ -13,11 +13,13 @@ public class EnemyHealth : MonoBehaviour
         [System.Serializable]
         public class Refs
         {
+            public TimeScale ts;
             public Score score;
             public PlayerPowerup playerPowerup;
 
-            public Refs(Score score, PlayerPowerup playerPowerup)
+            public Refs(TimeScale ts, Score score, PlayerPowerup playerPowerup)
             {
+                this.ts = ts;
                 this.score = score;
                 this.playerPowerup = playerPowerup;
             }
@@ -84,9 +86,14 @@ public class EnemyHealth : MonoBehaviour
         data.refs.score.Add(data.pointsWhenKilled);
         DropItem();
         ac.PlaySFX(enemyDeathSounds.GetRandomElement());
+
         GameObject de = Instantiate(deathExplosion, transform.position, Quaternion.identity);
+        Velocity2D.Data v2d = new Velocity2D.Data(
+            new Velocity2D.Data.Refs(data.refs.ts),
+            leftMovement.GetVelocity());
         Velocity2D lm = de.GetComponent<Velocity2D>();
-        lm.SetVelocity(leftMovement.GetVelocity());
+        lm.SetData(v2d);
+
         Destroy(gameObject);
     }
 
@@ -103,8 +110,12 @@ public class EnemyHealth : MonoBehaviour
             GameObject pup = Instantiate(prefabHealthKit, transform.position, Quaternion.identity);
             ItemHealthKit hk = pup.GetComponent<ItemHealthKit>();
             hk.SetData(data.healthKit);
+
+            Velocity2D.Data v2d = new Velocity2D.Data(
+                new Velocity2D.Data.Refs(data.refs.ts),
+                leftMovement.GetVelocity());
             Velocity2D lm = pup.GetComponent<Velocity2D>();
-            lm.SetVelocity(leftMovement.GetVelocity());
+            lm.SetData(v2d);
         }
         else
         {
@@ -123,8 +134,12 @@ public class EnemyHealth : MonoBehaviour
                 }
                 ItemPowerup pup = powerup.GetComponent<ItemPowerup>();
                 pup.SetPlayerPowerup(data.refs.playerPowerup);
+
+                Velocity2D.Data v2d = new Velocity2D.Data(
+                    new Velocity2D.Data.Refs(data.refs.ts),
+                    leftMovement.GetVelocity());
                 Velocity2D lm = powerup.GetComponent<Velocity2D>();
-                lm.SetVelocity(leftMovement.GetVelocity());
+                lm.SetData(v2d);
             }
         }
     }

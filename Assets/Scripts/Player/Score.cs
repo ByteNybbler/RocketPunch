@@ -14,6 +14,8 @@ public class Score : MonoBehaviour
     [SerializeField]
     [Tooltip("Text to use for the score.")]
     UIValueText textScore;
+    [SerializeField]
+    TimeScale ts;
 
     int pointsPerSecondPlaying;
     Timer timerPointsPerSecond = new Timer(1.0f);
@@ -31,7 +33,7 @@ public class Score : MonoBehaviour
 
     private void FixedUpdate()
     {
-        while (timerPointsPerSecond.TimeUp(Time.deltaTime))
+        while (timerPointsPerSecond.TimeUp(ts.DeltaTime()))
         {
             textScore.AddValue(pointsPerSecondPlaying);
         }

@@ -10,17 +10,29 @@ public class Velocity2D : MonoBehaviour
     [System.Serializable]
     public class Data : IDeepCopyable<Data>
     {
+        [System.Serializable]
+        public class Refs
+        {
+            public TimeScale ts;
+
+            public Refs(TimeScale ts)
+            {
+                this.ts = ts;
+            }
+        }
+        public Refs refs;
         [Tooltip("The vector determining the direction and speed to move.")]
         public Vector2 velocity;
 
-        public Data(Vector2 velocity)
+        public Data(Refs refs, Vector2 velocity)
         {
+            this.refs = refs;
             this.velocity = velocity;
         }
 
         public Data DeepCopy()
         {
-            return new Data(velocity);
+            return new Data(refs, velocity);
         }
     }
     [SerializeField]
@@ -37,7 +49,7 @@ public class Velocity2D : MonoBehaviour
 
     private void FixedUpdate()
     {
-        mover.MovePosition(data.velocity * Time.deltaTime);
+        mover.MovePosition(data.velocity * data.refs.ts.DeltaTime());
     }
 
     public void SetVelocity(Vector2 val)

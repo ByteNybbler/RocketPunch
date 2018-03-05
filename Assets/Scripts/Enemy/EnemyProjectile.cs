@@ -10,6 +10,20 @@ public class EnemyProjectile : MonoBehaviour
     [System.Serializable]
     public class Data : IDeepCopyable<Data>
     {
+        [System.Serializable]
+        public class Refs
+        {
+            public TimeScale ts;
+            [Tooltip("Reference to the Score instance.")]
+            public Score score;
+
+            public Refs(TimeScale ts, Score score)
+            {
+                this.ts = ts;
+                this.score = score;
+            }
+        }
+        public Refs refs;
         [Tooltip("Whether the projectile is punchable or not.")]
         public bool punchable;
         [Tooltip("How much damage the projectile does.")]
@@ -22,25 +36,23 @@ public class EnemyProjectile : MonoBehaviour
         public float angle;
         [Tooltip("The speed of the projectile.")]
         public float speed;
-        [Tooltip("Reference to the Score instance.")]
-        public Score score;
 
-        public Data(bool punchable, int damage, int pointsWhenPunched, Color color,
-            float angle, float speed, Score score)
+        public Data(Refs refs, bool punchable, int damage, int pointsWhenPunched,
+            Color color, float angle, float speed)
         {
+            this.refs = refs;
             this.punchable = punchable;
             this.damage = damage;
             this.pointsWhenPunched = pointsWhenPunched;
             this.color = color;
             this.angle = angle;
             this.speed = speed;
-            this.score = score;
         }
 
         public Data DeepCopy()
         {
-            return new Data(punchable, damage, pointsWhenPunched, color,
-                angle, speed, score);
+            return new Data(refs, punchable, damage, pointsWhenPunched, color,
+                angle, speed);
         }
     }
     [SerializeField]
@@ -60,7 +72,11 @@ public class EnemyProjectile : MonoBehaviour
 
     private void Start()
     {
-        SetAngleSpeed(data.angle, data.speed);
+        Velocity2D.Data dat = new Velocity2D.Data(
+            new Velocity2D.Data.Refs(data.refs.ts),
+            UtilHeading2D.HeadingVectorFromDegrees(data.angle) * data.speed);
+        velocity.SetData(dat);
+        //SetAngleSpeed(data.angle, data.speed);
         SetColor(data.color);
     }
 
@@ -85,7 +101,7 @@ public class EnemyProjectile : MonoBehaviour
 
     private void PunchedByPlayer()
     {
-        data.score.Add(data.pointsWhenPunched);
+        data.refs.score.Add(data.pointsWhenPunched);
     }
 
     private void OnTriggerEnter2D(Collider2D collision)

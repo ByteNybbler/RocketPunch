@@ -10,6 +10,17 @@ public class OscillatePosition2D : MonoBehaviour
     [System.Serializable]
     public class Data : IDeepCopyable<Data>
     {
+        [System.Serializable]
+        public class Refs
+        {
+            public TimeScale ts;
+
+            public Refs(TimeScale ts)
+            {
+                this.ts = ts;
+            }
+        }
+        public Refs refs;
         [Tooltip("The size of the x oscillation.")]
         public float xMagnitude;
         [Tooltip("The speed of the x oscillation.")]
@@ -19,8 +30,10 @@ public class OscillatePosition2D : MonoBehaviour
         [Tooltip("The speed of the y oscillation.")]
         public float ySpeed;
 
-        public Data(float xMagnitude, float xSpeed, float yMagnitude, float ySpeed)
+        public Data(Refs refs, float xMagnitude, float xSpeed,
+            float yMagnitude, float ySpeed)
         {
+            this.refs = refs;
             this.xMagnitude = xMagnitude;
             this.xSpeed = xSpeed;
             this.yMagnitude = yMagnitude;
@@ -29,7 +42,7 @@ public class OscillatePosition2D : MonoBehaviour
 
         public Data DeepCopy()
         {
-            return new Data(xMagnitude, xSpeed, yMagnitude, ySpeed);
+            return new Data(refs, xMagnitude, xSpeed, yMagnitude, ySpeed);
         }
     }
     [SerializeField]
@@ -55,8 +68,8 @@ public class OscillatePosition2D : MonoBehaviour
 
     private void FixedUpdate()
     {
-        float xDifference = oscX.SampleDelta(Time.deltaTime);
-        float yDifference = oscY.SampleDelta(Time.deltaTime);
+        float xDifference = oscX.SampleDelta(data.refs.ts.DeltaTime());
+        float yDifference = oscY.SampleDelta(data.refs.ts.DeltaTime());
         Vector2 change = new Vector2(xDifference, yDifference);
         mover.MovePosition(change);
     }

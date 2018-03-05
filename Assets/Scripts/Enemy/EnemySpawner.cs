@@ -31,6 +31,8 @@ public class EnemySpawner : MonoBehaviour
     [SerializeField]
     [Tooltip("The enemy spawn locations.")]
     GameObject[] spawns;
+    [SerializeField]
+    TimeScale ts;
 
     // The current maximum challenge value for the spawn groups.
     float challengeMax;
@@ -131,25 +133,27 @@ public class EnemySpawner : MonoBehaviour
                 Debug.Log(enemyName + ": Could not parse HTML color for volley!");
             }
             EnemyProjectile.Data projectile = new EnemyProjectile.Data(
+                new EnemyProjectile.Data.Refs(ts, score),
                 volleyNode.TryGetBool("projectile punchable", true),
                 volleyNode.TryGetInt("projectile damage", 20),
                 pointsPerProjectilePunched,
                 projColor,
                 volleyNode.TryGetFloat("direction", 180.0f),
-                volleyNode.TryGetFloat("speed", 4.0f),
-                score);
+                volleyNode.TryGetFloat("speed", 4.0f));
 
             VolleyData volley = new VolleyData(projectile,
                 volleyNode.TryGetInt("projectile count", 1),
                 volleyNode.TryGetFloat("spread angle", 0.0f),
                 volleyNode.TryGetBool("aims at player", false));
 
-            OscillatePosition2D.Data oscData = new OscillatePosition2D.Data(0.0f, 0.0f,
+            OscillatePosition2D.Data oscData = new OscillatePosition2D.Data(
+                new OscillatePosition2D.Data.Refs(ts),
+                0.0f, 0.0f,
                 enemyNode.TryGetFloat("y oscillation magnitude", 0.0f),
                 enemyNode.TryGetFloat("y oscillation speed", 0.0f));
 
             EnemyAttack.Data attack = new EnemyAttack.Data(
-                new EnemyAttack.Data.Refs(playerPowerup.gameObject),
+                new EnemyAttack.Data.Refs(ts, playerPowerup.gameObject),
                 volley,
                 enemyNode.TryGetFloat("seconds between volleys", 1.0f),
                 enemyNode.TryGetFloat("volley direction delta per shot", 0.0f),
@@ -159,6 +163,7 @@ public class EnemySpawner : MonoBehaviour
                 enemyNode.TryGetString("sprite name", "basic"));
 
             Velocity2D.Data leftMovement = new Velocity2D.Data(
+                new Velocity2D.Data.Refs(ts),
                 new Vector2(
                 -enemyNode.TryGetFloat("left movement speed increase", 0.0f)
                 - enemyBaseLeftMovementSpeed, 0.0f));
@@ -168,7 +173,7 @@ public class EnemySpawner : MonoBehaviour
                 healthPerHealthKit,
                 pointsPerFullHealthHealthKit);
             EnemyHealth.Data enemyHealthData = new EnemyHealth.Data(
-                new EnemyHealth.Data.Refs(score, playerPowerup),
+                new EnemyHealth.Data.Refs(ts, score, playerPowerup),
                 healthKitData,
                 pointsPerEnemyKilled,
                 probItem);
@@ -191,7 +196,7 @@ public class EnemySpawner : MonoBehaviour
         {
             if (spawnGroupActive)
             {
-                while (timerSpawn.TimeUp(Time.deltaTime))
+                while (timerSpawn.TimeUp(ts.DeltaTime()))
                 {
                     ChooseRandomSpawnPosition();
                     SpawnEnemy();
@@ -199,7 +204,7 @@ public class EnemySpawner : MonoBehaviour
             }
             else
             {
-                while (timerSpawnGroup.TimeUp(Time.deltaTime))
+                while (timerSpawnGroup.TimeUp(ts.DeltaTime()))
                 {
                     challengeCurrent = 0.0f;
                     challengeMax += challengeIncreasePerSpawnGroup;
@@ -211,7 +216,7 @@ public class EnemySpawner : MonoBehaviour
         }
         else
         {
-            while (timerDeadTime.TimeUp(Time.deltaTime))
+            while (timerDeadTime.TimeUp(ts.DeltaTime()))
             {
                 spawnGroupsSinceLastDeadTime = 0;
             }

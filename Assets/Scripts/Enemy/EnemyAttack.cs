@@ -13,11 +13,13 @@ public class EnemyAttack : MonoBehaviour
         [System.Serializable]
         public class Refs
         {
+            public TimeScale ts;
             [Tooltip("Reference to the player.")]
             public GameObject player;
 
-            public Refs(GameObject player)
+            public Refs(TimeScale ts, GameObject player)
             {
+                this.ts = ts;
                 this.player = player;
             }
         }
@@ -75,7 +77,7 @@ public class EnemyAttack : MonoBehaviour
 
     private void FixedUpdate()
     {
-        while (timerVolley.TimeUp(Time.deltaTime))
+        while (timerVolley.TimeUp(data.refs.ts.DeltaTime()))
         {
             VolleyData volley = data.volley;
             float[] angles = UtilSpread.PopulateAngle(volley.spreadAngle,
@@ -99,7 +101,10 @@ public class EnemyAttack : MonoBehaviour
                 projData.angle = angle;
                 proj.SetData(projData);
                 Velocity2D leftMovement = projectile.GetComponent<Velocity2D>();
-                leftMovement.SetVelocity(new Vector2(-data.projectileLeftSpeed, 0.0f));
+                Velocity2D.Data v2d = new Velocity2D.Data(
+                    new Velocity2D.Data.Refs(data.refs.ts),
+                    new Vector2(-data.projectileLeftSpeed, 0.0f));
+                leftMovement.SetData(v2d);
             }
             data.volley.projectile.angle += data.volleyDirectionDeltaPerShot;
         }
