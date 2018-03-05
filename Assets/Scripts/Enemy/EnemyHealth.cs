@@ -84,7 +84,9 @@ public class EnemyHealth : MonoBehaviour
         data.refs.score.Add(data.pointsWhenKilled);
         DropItem();
         ac.PlaySFX(enemyDeathSounds.GetRandomElement());
-        Instantiate(deathExplosion, transform.position, Quaternion.identity);
+        GameObject de = Instantiate(deathExplosion, transform.position, Quaternion.identity);
+        Velocity2D lm = de.GetComponent<Velocity2D>();
+        lm.SetVelocity(leftMovement.GetVelocity());
         Destroy(gameObject);
     }
 
