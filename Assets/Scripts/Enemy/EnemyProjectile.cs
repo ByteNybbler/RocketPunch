@@ -102,6 +102,7 @@ public class EnemyProjectile : MonoBehaviour
     private void PunchedByPlayer()
     {
         data.refs.score.Add(data.pointsWhenPunched);
+        data.refs.score.PunchedBullet();
     }
 
     private void OnTriggerEnter2D(Collider2D collision)

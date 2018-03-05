@@ -39,14 +39,19 @@ public class PlayerDeathTracker : MonoBehaviour
     public void PlayerHasDied()
     {
         deathWaitTimer.Start();
-        PlayerPrefs.SetInt("HighScore", score.GetValue());
+        int scoreThisTime = score.GetValue();
+        if (scoreThisTime > PlayerPrefs.GetInt("HighScore", 0))
+        {
+            PlayerPrefs.SetInt("HighScore", scoreThisTime);
+        }
     }
 
     private void FixedUpdate()
     {
         while (deathWaitTimer.TimeUp(Time.deltaTime))
         {
-            UtilScene.ResetScene();
+            //UtilScene.ResetScene();
+            score.PopulateSummaryScreen();
         }
     }
 }

@@ -84,6 +84,7 @@ public class EnemyHealth : MonoBehaviour
     public void Kill()
     {
         data.refs.score.Add(data.pointsWhenKilled);
+        data.refs.score.PunchedEnemy();
         DropItem();
         ac.PlaySFX(enemyDeathSounds.GetRandomElement());
 
