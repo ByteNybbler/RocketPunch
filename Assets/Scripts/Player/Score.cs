@@ -41,4 +41,9 @@ public class Score : MonoBehaviour
     {
         textScore.AddValue(val);
     }
+
+    public int GetValue()
+    {
+        return textScore.GetValue();
+    }
 }

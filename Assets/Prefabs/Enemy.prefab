@@ -255,6 +255,8 @@ MonoBehaviour:
   prefabMoreArms: {fileID: 1473690354280622, guid: fadae3906e703e24f8c6bff1e4a11deb,
     type: 2}
   enemyDeathSounds: {fileID: 11400000, guid: c09bb90c1f9106d47ad3f2efcfa4b5a7, type: 2}
+  deathExplosion: {fileID: 1395971513036336, guid: bf2b74b771463dd46ae404d9b6b2c500,
+    type: 2}
 --- !u!114 &114855306671082544
 MonoBehaviour:
   m_ObjectHideFlags: 1

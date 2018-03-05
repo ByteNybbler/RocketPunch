@@ -1,5 +1,5 @@
 ﻿// Author(s): Paul Calande
-// 
+// Tracks an integer and updates it accordingly in a Text component.
 
 using System.Collections;
 using System.Collections.Generic;

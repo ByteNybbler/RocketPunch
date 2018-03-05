@@ -84,11 +84,13 @@ public class EnemyAttack : MonoBehaviour
             foreach (float a in angles)
             {
                 float angle = a;
-                if (volley.aimAtPlayer)
+                if (data.refs.player != null)
                 {
-                    Vector3 playerPos = data.refs.player.transform.position;
-                    //angle += UtilHeading2D.GetSignedAngleToPoint(transform.position, playerPos);
-                    angle += UtilHeading2D.SignedAngleToPoint(transform.position, playerPos);
+                    if (volley.aimAtPlayer)
+                    {
+                        Vector3 playerPos = data.refs.player.transform.position;
+                        angle += UtilHeading2D.SignedAngleToPoint(transform.position, playerPos);
+                    }
                 }
                 Quaternion rotation = Quaternion.AngleAxis(angle, Vector3.forward);
                 GameObject projectile = Instantiate(prefabProjectile, transform.position, rotation);

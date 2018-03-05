@@ -63,6 +63,9 @@ public class EnemyHealth : MonoBehaviour
     [SerializeField]
     [Tooltip("Sounds to play for the enemy dying.")]
     SOAAudioClip enemyDeathSounds;
+    [SerializeField]
+    [Tooltip("Explosion object to instantiate upon death.")]
+    GameObject deathExplosion;
 
     AudioController ac;
 
@@ -81,6 +84,7 @@ public class EnemyHealth : MonoBehaviour
         data.refs.score.Add(data.pointsWhenKilled);
         DropItem();
         ac.PlaySFX(enemyDeathSounds.GetRandomElement());
+        Instantiate(deathExplosion, transform.position, Quaternion.identity);
         Destroy(gameObject);
     }
 

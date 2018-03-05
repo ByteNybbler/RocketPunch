@@ -1,4 +1,7 @@
-﻿using System.Collections;
+﻿// Author(s): Paul Calande
+// Script for tuning the player.
+
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -10,16 +13,19 @@ public class Player : MonoBehaviour
         public PlayerPowerup.Data powerupData;
         public PlayerInput.Data inputData;
         public PlayerHealth.Data healthData;
+        public PlayerDeathTracker.Data deathTrackerData;
 
         public Data(PlayerPunch.Data punchData,
             PlayerPowerup.Data powerupData,
             PlayerInput.Data inputData,
-            PlayerHealth.Data healthData)
+            PlayerHealth.Data healthData,
+            PlayerDeathTracker.Data deathTrackerData)
         {
             this.punchData = punchData;
             this.powerupData = powerupData;
             this.inputData = inputData;
             this.healthData = healthData;
+            this.deathTrackerData = deathTrackerData;
         }
     }
 
@@ -41,6 +47,9 @@ public class Player : MonoBehaviour
     [SerializeField]
     [Tooltip("Reference to the PlayerInput component.")]
     PlayerInput playerInput;
+    [SerializeField]
+    [Tooltip("Reference to the PlayerDeathTracker component.")]
+    PlayerDeathTracker playerDeathTracker;
 
     [SerializeField]
     [Tooltip("Voice clips for starting the level.")]
@@ -54,6 +63,7 @@ public class Player : MonoBehaviour
         playerPowerup.SetData(val.powerupData);
         playerInput.SetData(val.inputData);
         playerHealth.SetData(val.healthData);
+        playerDeathTracker.SetData(val.deathTrackerData);
     }
 
     private void Awake()
@@ -86,8 +96,9 @@ public class Player : MonoBehaviour
         PlayerHealth.Data healthData = new PlayerHealth.Data(
             jsonP.TryGetFloat("seconds of invincibility when damaged", 1.0f),
             jsonP.TryGetFloat("chance of saying fuck", 0.01f),
-            jsonP.TryGetInt("max health", 100)
-            );
-        SetData(new Data(punchData, powerupData, inputData, healthData));
+            jsonP.TryGetInt("max health", 100));
+        PlayerDeathTracker.Data deathData = new PlayerDeathTracker.Data(
+            jsonP.TryGetFloat("seconds to wait after dying", 5.0f));
+        SetData(new Data(punchData, powerupData, inputData, healthData, deathData));
     }
 }

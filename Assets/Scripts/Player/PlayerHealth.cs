@@ -46,6 +46,12 @@ public class PlayerHealth : MonoBehaviour
     [SerializeField]
     [Tooltip("The player heal voice clips.")]
     SOAAudioClip healVoiceClips;
+    [SerializeField]
+    [Tooltip("The explosion object to instantiate when dying.")]
+    GameObject deathExplosion;
+    [SerializeField]
+    [Tooltip("Reference to the PlayerDeathTracker component.")]
+    PlayerDeathTracker playerDeathTracker;
 
     // Invincibility timer.
     Timer timerInvincible;
@@ -79,7 +85,9 @@ public class PlayerHealth : MonoBehaviour
 
     private void Health_Died()
     {
-        UtilScene.ResetScene();
+        Instantiate(deathExplosion, transform.position, Quaternion.identity);
+        playerDeathTracker.PlayerHasDied();
+        Destroy(gameObject);
     }
 
     // Returns whether the player can currently be damaged.
