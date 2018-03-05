@@ -52,6 +52,9 @@ public class PlayerHealth : MonoBehaviour
     [SerializeField]
     [Tooltip("Reference to the PlayerDeathTracker component.")]
     PlayerDeathTracker playerDeathTracker;
+    [SerializeField]
+    [Tooltip("Array of possible death explosion sounds.")]
+    SOAAudioClip deathExplosionSounds;
 
     // Invincibility timer.
     Timer timerInvincible;
@@ -86,6 +89,7 @@ public class PlayerHealth : MonoBehaviour
     private void Health_Died()
     {
         Instantiate(deathExplosion, transform.position, Quaternion.identity);
+        ac.PlaySFX(deathExplosionSounds.GetRandomElement());
         playerDeathTracker.PlayerHasDied();
         Destroy(gameObject);
     }
