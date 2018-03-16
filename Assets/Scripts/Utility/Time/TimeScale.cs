@@ -1,6 +1,5 @@
 ﻿// Author(s): Paul Calande
 // Convenient script for scaling time on a per-GameObject basis.
-// Note that it uses FixedUpdate's time step.
 
 using System.Collections;
 using System.Collections.Generic;
@@ -13,39 +12,53 @@ public class TimeScale : MonoBehaviour
     // Whether the time scale is paused.
     // Pausing the time scale effectively sets delta time to zero.
     bool paused = false;
-    // Stores the delta time based on the time scale settings.
+    // Stores the scaled fixed delta time based on the time scale settings.
     // Helps avoid unnecessary repeated calculations.
     float cachedDeltaTime;
 
     private void Start()
     {
-        CalculateDeltaTime();
+        CacheDeltaTime();
     }
 
-    // Update the cached delta time value based on the time scale settings.
-    private void CalculateDeltaTime()
+    // Returns a new delta time that is modified by the time scale settings.
+    private float ConvertDeltaTime(float deltaTime)
     {
         if (paused)
         {
-            cachedDeltaTime = 0.0f;
+            return 0.0f;
         }
         else
         {
-            cachedDeltaTime = Time.fixedDeltaTime * timeScale;
+            return deltaTime * timeScale;
         }
     }
 
-    // Returns delta time, taking the time scale into account.
+    // Update the cached delta time value based on the time scale settings.
+    private void CacheDeltaTime()
+    {
+        cachedDeltaTime = ConvertDeltaTime(Time.fixedDeltaTime);
+    }
+
+    // Returns the fixed delta time, taking the time scale into account.
     // Returns zero if the time scale is paused.
+    // To be used for FixedUpdate's time step.
     public float DeltaTime()
     {
         return cachedDeltaTime;
     }
 
+    // Like the DeltaTime method, but it returns the non-fixed delta time.
+    // For use in Update rather than FixedUpdate.
+    public float DeltaTimeNotFixed()
+    {
+        return ConvertDeltaTime(Time.deltaTime);
+    }
+
     public void SetTimeScale(float val)
     {
         timeScale = val;
-        CalculateDeltaTime();
+        CacheDeltaTime();
     }
 
     public float GetTimeScale()
@@ -59,7 +72,7 @@ public class TimeScale : MonoBehaviour
     public void TogglePause()
     {
         paused = !paused;
-        CalculateDeltaTime();
+        CacheDeltaTime();
     }
 
     // Returns true if the time scale is paused.
