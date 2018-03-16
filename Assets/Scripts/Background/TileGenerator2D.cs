@@ -14,7 +14,7 @@ public class TileGenerator2D : MonoBehaviour
     [Tooltip("How many tiles to have along the y-axis.")]
     int yTiles;
     [SerializeField]
-    [Tooltip("Whether to add PositionModulo components to the instantiated tiles. "
+    [Tooltip("Whether to add modular positioning components to the instantiated tiles. "
         + "Does not add the other necessary components like mover, Rigidbody, etc.")]
     bool addPositionModulo;
     [SerializeField]
@@ -76,9 +76,9 @@ public class TileGenerator2D : MonoBehaviour
                 tile.transform.localScale = scale;
                 if (addPositionModulo)
                 {
-                    PositionModulo2D pm = tile.AddComponent<PositionModulo2D>();
-                    PositionModulo2D.Data pmData = new PositionModulo2D.Data(
-                        new PositionModulo2D.Data.Refs(tile.GetComponent<Mover2D>()),
+                    ModularPosition2D pm = tile.AddComponent<ModularPosition2D>();
+                    ModularPosition2D.Data pmData = new ModularPosition2D.Data(
+                        new ModularPosition2D.Data.Refs(tile.GetComponent<Mover2D>()),
                         region);
                     pm.SetData(pmData);
                 }

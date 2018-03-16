@@ -5,7 +5,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PositionModulo2D : MonoBehaviour
+public class ModularPosition2D : MonoBehaviour
 {
     [System.Serializable]
     public class Data

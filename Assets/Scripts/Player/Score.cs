@@ -5,7 +5,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using SimpleJSON;
 
 public class Score : MonoBehaviour
 {
@@ -46,8 +45,8 @@ public class Score : MonoBehaviour
 
     private void Tune()
     {
-        JSONNode json = JSON.Parse(scoreFile.ToString());
-        pointsPerSecondPlaying = json["points per second playing"].AsInt;
+        JSONNodeReader reader = new JSONNodeReader(scoreFile);
+        pointsPerSecondPlaying = reader.TryGetInt("points per second playing", 10);
     }
 
     private void FixedUpdate()

@@ -59,6 +59,8 @@ public class PlayerPunch : MonoBehaviour
     [SerializeField]
     [Tooltip("Reference to the punch cooldown meter.")]
     UIMeter meterPunchCooldown;
+    [SerializeField]
+    TimeScale ts;
 
     AudioController ac;
     static int hashPunch = Animator.StringToHash("Punch");
@@ -168,13 +170,13 @@ public class PlayerPunch : MonoBehaviour
     private void FixedUpdate()
     {
         meterPunchCooldown.SetPercent(timerPunchCooldown.GetPercentFinished());
-        while (timerPunching.TimeUp(Time.deltaTime))
+        while (timerPunching.TimeUp(ts.DeltaTime()))
         {
             // Punch finished.
             punchingObject.SetActive(false);
             timerPunchCooldown.Start();
         }
-        while (timerPunchCooldown.TimeUp(Time.deltaTime))
+        while (timerPunchCooldown.TimeUp(ts.DeltaTime()))
         {
             // Punch cooldown finished.
         }

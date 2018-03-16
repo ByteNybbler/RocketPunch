@@ -48,18 +48,9 @@ public class PlayerInput : MonoBehaviour, IPlayable
 
     public void TogglePause()
     {
-        if (tsGameplay.IsFrozen())
-        {
-            tsGameplay.SetTimeScale(1.0f);
-            tsBackground.SetTimeScale(1.0f);
-            pauseMenu.SetActive(false);
-        }
-        else
-        {
-            tsGameplay.SetTimeScale(0.0f);
-            tsBackground.SetTimeScale(0.0f);
-            pauseMenu.SetActive(true);
-        }
+        tsGameplay.TogglePause();
+        tsBackground.TogglePause();
+        pauseMenu.SetActive(!pauseMenu.activeSelf);
     }
 
     public void ReceiveInput(InputReader inputReader)
@@ -70,7 +61,7 @@ public class PlayerInput : MonoBehaviour, IPlayable
             * data.movementSpeed * tsGameplay.DeltaTime();
         mover.MovePosition(change);
 
-        if (!tsGameplay.IsFrozen())
+        if (!tsGameplay.IsPaused())
         {
             if (inputReader.GetKeyDown(KeyCode.Space))
             {

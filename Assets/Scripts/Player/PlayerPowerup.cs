@@ -30,6 +30,8 @@ public class PlayerPowerup : MonoBehaviour
     [SerializeField]
     [Tooltip("Voice clips for collecting a powerup.")]
     SOAAudioClip voicePowerup;
+    [SerializeField]
+    TimeScale ts;
 
     AudioController ac;
 
@@ -80,12 +82,12 @@ public class PlayerPowerup : MonoBehaviour
 
     private void FixedUpdate()
     {
-        while (timerBattleAxe.TimeUp(Time.deltaTime))
+        while (timerBattleAxe.TimeUp(ts.DeltaTime()))
         {
             playerPunch.UseBattleAxe(false);
             SetPowerupExists(false);
         }
-        while (timerMoreArms.TimeUp(Time.deltaTime))
+        while (timerMoreArms.TimeUp(ts.DeltaTime()))
         {
             playerPunch.UseMoreArms(false);
             SetPowerupExists(false);

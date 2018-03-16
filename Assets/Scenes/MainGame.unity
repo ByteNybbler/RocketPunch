@@ -4567,6 +4567,7 @@ MonoBehaviour:
   - {fileID: 2119569903}
   - {fileID: 937206022}
   meterPunchCooldown: {fileID: 784753868}
+  ts: {fileID: 742453017}
 --- !u!114 &2109147859
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4641,6 +4642,7 @@ MonoBehaviour:
     secondsOfMoreArms: 0
   playerPunch: {fileID: 2109147858}
   voicePowerup: {fileID: 11400000, guid: 6588cc9ce11f7ff48b94f5208628400c, type: 2}
+  ts: {fileID: 742453017}
 --- !u!114 &2109147863
 MonoBehaviour:
   m_ObjectHideFlags: 0

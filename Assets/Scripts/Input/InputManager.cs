@@ -40,6 +40,23 @@ public class InputManager : MonoBehaviour
         subscribers.Remove(subscriber);
     }
 
+    public bool HasSubscriber(IPlayable subscriber)
+    {
+        return subscribers.Contains(subscriber);
+    }
+
+    public void ToggleSubscriber(IPlayable subscriber)
+    {
+        if (HasSubscriber(subscriber))
+        {
+            RemoveSubscriber(subscriber);
+        }
+        else
+        {
+            AddSubscriber(subscriber);
+        }
+    }
+
     private void SendInputToSubscribers()
     {
         foreach (IPlayable sub in subscribers)
