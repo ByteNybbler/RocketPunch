@@ -1,5 +1,5 @@
 ﻿// Author(s): Paul Calande
-// Toggles all Animator components in a GameObject hierarchy.
+// Toggles all Animator components in a GameObject's hierarchy.
 // Only toggles Animator components that are currently enabled.
 
 using System.Collections;
