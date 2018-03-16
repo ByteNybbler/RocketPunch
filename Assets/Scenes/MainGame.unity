@@ -4417,6 +4417,7 @@ GameObject:
   - component: {fileID: 2109147860}
   - component: {fileID: 2109147862}
   - component: {fileID: 2109147863}
+  - component: {fileID: 2109147864}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -4524,6 +4525,7 @@ MonoBehaviour:
   tsGameplay: {fileID: 742453017}
   tsBackground: {fileID: 2084896450}
   pauseMenu: {fileID: 1321819369}
+  hat: {fileID: 2109147864}
 --- !u!114 &2109147857
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4652,6 +4654,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: dc14310824c6e8b47bdf049e463da9a6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &2109147864
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 2109147852}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 31379951351c40b4b92138b41643fba1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &2111159182

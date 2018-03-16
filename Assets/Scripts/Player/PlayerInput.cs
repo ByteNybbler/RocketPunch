@@ -34,6 +34,9 @@ public class PlayerInput : MonoBehaviour, IPlayable
     [SerializeField]
     [Tooltip("Reference to the pause menu.")]
     GameObject pauseMenu;
+    [SerializeField]
+    [Tooltip("HierarchyAnimationToggler for the player.")]
+    HierarchyAnimationToggler hat;
 
     public void SetData(Data val)
     {
@@ -46,10 +49,16 @@ public class PlayerInput : MonoBehaviour, IPlayable
         pauseMenu.SetActive(false);
     }
 
+    private void OnDestroy()
+    {
+        ServiceLocator.GetInputManager().RemoveSubscriber(this);
+    }
+
     public void TogglePause()
     {
         tsGameplay.TogglePause();
         tsBackground.TogglePause();
+        hat.Toggle();
         pauseMenu.SetActive(!pauseMenu.activeSelf);
     }
 

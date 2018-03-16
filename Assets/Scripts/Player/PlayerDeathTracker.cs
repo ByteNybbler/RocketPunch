@@ -44,6 +44,7 @@ public class PlayerDeathTracker : MonoBehaviour
         {
             PlayerPrefs.SetInt("HighScore", scoreThisTime);
         }
+        score.enabled = false;
     }
 
     private void FixedUpdate()
