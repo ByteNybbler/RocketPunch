@@ -75,13 +75,13 @@ public class EnemySpawner : MonoBehaviour
     private void Tune()
     {
         JSONNodeReader reader = new JSONNodeReader(enemySpawnersFile);
-        challengeMax = reader.TryGetFloat("initial challenge", 1.0f);
-        challengeIncreasePerSpawnGroup = reader.TryGetFloat("challenge increase per spawn group", 1.0f);
-        spawnGroupsPerDeadTime = reader.TryGetInt("spawn groups per dead time", 3);
-        secondsBetweenSpawns = reader.TryGetFloat("seconds between spawns", 1.0f);
-        secondsBetweenSpawnGroups = reader.TryGetFloat("seconds between spawn groups", 2.0f);
-        secondsPerDeadTime = reader.TryGetFloat("seconds per dead time", 3.0f);
-        enemyBaseLeftMovementSpeed = reader.TryGetFloat("enemy base left movement speed", 0.05f);
+        challengeMax = reader.Get("initial challenge", 1.0f);
+        challengeIncreasePerSpawnGroup = reader.Get("challenge increase per spawn group", 1.0f);
+        spawnGroupsPerDeadTime = reader.Get("spawn groups per dead time", 3);
+        secondsBetweenSpawns = reader.Get("seconds between spawns", 1.0f);
+        secondsBetweenSpawnGroups = reader.Get("seconds between spawn groups", 2.0f);
+        secondsPerDeadTime = reader.Get("seconds per dead time", 3.0f);
+        enemyBaseLeftMovementSpeed = reader.Get("enemy base left movement speed", 0.05f);
 
         timerSpawn = new Timer(secondsBetweenSpawns);
         timerSpawnGroup = new Timer(secondsBetweenSpawnGroups);
@@ -95,9 +95,9 @@ public class EnemySpawner : MonoBehaviour
         int pointsPerFullHealthHealthKit;
 
         reader.SetFile(scoreFile);
-        pointsPerEnemyKilled = reader.TryGetInt("points per enemy killed", 100);
-        pointsPerProjectilePunched = reader.TryGetInt("points per projectile punched", 10);
-        pointsPerFullHealthHealthKit = reader.TryGetInt("points per full health health kit", 100);
+        pointsPerEnemyKilled = reader.Get("points per enemy killed", 100);
+        pointsPerProjectilePunched = reader.Get("points per projectile punched", 10);
+        pointsPerFullHealthHealthKit = reader.Get("points per full health health kit", 100);
 
         // Drop rates for items.
         Probability<ItemType> probItem = new Probability<ItemType>(ItemType.None);
@@ -106,27 +106,28 @@ public class EnemySpawner : MonoBehaviour
         float dropRateMoreArms;
 
         reader.SetFile(itemsFile);
-        dropRateHealthKit = reader.TryGetFloat("health kit drop rate", 0.07f);
-        dropRateBattleAxe = reader.TryGetFloat("battle axe drop rate", 0.05f);
-        dropRateMoreArms = reader.TryGetFloat("more arms drop rate", 0.05f);
+        dropRateHealthKit = reader.Get("health kit drop rate", 0.07f);
+        dropRateBattleAxe = reader.Get("battle axe drop rate", 0.05f);
+        dropRateMoreArms = reader.Get("more arms drop rate", 0.05f);
+        healthPerHealthKit = reader.Get("health per health kit", 50);
+
         probItem.SetChance(ItemType.HealthKit, dropRateHealthKit);
         probItem.SetChance(ItemType.BattleAxe, dropRateBattleAxe);
         probItem.SetChance(ItemType.MoreArms, dropRateMoreArms);
-        healthPerHealthKit = reader.TryGetInt("health per health kit", 50);
 
         reader.SetFile(enemiesFile);
-        JSONArrayReader enemyArray = reader.TryGetArray("enemies");
+        JSONArrayReader enemyArray = reader.Get<JSONArrayReader>("enemies");
         //for (int i = 0; i < enemyArray.GetCount(); ++i)
         JSONNodeReader enemyNode;
         while (enemyArray.GetNextNode(out enemyNode))
         {
             //JSONNodeReader enemyNode = enemyArray.GetNode(i);
-            string enemyName = enemyNode.TryGetString("name", "UNNAMED");
+            string enemyName = enemyNode.Get("name", "UNNAMED");
 
             // Read volley data.
-            JSONNodeReader volleyNode = enemyNode.TryGetNode("volley");
+            JSONNodeReader volleyNode = enemyNode.Get<JSONNodeReader>("volley");
 
-            string colString = volleyNode.TryGetString("color", "#ffffff");
+            string colString = volleyNode.Get("color", "#ffffff");
             Color projColor;
             if (!ColorUtility.TryParseHtmlString(colString, out projColor))
             {
@@ -134,38 +135,38 @@ public class EnemySpawner : MonoBehaviour
             }
             EnemyProjectile.Data projectile = new EnemyProjectile.Data(
                 new EnemyProjectile.Data.Refs(ts, score),
-                volleyNode.TryGetBool("projectile punchable", true),
-                volleyNode.TryGetInt("projectile damage", 20),
+                volleyNode.Get("projectile punchable", true),
+                volleyNode.Get("projectile damage", 20),
                 pointsPerProjectilePunched,
                 projColor,
-                volleyNode.TryGetFloat("direction", 180.0f),
-                volleyNode.TryGetFloat("speed", 4.0f));
+                volleyNode.Get("direction", 180.0f),
+                volleyNode.Get("speed", 4.0f));
 
             VolleyData volley = new VolleyData(projectile,
-                volleyNode.TryGetInt("projectile count", 1),
-                volleyNode.TryGetFloat("spread angle", 0.0f),
-                volleyNode.TryGetBool("aims at player", false));
+                volleyNode.Get("projectile count", 1),
+                volleyNode.Get("spread angle", 0.0f),
+                volleyNode.Get("aims at player", false));
 
             OscillatePosition2D.Data oscData = new OscillatePosition2D.Data(
                 new OscillatePosition2D.Data.Refs(ts),
                 0.0f, 0.0f,
-                enemyNode.TryGetFloat("y oscillation magnitude", 0.0f),
-                enemyNode.TryGetFloat("y oscillation speed", 0.0f));
+                enemyNode.Get("y oscillation magnitude", 0.0f),
+                enemyNode.Get("y oscillation speed", 0.0f));
 
             EnemyAttack.Data attack = new EnemyAttack.Data(
                 new EnemyAttack.Data.Refs(ts, playerPowerup.gameObject),
                 volley,
-                enemyNode.TryGetFloat("seconds between volleys", 1.0f),
-                enemyNode.TryGetFloat("volley direction delta per shot", 0.0f),
+                enemyNode.Get("seconds between volleys", 1.0f),
+                enemyNode.Get("volley direction delta per shot", 0.0f),
                 enemyBaseLeftMovementSpeed);
 
             EnemySprite.Data enemySprite = new EnemySprite.Data(
-                enemyNode.TryGetString("sprite name", "basic"));
+                enemyNode.Get("sprite name", "basic"));
 
             Velocity2D.Data leftMovement = new Velocity2D.Data(
                 new Velocity2D.Data.Refs(ts),
                 new Vector2(
-                -enemyNode.TryGetFloat("left movement speed increase", 0.0f)
+                -enemyNode.Get("left movement speed increase", 0.0f)
                 - enemyBaseLeftMovementSpeed, 0.0f));
 
             ItemHealthKit.Data healthKitData = new ItemHealthKit.Data(
@@ -178,7 +179,7 @@ public class EnemySpawner : MonoBehaviour
                 pointsPerEnemyKilled,
                 probItem);
 
-            Enemy.Data enemy = new Enemy.Data(enemyNode.TryGetFloat("challenge", 1.0f),
+            Enemy.Data enemy = new Enemy.Data(enemyNode.Get("challenge", 1.0f),
                 oscData,
                 attack,
                 enemySprite,

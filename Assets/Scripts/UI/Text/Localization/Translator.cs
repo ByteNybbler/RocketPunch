@@ -4,12 +4,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using SimpleJSON;
 
 public class Translator : MonoBehaviour
 {
     [SerializeField]
-    [Tooltip("All languages supported by the game.")]
+    [Tooltip("All languages supported by the application.")]
     Language[] languages;
     [SerializeField]
     [Tooltip("The default language to use when no other language is saved.")]
@@ -19,8 +18,8 @@ public class Translator : MonoBehaviour
     string currentLanguage;
     // Whether the current language reads left-to-right or right-to-left.
     bool currentLanguageRTL = false;
-    // The data loaded from the current translation file.
-    JSONNode jsonRoot;
+    // The node reader for the current translation file.
+    JSONNodeReader translationReader;
 
     private void Awake()
     {
@@ -52,7 +51,7 @@ public class Translator : MonoBehaviour
         // Update the current language.
         currentLanguage = lang.GetName();
         currentLanguageRTL = lang.IsRightToLeft();
-        jsonRoot = JSON.Parse(lang.GetTranslationFileContent());
+        translationReader = new JSONNodeReader(lang.GetTranslationFile());
 
         // Save the language choice.
         PlayerPrefs.SetString("currentLanguage", currentLanguage);
@@ -87,18 +86,18 @@ public class Translator : MonoBehaviour
     // Translates a string using the current language file.
     public string Translate(string translationKey)
     {
-        string result = jsonRoot[translationKey];
-        if (result == null)
+        string result;
+        if (translationReader.TryGet(translationKey, out result))
+        {
+            return result;
+        }
+        else
         {
             string errorStr =
                 "ERROR IN Translator.Translate: Couldn't find translation key: "
                 + translationKey;
             Debug.LogError(errorStr);
             return errorStr;
-        }
-        else
-        {
-            return result;
         }
     }
 }

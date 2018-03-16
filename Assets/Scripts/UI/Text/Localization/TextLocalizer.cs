@@ -11,8 +11,8 @@ public class TextLocalizer : MonoBehaviour
     [Tooltip("The translation key to fetch from the translation files.")]
     string translationKey;
     [SerializeField]
-    [Tooltip("Reference to the TextFormatter to use.")]
-    TextFormatter textFormatter;
+    [Tooltip("The component to use to format the text.")]
+    TextRTLSupport textFormatter;
 
     private void Start()
     {

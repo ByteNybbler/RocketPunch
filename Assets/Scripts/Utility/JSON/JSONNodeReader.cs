@@ -29,47 +29,65 @@ public class JSONNodeReader
         myNode = JSON.Parse(file.ToString());
     }
 
-    // Attempt to read a JSON node. If the node does not exist, return the default value.
-    public int TryGetInt(string nodeName, int defaultValue)
+    // For template specialization.
+    interface IAsType<T>
     {
-        JSONNode node = myNode[nodeName];
-        if (node == null)
+        T As(JSONNode node);
+    }
+    class AsType<T> : IAsType<T>
+    {
+        public static readonly IAsType<T> instance
+            = AsType.instance as IAsType<T> ?? new AsType<T>();
+
+        T IAsType<T>.As(JSONNode node)
         {
-            return defaultValue;
+            throw new System.NotSupportedException();
         }
-        else
+    }
+    class AsType : IAsType<int>, IAsType<bool>, IAsType<float>, IAsType<double>,
+        IAsType<string>, IAsType<JSONNodeReader>, IAsType<JSONArrayReader>
+    {
+        public static AsType instance = new AsType();
+
+        int IAsType<int>.As(JSONNode node)
         {
             return node.AsInt;
         }
-    }
-
-    public float TryGetFloat(string nodeName, float defaultValue)
-    {
-        JSONNode node = myNode[nodeName];
-        if (node == null)
-        {
-            return defaultValue;
-        }
-        else
-        {
-            return node.AsFloat;
-        }
-    }
-
-    public bool TryGetBool(string nodeName, bool defaultValue)
-    {
-        JSONNode node = myNode[nodeName];
-        if (node == null)
-        {
-            return defaultValue;
-        }
-        else
+        bool IAsType<bool>.As(JSONNode node)
         {
             return node.AsBool;
         }
+        float IAsType<float>.As(JSONNode node)
+        {
+            return node.AsFloat;
+        }
+        double IAsType<double>.As(JSONNode node)
+        {
+            return node.AsDouble;
+        }
+        string IAsType<string>.As(JSONNode node)
+        {
+            return node;
+        }
+        JSONNodeReader IAsType<JSONNodeReader>.As(JSONNode node)
+        {
+            return new JSONNodeReader(node);
+        }
+        JSONArrayReader IAsType<JSONArrayReader>.As(JSONNode node)
+        {
+            return new JSONArrayReader(node.AsArray);
+        }
+    }
+    private static T As<T>(JSONNode node)
+    {
+        return AsType<T>.instance.As(node);
     }
 
-    public string TryGetString(string nodeName, string defaultValue)
+    // Get will return the value stored in the node.
+    // If the node does not exist, the default value will be returned.
+    // This means the method will return a value no matter what,
+    // assuming a supported type is used.
+    public T Get<T>(string nodeName, T defaultValue)
     {
         JSONNode node = myNode[nodeName];
         if (node == null)
@@ -78,36 +96,33 @@ public class JSONNodeReader
         }
         else
         {
-            return node;
+            return As<T>(node);
         }
     }
 
-    // Tries to get a JSON object with the given node name.
-    // Returns null if no object with the given name is found.
-    public JSONNodeReader TryGetNode(string nodeName)
+    // Overload for types that support null.
+    // This will return null as the default value.
+    public T Get<T>(string nodeName) where T : class
+    {
+        return Get<T>(nodeName, null);
+    }
+
+    // TryGet will return a boolean: true if the node exists, or false if it does not.
+    // If a value is found, it is returned via the out parameter.
+    // If a value is not found, the default-constructed value is returned.
+    // TryGet should be used to support alternative behavior if a node does not exist.
+    public bool TryGet<T>(string nodeName, out T value)
     {
         JSONNode node = myNode[nodeName];
         if (node == null)
         {
-            return null;
+            value = default(T);
+            return false;
         }
         else
         {
-            return new JSONNodeReader(node);
-        }
-    }
-
-    // Returns null if no array with the given name is found.
-    public JSONArrayReader TryGetArray(string nodeName)
-    {
-        JSONNode node = myNode[nodeName];
-        if (node == null)
-        {
-            return null;
-        }
-        else
-        {
-            return new JSONArrayReader(node.AsArray);
+            value = As<T>(node);
+            return true;
         }
     }
 }

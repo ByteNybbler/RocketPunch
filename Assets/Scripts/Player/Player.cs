@@ -83,22 +83,22 @@ public class Player : MonoBehaviour
         JSONNodeReader jsonP = new JSONNodeReader(playerFile);
         JSONNodeReader jsonI = new JSONNodeReader(itemFile);
         PlayerPunch.Data punchData = new PlayerPunch.Data(
-            jsonP.TryGetFloat("seconds of punching", 1.0f),
-            jsonP.TryGetFloat("seconds of punch cooldown", 1.0f),
-            jsonI.TryGetFloat("seconds of more arms punch cooldown", 0.1f),
-            jsonP.TryGetFloat("base punch hitbox size", 1.4f),
-            jsonI.TryGetFloat("battle axe hitbox size", 2.0f));
+            jsonP.Get("seconds of punching", 1.0f),
+            jsonP.Get("seconds of punch cooldown", 1.0f),
+            jsonI.Get("seconds of more arms punch cooldown", 0.1f),
+            jsonP.Get("base punch hitbox size", 1.4f),
+            jsonI.Get("battle axe hitbox size", 2.0f));
         PlayerPowerup.Data powerupData = new PlayerPowerup.Data(
-            jsonI.TryGetFloat("seconds of battle axe", 8.0f),
-            jsonI.TryGetFloat("seconds of more arms", 8.0f));
+            jsonI.Get("seconds of battle axe", 8.0f),
+            jsonI.Get("seconds of more arms", 8.0f));
         PlayerInput.Data inputData = new PlayerInput.Data(
-            jsonP.TryGetFloat("base movement speed", 10.0f));
+            jsonP.Get("base movement speed", 10.0f));
         PlayerHealth.Data healthData = new PlayerHealth.Data(
-            jsonP.TryGetFloat("seconds of invincibility when damaged", 1.0f),
-            jsonP.TryGetFloat("chance of saying fuck", 0.01f),
-            jsonP.TryGetInt("max health", 100));
+            jsonP.Get("seconds of invincibility when damaged", 1.0f),
+            jsonP.Get("chance of saying fuck", 0.01f),
+            jsonP.Get("max health", 100));
         PlayerDeathTracker.Data deathData = new PlayerDeathTracker.Data(
-            jsonP.TryGetFloat("seconds to wait after dying", 5.0f));
+            jsonP.Get("seconds to wait after dying", 5.0f));
         SetData(new Data(punchData, powerupData, inputData, healthData, deathData));
     }
 }

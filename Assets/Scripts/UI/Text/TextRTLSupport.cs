@@ -1,6 +1,6 @@
 ﻿// Author(s): Paul Calande
-// Text formatter script that creates word wrap for both left-to-right
-// and right-to-left languages.
+// Text formatter script that provides support for both left-to-right and
+// right-to-left languages, as well as word wrap.
 // Do not use with "Best Fit" enabled on Text component!
 
 using System.Collections;
@@ -8,7 +8,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class TextFormatter : MonoBehaviour
+public class TextRTLSupport : MonoBehaviour
 {
     [SerializeField]
     [Tooltip("Reference to the Text component to perform formatting on.")]

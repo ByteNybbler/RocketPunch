@@ -46,7 +46,7 @@ public class Score : MonoBehaviour
     private void Tune()
     {
         JSONNodeReader reader = new JSONNodeReader(scoreFile);
-        pointsPerSecondPlaying = reader.TryGetInt("points per second playing", 10);
+        pointsPerSecondPlaying = reader.Get("points per second playing", 10);
     }
 
     private void FixedUpdate()

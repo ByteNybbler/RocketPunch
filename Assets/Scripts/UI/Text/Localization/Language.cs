@@ -17,9 +17,9 @@ public class Language
     [Tooltip("Whether the language reads from left-to-right or right-to-left.")]
     bool rightToLeft;
 
-    public string GetTranslationFileContent()
+    public TextAsset GetTranslationFile()
     {
-        return translationsFile.ToString();
+        return translationsFile;
     }
 
     public string GetName()
