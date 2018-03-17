@@ -47,6 +47,15 @@ public class UIMeter : MonoBehaviour
         return meterFront.anchorMax.x;
     }
 
+    // Adjusts the leftmost anchor of the meter.
+    // Mainly useful if this meter is a buffer meter.
+    public void SetLeftAnchor(float percent)
+    {
+        Vector2 newAnchorMin = meterFront.anchorMin;
+        newAnchorMin.x = percent;
+        meterFront.anchorMin = newAnchorMin;
+    }
+
     private void OnPercentChanged(float percentOld, float percentNew)
     {
         if (PercentChanged != null)

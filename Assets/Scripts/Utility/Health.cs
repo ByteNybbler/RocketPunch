@@ -131,6 +131,16 @@ public class Health : MonoBehaviour
         return (healthCurrent <= 0);
     }
 
+    // Sets the health without restraints and without invoking any events.
+    public void ForceSetHealth(int amount)
+    {
+        healthCurrent = amount;
+    }
+    public void ForceSetMaxHealth(int amount)
+    {
+        healthMax = amount;
+    }
+
     // Event invocations.
     private void OnDied()
     {

@@ -19,7 +19,7 @@ public class HealthToMeter : MonoBehaviour
 
     private void Start()
     {
-        UpdateMeter(health.GetCurrentHealth(), health.GetMaxHealth());
+        //UpdateMeter(health.GetCurrentHealth(), health.GetMaxHealth());
     }
 
     private void OnEnable()

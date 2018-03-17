@@ -71,8 +71,10 @@ public class PlayerHealth : MonoBehaviour
     private void Start()
     {
         ac = ServiceLocator.GetAudioController();
-        health.SetMaxHealth(data.maxHealth);
-        health.FullHeal();
+        //health.SetMaxHealth(data.maxHealth);
+        //health.FullHeal();
+        health.ForceSetMaxHealth(data.maxHealth);
+        health.ForceSetHealth(data.maxHealth);
         health.Died += Health_Died;
         timerInvincible = new Timer(data.secondsOfInvincibilityWhenDamaged, false, false);
         playerSaysFuck.SetChance(true, data.chanceOfSayingFuck);
