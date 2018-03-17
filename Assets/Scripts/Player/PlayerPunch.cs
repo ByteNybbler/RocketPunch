@@ -115,6 +115,7 @@ public class PlayerPunch : MonoBehaviour
         }
         timerPunchCooldown.SetTargetTime(cooldown);
         moreArmsObject.SetActive(willUseMoreArms);
+        meterPunchCooldown.SetForcedInvisible(willUseMoreArms);
     }
 
     // Returns true if the player currently has the Battle Axe powerup.

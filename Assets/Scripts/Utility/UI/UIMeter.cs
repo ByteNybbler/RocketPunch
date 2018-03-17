@@ -17,6 +17,9 @@ public class UIMeter : MonoBehaviour
     [Tooltip("Whether the meter should be invisible when it becomes 0% filled.")]
     bool invisibleWhenEmpty;
 
+    // If true, the meter will always be invisible.
+    bool forcedInvisible = false;
+
     // Fills the meter up to the given percentage.
     public void SetPercent(float percent)
     {
@@ -26,42 +29,66 @@ public class UIMeter : MonoBehaviour
             percent = 1.0f;
         }
 
-        if (invisibleWhenEmpty)
-        {
-            if (percent <= 0.0f)
-            {
-                SetMeterVisible(false);
-            }
-            else
-            {
-                SetMeterVisible(true);
-            }
-        }
-        if (invisibleWhenFull)
-        {
-            if (percent >= 1.0f)
-            {
-                SetMeterVisible(false);
-            }
-            else
-            {
-                SetMeterVisible(true);
-            }
-        }
-
         // Adjust anchors.
         Vector2 newAnchorMax = meterFront.anchorMax;
         newAnchorMax.x = percent;
         meterFront.anchorMax = newAnchorMax;
+
+        CheckMeterVisibility();
     }
 
-    // Fills the meter up to the calculated percentage.
+    // Fills the meter up to the calculated percentage based on the given proportion.
     public void SetProportion(float currentValue, float maxValue)
     {
         SetPercent(currentValue / maxValue);
     }
 
-    // Set whether the meter is visible or not.
+    // Returns the current percent of the meter.
+    public float GetCurrentPercent()
+    {
+        return meterFront.anchorMax.x;
+    }
+
+    // Makes the meter visible or invisible based on the current percentage.
+    private void CheckMeterVisibility()
+    {
+        if (forcedInvisible)
+        {
+            SetMeterVisible(false);
+            return;
+        }
+        float percent = GetCurrentPercent();
+        if (percent <= 0.0f)
+        {
+            // The meter is empty.
+            if (invisibleWhenEmpty)
+            {
+                SetMeterVisible(false);
+            }
+        }
+        else if (percent >= 1.0f)
+        {
+            // The meter is full.
+            if (invisibleWhenFull)
+            {
+                SetMeterVisible(false);
+            }
+        }
+        else
+        {
+            // The meter is not empty or full.
+            SetMeterVisible(true);
+        }
+    }
+
+    // Turns forced invisibility on or off.
+    public void SetForcedInvisible(bool invisible)
+    {
+        forcedInvisible = invisible;
+        CheckMeterVisibility();
+    }
+
+    // Makes the meter visible or invisible.
     private void SetMeterVisible(bool visible)
     {
         gameObject.SetActive(visible);
