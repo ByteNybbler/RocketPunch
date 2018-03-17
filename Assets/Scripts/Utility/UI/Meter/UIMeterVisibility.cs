@@ -1,52 +1,29 @@
 ﻿// Author(s): Paul Calande
-// Class for manipulating UI meters.
+// Class for controlling UI meter visibility.
 
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class UIMeter : MonoBehaviour
+public class UIMeterVisibility : MonoBehaviour
 {
     [SerializeField]
-    [Tooltip("Reference to the RectTransform of the front component of the meter.")]
-    RectTransform meterFront;
+    [Tooltip("The UIMeter to track.")]
+    UIMeter meter;
     [SerializeField]
     [Tooltip("Whether the meter should be invisible when it becomes 100% filled.")]
-    bool invisibleWhenFull;
+    bool invisibleWhenFull = false;
     [SerializeField]
     [Tooltip("Whether the meter should be invisible when it becomes 0% filled.")]
-    bool invisibleWhenEmpty;
-
-    // If true, the meter will always be invisible.
+    bool invisibleWhenEmpty = false;
+    [SerializeField]
+    [Tooltip("If true, the meter will always be invisible.")]
     bool forcedInvisible = false;
 
-    // Fills the meter up to the given percentage.
-    public void SetPercent(float percent)
+    private void Start()
     {
-        // Cap the percent at 100% so that the anchors don't overflow.
-        if (percent > 1.0f)
-        {
-            percent = 1.0f;
-        }
-
-        // Adjust anchors.
-        Vector2 newAnchorMax = meterFront.anchorMax;
-        newAnchorMax.x = percent;
-        meterFront.anchorMax = newAnchorMax;
-
+        meter.PercentChanged += UIMeter_OnPercentChanged;
         CheckMeterVisibility();
-    }
-
-    // Fills the meter up to the calculated percentage based on the given proportion.
-    public void SetProportion(float currentValue, float maxValue)
-    {
-        SetPercent(currentValue / maxValue);
-    }
-
-    // Returns the current percent of the meter.
-    public float GetCurrentPercent()
-    {
-        return meterFront.anchorMax.x;
     }
 
     // Makes the meter visible or invisible based on the current percentage.
@@ -57,7 +34,7 @@ public class UIMeter : MonoBehaviour
             SetMeterVisible(false);
             return;
         }
-        float percent = GetCurrentPercent();
+        float percent = meter.GetCurrentPercent();
         if (percent <= 0.0f)
         {
             // The meter is empty.
@@ -91,6 +68,11 @@ public class UIMeter : MonoBehaviour
     // Makes the meter visible or invisible.
     private void SetMeterVisible(bool visible)
     {
-        gameObject.SetActive(visible);
+        meter.gameObject.SetActive(visible);
+    }
+
+    private void UIMeter_OnPercentChanged(float percentOld, float percentNew)
+    {
+        CheckMeterVisibility();
     }
 }

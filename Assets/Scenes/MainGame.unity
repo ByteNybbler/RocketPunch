@@ -162,8 +162,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   meterFront: {fileID: 691391731}
-  invisibleWhenFull: 0
-  invisibleWhenEmpty: 0
 --- !u!114 &147917962
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1469,6 +1467,7 @@ GameObject:
   m_Component:
   - component: {fileID: 784753866}
   - component: {fileID: 784753868}
+  - component: {fileID: 784753867}
   m_Layer: 5
   m_Name: PunchMeter
   m_TagString: Untagged
@@ -1496,6 +1495,21 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &784753867
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 784753865}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0cacaef5399555d40a30a6112ff87e32, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  meter: {fileID: 784753868}
+  invisibleWhenFull: 0
+  invisibleWhenEmpty: 1
+  forcedInvisible: 0
 --- !u!114 &784753868
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1508,8 +1522,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   meterFront: {fileID: 1915990635}
-  invisibleWhenFull: 0
-  invisibleWhenEmpty: 1
 --- !u!1 &828974815
 GameObject:
   m_ObjectHideFlags: 0
@@ -4621,6 +4633,7 @@ MonoBehaviour:
   - {fileID: 2119569903}
   - {fileID: 937206022}
   meterPunchCooldown: {fileID: 784753868}
+  meterPunchCooldownVisibility: {fileID: 784753867}
   ts: {fileID: 742453017}
 --- !u!114 &2109147859
 MonoBehaviour:

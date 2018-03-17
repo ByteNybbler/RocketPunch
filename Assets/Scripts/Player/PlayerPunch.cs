@@ -60,6 +60,9 @@ public class PlayerPunch : MonoBehaviour
     [Tooltip("Reference to the punch cooldown meter.")]
     UIMeter meterPunchCooldown;
     [SerializeField]
+    [Tooltip("Reference to the punch cooldown meter's visibility component.")]
+    UIMeterVisibility meterPunchCooldownVisibility;
+    [SerializeField]
     TimeScale ts;
 
     AudioController ac;
@@ -115,7 +118,7 @@ public class PlayerPunch : MonoBehaviour
         }
         timerPunchCooldown.SetTargetTime(cooldown);
         moreArmsObject.SetActive(willUseMoreArms);
-        meterPunchCooldown.SetForcedInvisible(willUseMoreArms);
+        meterPunchCooldownVisibility.SetForcedInvisible(willUseMoreArms);
     }
 
     // Returns true if the player currently has the Battle Axe powerup.
