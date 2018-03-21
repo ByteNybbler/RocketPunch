@@ -71,6 +71,6 @@ public class OscillatePosition2D : MonoBehaviour
         float xDifference = oscX.SampleDelta(data.refs.ts.DeltaTime());
         float yDifference = oscY.SampleDelta(data.refs.ts.DeltaTime());
         Vector2 change = new Vector2(xDifference, yDifference);
-        mover.MovePosition(change);
+        mover.OffsetPosition(change);
     }
 }

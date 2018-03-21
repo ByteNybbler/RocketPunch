@@ -28,7 +28,7 @@ public class LoopedRotate : MonoBehaviour
     private void FixedUpdate()
     {
         float rotationDelta = rotationSpeed * Time.deltaTime;
-        mover.MoveRotation(rotationDelta);
+        mover.OffsetRotation(rotationDelta);
 
         if (mover.GetRotation() >= rotationMax)
         {

@@ -1,12 +1,12 @@
 ﻿// Author(s): Paul Calande
-// Continuously moves the GameObject based on a given movement vector.
+// Continuously rotates the GameObject at a constant rate.
 // Has the advantage of being suspectible to the effects of time scales.
 
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Velocity2D : MonoBehaviour
+public class AngularVelocity2D : MonoBehaviour
 {
     [System.Serializable]
     public class Data : IDeepCopyable<Data>
@@ -22,18 +22,18 @@ public class Velocity2D : MonoBehaviour
             }
         }
         public Refs refs;
-        [Tooltip("The vector determining the direction and speed to move.")]
-        public Vector2 velocity;
+        [Tooltip("How quickly to rotate.")]
+        public float angularVelocity;
 
-        public Data(Refs refs, Vector2 velocity)
+        public Data(Refs refs, float angularVelocity)
         {
             this.refs = refs;
-            this.velocity = velocity;
+            this.angularVelocity = angularVelocity;
         }
 
         public Data DeepCopy()
         {
-            return new Data(refs, velocity);
+            return new Data(refs, angularVelocity);
         }
     }
     [SerializeField]
@@ -50,16 +50,16 @@ public class Velocity2D : MonoBehaviour
 
     private void FixedUpdate()
     {
-        mover.OffsetPosition(data.velocity * data.refs.ts.DeltaTime());
+        mover.OffsetRotation(data.angularVelocity * data.refs.ts.DeltaTime());
     }
 
-    public void SetVelocity(Vector2 val)
+    public void SetAngularVelocity(float val)
     {
-        data.velocity = val;
+        data.angularVelocity = val;
     }
 
-    public Vector2 GetVelocity()
+    public float GetAngularVelocity()
     {
-        return data.velocity;
+        return data.angularVelocity;
     }
 }
