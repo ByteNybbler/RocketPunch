@@ -68,7 +68,7 @@ public class PlayerInput : MonoBehaviour, IPlayable
         float axisV = inputReader.GetAxisVerticalRaw();
         Vector2 change = new Vector2(axisH, axisV)
             * data.movementSpeed * tsGameplay.DeltaTime();
-        mover.MovePosition(change);
+        mover.OffsetPosition(change);
 
         if (!tsGameplay.IsPaused())
         {
